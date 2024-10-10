@@ -1,0 +1,10 @@
+(Uso da pasta hooks)
+
+
+- Essa pasta vai ser usada para criarmos os nossos custom hooks
+- Os custom hooks devem ser criados nessa estrutura, sempre começando o nome do arquivo e da função com use
+
+
+(
+  OBS.: Os custom hooks são hooks customizados, diferente do useState onde apenas o utilizamos sem alterar sua funcionalidade, que criamos para separar nossa lógica da parte visual. Nele conseguimos colocar todas as funções que estariam dentro da pasta index.txt
+)

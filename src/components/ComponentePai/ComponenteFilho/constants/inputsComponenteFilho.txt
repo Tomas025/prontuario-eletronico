@@ -1,0 +1,10 @@
+(Uso da pasta constants)
+
+
+- Essa pasta vai ser usada para criarmos os nossos objetos que não vão mudar
+- Os arquivos desta pasta devem ser criados com o nome do arquivo representando o seu conteudo
+
+
+(
+  OBS.: Esses objetos podem ser utilizados para, por exemplo: colocar todas as informações dos inputs que utilizaremos e na tela quando for renderizar esses inputs apenas fazer um map nesse array de objetos
+)

@@ -1,0 +1,10 @@
+(Uso da pasta contexts)
+
+
+- Essa pasta vai ser usada para criarmos os nossos contextos (context api).
+- Os contexts devem ser criados nessa estrutura, sempre começando com context no nome do arquivo.
+
+
+(
+  OBS.: Esses contexts podem ser utilizados para gerenciamento de estados, estados esses que precisam ser compartilhados em mais de um componente, por exemplo, muito utilizado em forms mult-steps onde, às vezes precisamos armazenar as informações preenchidas em cada etapa para que apenas na última etapa enviamos tudo em um único post para o back-end
+)

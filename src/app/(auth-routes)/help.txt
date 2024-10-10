@@ -1,0 +1,1 @@
+Pasta para colocar todas as rotas que precisarem de autenticação
