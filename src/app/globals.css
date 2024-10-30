@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .title {
+    @apply font-bold text-xl leading-[26px]
+  }
+  .subTitle {
+    @apply font-bold text-sm leading-[18px]
+  }
+  .textSelect {
+    @apply font-medium text-sm leading-4
+  }
+  .text {
+    @apply font-medium text-sm leading-[14px]
+  }
+  .linkButton {
+    @apply font-bold text-xl leading-[14px]
+  }
+  .navigation {
+    @apply font-bold text-xl leading-[14px]
+  }
+  .tableText {
+    @apply font-medium leading-[12px]
+  }
+  .linkText {
+    @apply font-bold leading-[12px]
+  }
+  .select {
+    @apply font-medium text-xs leading-[18px]
+  }
+  .placeholder {
+    @apply font-medium leading-[12px]
+  }
+  .button {
+    @apply font-medium text-xs leading-[14px]
+  }
+  .label {
+    @apply font-medium text-xs leading-[12px]
+  }
+  .tagText {
+    @apply font-light text-sm leading-[14px]
+  }
+  .tagTable {
+    @apply font-light text-xs leading-[14px]
+  }
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
