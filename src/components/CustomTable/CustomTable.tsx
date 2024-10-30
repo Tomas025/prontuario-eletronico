@@ -1,4 +1,5 @@
-import React from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import React from "react";
 
 type Column = {
   key: string;
@@ -12,33 +13,39 @@ type CustomTableProps = {
   pagination?: boolean;
 };
 
-const CustomTable: React.FC<CustomTableProps> = ({ columns, data }) => {
+const CustomTable: React.FC<CustomTableProps> = ({ columns, data, pagination }) => {
   return (
-    <div className="w-full overflow-auto bg-white shadow-md rounded-lg">
-      <table className="w-full text-left border-collapse">
-        <thead className="bg-blue-100">
-          <tr>
+    <div className="w-full overflow-auto bg-white shadow-md rounded-lg font-sans">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-blue-100">
             {columns.map((column) => (
-              <th key={column.key} className="p-4 font-semibold text-gray-700">
+              <TableHead
+                key={column.key}
+                className="p-4 font-semibold text-gray-700 text-lg"
+              >
                 {column.label}
-              </th>
+              </TableHead>
             ))}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {data.map((row, index) => (
-            <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+            <TableRow key={index} className="border-b border-gray-200 hover:bg-gray-50">
               {columns.map((column) => (
-                <td key={column.key} className="p-4 text-gray-600">
+                <TableCell
+                  key={column.key}
+                  className="p-4 text-gray-600 text-base"
+                >
                   {column.render ? column.render(row) : row[column.key]}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
 
-    
+     
     </div>
   );
 };
