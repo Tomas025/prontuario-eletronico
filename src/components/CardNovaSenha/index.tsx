@@ -23,7 +23,7 @@ export default function CardNovaSenha() {
     };
 
     return (
-        <Card className="w-60vh h-80vh">
+        <Card>
             <CardHeader>
                 <Button />
                 <CardTitle>Nova Senha</CardTitle>
