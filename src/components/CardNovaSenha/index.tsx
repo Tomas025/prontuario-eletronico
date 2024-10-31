@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "../ui/form";
 import { Input } from "@/components/ui/input"
+import MailIcon from "@/utils/icons/mail.svg"
 
 
 const formSchema = z.object({
@@ -37,7 +38,10 @@ export default function CardNovaSenha() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input type="email" placeholder="email" {...field} />
+                                    <div className="flex border-b-[1px] border-gray-500">
+                                    <img src={MailIcon} alt="Ícon" className="h-5 w-5 mx-2 my-auto" />
+                                        <Input type="email" placeholder="Email" {...field} className="border-0 focus:outline-none rounded-none"  />
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
