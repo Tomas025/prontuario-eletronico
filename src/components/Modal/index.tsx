@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { IconType } from 'react-icons';
-import {
-  AiOutlineCheckCircle,
-  AiOutlineExclamationCircle,
-  AiOutlineInfoCircle,
-  AiOutlineCloseCircle
-} from 'react-icons/ai';
+import { FaCheck } from 'react-icons/fa6';
+import { FiInfo, FiX } from 'react-icons/fi';
+import { GoAlert } from 'react-icons/go';
 
 import {
   AlertDialog,
@@ -40,15 +37,15 @@ interface ModalProps {
 const getIcon = (type: ModalType): IconType => {
   switch (type) {
     case 'success':
-      return AiOutlineCheckCircle;
+      return FaCheck;
     case 'warning':
-      return AiOutlineExclamationCircle;
+      return GoAlert;
     case 'danger':
-      return AiOutlineCloseCircle;
+      return FiX;
     case 'info':
-      return AiOutlineInfoCircle;
+      return FiInfo;
     default:
-      return AiOutlineInfoCircle;
+      return FiInfo;
   }
 };
 
@@ -78,7 +75,7 @@ const getButtonColor = (type: ModalType): string => {
     case 'danger':
       return 'bg-red/01 hover:bg-red/02';
     case 'info':
-      return 'bg-otherBlue hover:bg-otherBlue';
+      return 'bg-otherBlue hover:bg-otherBlue/02';
     default:
       return 'bg-gray/01 hover:bg-gray/04';
   }
@@ -107,23 +104,25 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="max-w-sm p-6 rounded-lg shadow-lg bg-white text-center border border-gray-03">
-        <AlertDialogHeader className="flex flex-col items-center justify-center mb-2">
-          <Icon className={`text-3xl ${getIconColor(type)}`} />
-          <AlertDialogTitle className="subTitle mt-1">{title}</AlertDialogTitle>
+      <AlertDialogContent className="max-w-sm rounded-lg shadow-lg bg-white text-center border border-gray-03">
+        <AlertDialogHeader className="flex flex-col items-center justify-center">
+          <Icon className={`text-4xl ${getIconColor(type)}`} />
+          <AlertDialogTitle className="title text-blue/01">
+            {title}
+          </AlertDialogTitle>
         </AlertDialogHeader>
-        <AlertDialogDescription className="text text-gray-02 mb-3">
+        <AlertDialogDescription className="text px-4 text-blue/01">
           {message}
         </AlertDialogDescription>
 
         {/* Centralizando o Footer e os Botões */}
         {buttons && buttons.length > 0 && (
-          <AlertDialogFooter className="flex !justify-center space-x-2 mt-2">
+          <AlertDialogFooter className="flex !justify-center space-x-3">
             {buttons.map((button, index) => (
               <AlertDialogAction
                 key={index}
                 onClick={button.onClick}
-                className={`px-4 py-2 rounded-md font-medium text-xs text-white ${getButtonColor(button.color || type)}`}
+                className={`px-5 py-3 rounded-md font-medium text-xs text-white ${getButtonColor(button.color || type)}`}
               >
                 {button.label}
               </AlertDialogAction>

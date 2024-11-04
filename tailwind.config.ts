@@ -34,6 +34,7 @@ const config: Config = {
         yellow: '#E2CE19',
         orange: '#EB9617',
         otherBlue: '#29A7F5',
+        'otherBlue/02': '#23638A',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
