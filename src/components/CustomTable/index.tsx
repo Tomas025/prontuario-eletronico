@@ -1,5 +1,14 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '../ui/table';
 
 type Column = {
   key: string;
@@ -13,7 +22,7 @@ type CustomTableProps = {
   pagination?: boolean;
 };
 
-const CustomTable: React.FC<CustomTableProps> = ({ columns, data, pagination }) => {
+export function CustomTable({ columns, data }: CustomTableProps) {
   return (
     <div className="w-full overflow-auto bg-white shadow-md rounded-lg font-sans">
       <Table>
@@ -31,7 +40,10 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, data, pagination }) 
         </TableHeader>
         <TableBody>
           {data.map((row, index) => (
-            <TableRow key={index} className="border-b border-gray-200 hover:bg-gray-50">
+            <TableRow
+              key={index}
+              className="border-b border-gray-200 hover:bg-gray-50"
+            >
               {columns.map((column) => (
                 <TableCell
                   key={column.key}
@@ -44,10 +56,6 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, data, pagination }) 
           ))}
         </TableBody>
       </Table>
-
-     
     </div>
   );
-};
-
-export default CustomTable;
+}

@@ -1,4 +1,0 @@
-(Exemplo de componente exclusivo do nosso componente pai)
-
-
-- Dentro de uma pasta de componente pode haver outras pastas que utilizaremos para separar a parte logica do nosso codigo do visual

@@ -81,7 +81,7 @@ const getButtonColor = (type: ModalType): string => {
   }
 };
 
-const Modal: React.FC<ModalProps> = ({
+export function Modal({
   type,
   title,
   message,
@@ -89,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   autoCloseTime
-}) => {
+}: ModalProps) {
   const Icon = getIcon(type);
 
   // Fechamento automático do modal, caso `autoCloseTime` seja definido
@@ -132,6 +132,6 @@ const Modal: React.FC<ModalProps> = ({
       </AlertDialogContent>
     </AlertDialog>
   );
-};
+}
 
 export default Modal;
