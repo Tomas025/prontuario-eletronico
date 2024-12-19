@@ -23,7 +23,7 @@ export default async function PrivateLayout({
         <UserComponent />
         <MenuComponent />
       </header>
-      <main>{children}</main>
+      <main className="p-[30px]">{children}</main>
     </>
   );
 }
