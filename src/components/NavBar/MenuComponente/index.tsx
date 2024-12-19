@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React from 'react';
 import { FaClipboardList } from 'react-icons/fa';
 
-const MenuComponent = () => {
+export function MenuComponent() {
   return (
     <nav className="flex w-auto space-x-4 bg-blue/03 items-center h-16">
       {/* Navegação */}
@@ -31,6 +31,4 @@ const MenuComponent = () => {
       </div>
     </nav>
   );
-};
-
-export default MenuComponent;
+}
