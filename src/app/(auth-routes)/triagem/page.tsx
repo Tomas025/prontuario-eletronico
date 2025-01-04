@@ -1,7 +1,8 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
+import { IoIosSearch } from 'react-icons/io';
+
 import { CustomTable } from '@/components/CustomTable';
-import { IoIosSearch } from "react-icons/io";
 
 type RowData = {
   id: number;
@@ -39,7 +40,7 @@ export default function Triagem() {
     { id: 17, paciente: 'Daniela Pereira', horario: '06:00' },
     { id: 18, paciente: 'Felipe Oliveira', horario: '07:00' },
     { id: 19, paciente: 'Sofia Lima', horario: '08:00' },
-    { id: 20, paciente: 'Vitor Costa', horario: '09:00' },
+    { id: 20, paciente: 'Vitor Costa', horario: '09:00' }
   ];
 
   // Definição das colunas
@@ -56,8 +57,8 @@ export default function Triagem() {
         >
           INICIAR TRIAGEM
         </button>
-      ),
-    },
+      )
+    }
   ];
 
   const handleIniciarTriagem = (id: number): void => {
@@ -89,4 +90,18 @@ export default function Triagem() {
       />
     </div>
   );
+}
+{
+  /* import { CardLogin } from '@/components/CardLogin';
+import { HeaderTriagem } from '@/components/HeaderTriagem';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import BodyTriagem from '@/components/BodyTriagem';
+
+export default function Triagem() {
+  return (
+    <div className="flex flex-col h-screen">
+      <HeaderTriagem />
+      <BodyTriagem /> */
 }

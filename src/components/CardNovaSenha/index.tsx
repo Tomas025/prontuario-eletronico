@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input"
 import { FiMail, FiLock } from "react-icons/fi";
 import { PasswordInput } from "../ui/passwordInput";
 import { FiArrowLeft } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { LuLoader2 } from "react-icons/lu";
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -18,6 +20,8 @@ const formSchema = z.object({
 })
 
 export default function CardNovaSenha() {
+    const router = useRouter();
+
     const form = useForm();
 
     const handleSubmit = (data: any) => {
@@ -25,9 +29,9 @@ export default function CardNovaSenha() {
     };
 
     return (
-        <Card>
+        <Card className="flex flex-col justify-between bg-white w-[478px] p-[30px] rounded-[20px] absolute right-[150px] self-center">
             <CardHeader>
-                <Button className="w-5 h-10 bg-transparent focus-visible:outline-none hover:bg-transparent focus:bg-transparent active:bg-transparent border-transparent border-none shadow-none outline-none">
+                <Button className="w-5 h-10 bg-transparent focus-visible:outline-none hover:bg-transparent focus:bg-transparent active:bg-transparent border-transparent border-none shadow-none outline-none" onClick={() => router.push('/login')}>
                     <FiArrowLeft className="text-black" size={40}/>
                 </Button>
                 <CardTitle className="text-blue-900 text-4xl font-normal">Nova Senha</CardTitle>
@@ -65,7 +69,7 @@ export default function CardNovaSenha() {
                         )}/>
                         <FormField
                         control={form.control}
-                        name="Senha"
+                        name="password"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
@@ -91,7 +95,15 @@ export default function CardNovaSenha() {
                                 <FormMessage />
                             </FormItem>
                         )}/>
-                        <Button className="bg-blue-950 w-full text-lg"type="submit">Entrar</Button>
+                        <Button className="bg-blue-950 w-full text-lg"type="submit" disabled={form.formState.isSubmitting}>
+                        {form.formState.isSubmitting && (
+                            <>
+                            <LuLoader2 className="animate-spin" />
+                            Carregando...
+                            </>
+                        )}
+                        {!form.formState.isSubmitting && 'Entrar'}
+                        </Button>
                     </form>
                 </Form>
             </CardContent>
