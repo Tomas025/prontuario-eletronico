@@ -3,13 +3,25 @@ import { BsPrinter } from 'react-icons/bs';
 import { FiCheck } from 'react-icons/fi';
 import { FiX } from 'react-icons/fi';
 
+import { BreadCrumb } from '../BreadCrumb';
+import { ListLink } from '../BreadCrumb/types/typesBreadCrumb';
 import { Button } from '../ui/button';
-import { BreadCrumbTriagem } from './BreadCrumbTriagem';
 
 export function HeaderTriagem() {
+  const linkListBreadCrumb: ListLink[] = [
+    {
+      label: 'Triagem',
+      route: '/triagem'
+    },
+    {
+      label: 'Paciente',
+      route: ''
+    }
+  ];
+
   return (
     <div className="flex justify-between w-full items-center mb-[25px]">
-      <BreadCrumbTriagem />
+      <BreadCrumb linkList={linkListBreadCrumb} />
 
       <div className="flex gap-x-4">
         <Button className="bg-blue-950 w-28 text-sm" type="submit">
