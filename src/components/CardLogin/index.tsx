@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiMail, FiLock, FiArrowLeft } from 'react-icons/fi';
 import { LuLoader2 } from 'react-icons/lu';
 
 import { Input } from '@/components/ui/input';
@@ -24,12 +24,15 @@ export function CardLogin() {
 
   return (
     <Card className="flex flex-col justify-between bg-white w-[478px] p-[30px] rounded-[20px] absolute right-[150px] self-center">
-      <CardHeader className="mb-4">
-        <CardTitle className="text-blue/04 text-5xl font-medium">
+      <button className="w-fit text-xl">
+        <FiArrowLeft />
+      </button>
+      <CardHeader className="p-0">
+        <CardTitle className="text-blue/04 text-5xl font-medium my-10">
           Login
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(submitForm)}
