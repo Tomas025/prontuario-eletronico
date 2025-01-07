@@ -1,16 +1,16 @@
-"use client"
-import { Input } from '@/components/Input';
-
+'use client';
 import React, { useState } from 'react';
+
+import { Input } from '@/components/Input';
 
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>){
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value);
-  };
+  }
 
-  function onSubmit(){
+  function onSubmit() {
     alert(inputValue);
   }
 
