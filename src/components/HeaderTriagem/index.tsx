@@ -8,7 +8,7 @@ import { BreadCrumbTriagem } from './BreadCrumbTriagem';
 
 export function HeaderTriagem() {
   return (
-    <div className="flex justify-between w-full items-center px-5 pt-8">
+    <div className="flex justify-between w-full items-center mb-[25px]">
       <BreadCrumbTriagem />
 
       <div className="flex gap-x-4">
