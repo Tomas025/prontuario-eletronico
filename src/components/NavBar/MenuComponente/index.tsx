@@ -52,7 +52,7 @@ export function MenuComponent() {
         {listLinkNavBar.map((item, index) => (
           <Link
             href={item.route}
-            className={`flex items-center text-base space-x-2 px-3 py-2 rounded-full font-semibold hover:bg-white hover:text-blue/03 ${item.route === pathname ? 'bg-white text-blue/03' : 'text-white'}`}
+            className={`flex items-center text-base space-x-2 px-3 py-2 rounded-full font-semibold hover:bg-white hover:text-blue/03 ${pathname.startsWith(item.route) ? 'bg-white text-blue/03' : 'text-white'}`}
             key={index}
           >
             {item.icon}
