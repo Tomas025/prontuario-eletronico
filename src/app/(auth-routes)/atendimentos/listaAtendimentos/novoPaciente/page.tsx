@@ -1,4 +1,6 @@
 'use client';
+import Link from 'next/link';
+
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,31 +35,148 @@ export default function NovoPaciente() {
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
         <div className="flex gap-4">
-          <Button>Cancelar</Button>
-          <Button>Salvar</Button>
+          <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
+            <Link href={'/atendimentos/listaAtendimentos'}> CANCELAR</Link>
+          </Button>
+          <Button
+            className="bg-green/01 w-full button hover:bg-green/02"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
+            SALVAR
+          </Button>
         </div>
       </section>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(submitForm)}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-5"
         >
           {/* Dados Pessoais */}
-          <h1 className="text-xl font-bold text-blue/03">Dados Pessoais</h1>
-          <div className="flex gap-5">
+          <section className="flex flex-col gap-2">
+            <h1 className="text-xl font-bold text-blue/03">Dados Pessoais</h1>
+            <div className="flex w-full gap-5">
+              <FormField
+                control={form.control}
+                name="nomeCompleto"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 min-w-96 label">
+                        <Label htmlFor="nomeCompleto">
+                          Nome completo<span className="text-red/01">*</span>
+                        </Label>
+                        <Input
+                          id="nomeCompleto"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="nomeSocial"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 min-w-96 label">
+                        <Label htmlFor="nomeSocial">Nome social</Label>
+                        <Input
+                          id="nomeSocial"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dataNascimento"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="dataNascimento">
+                          Data de nascimento
+                        </Label>
+                        <Input
+                          id="dataNascimento"
+                          type="date"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="sus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="sus">SUS</Label>
+                        <Input
+                          id="sus"
+                          type="number"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cpf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="cpf">
+                          CPF<span className="text-red/01">*</span>
+                        </Label>
+                        <Input
+                          id="cpf"
+                          type="number"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </section>
+
+          <div className="flex w-full gap-5">
             <FormField
               control={form.control}
-              name="nomeCompleto"
+              name="nomeMae"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="grid w-full items-center gap-1.5 min-w-80 label">
-                      <Label htmlFor="nomeCompleto">
-                        Nome completo<span className="text-red/01">*</span>
-                      </Label>
+                    <div className="grid w-full items-center gap-1.5 min-w-96 label">
+                      <Label htmlFor="nomeMae">Nome da mãe</Label>
                       <Input
-                        id="nomeCompleto"
+                        id="nomeMae"
                         type="text"
                         {...field}
                         className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
@@ -70,15 +189,15 @@ export default function NovoPaciente() {
             />
             <FormField
               control={form.control}
-              name="nomeSocial"
+              name="rg"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="grid w-full items-center gap-1.5 min-w-80 label">
-                      <Label htmlFor="nomeSocial">Nome social</Label>
+                    <div className="grid w-full items-center gap-1.5 label">
+                      <Label htmlFor="rg">RG</Label>
                       <Input
-                        id="nomeSocial"
-                        type="text"
+                        id="rg"
+                        type="number"
                         {...field}
                         className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
                       />
@@ -90,15 +209,15 @@ export default function NovoPaciente() {
             />
             <FormField
               control={form.control}
-              name="dataNascimento"
+              name="telefone"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <div className="grid w-full items-center gap-1.5 label">
-                      <Label htmlFor="dataNascimento">Data de nascimento</Label>
+                      <Label htmlFor="telefone">Telefone</Label>
                       <Input
-                        id="dataNascimento"
-                        type="date"
+                        id="telefone"
+                        type="tel"
                         {...field}
                         className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
                       />
@@ -108,67 +227,187 @@ export default function NovoPaciente() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="dataNascimento"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="grid w-full items-center gap-1.5 label">
-                      <Label htmlFor="dataNascimento">SUS</Label>
-                      <Input
-                        id="dataNascimento"
-                        type="date"
-                        {...field}
-                        className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* 
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="dataNascimento">Data de nascimento</Label>
-              <Input type="date" id="dataNascimento" />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="sus">SUS</Label>
-              <Input type="number" id="sus" />
-            </div>
           </div>
 
-          <div className="flex gap-5">
-            <div className="grid w-full items-center gap-1.5 max-w-80">
-              <Label htmlFor="rg">RG</Label>
-              <Input type="number" id="rg" />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="cpf">CPF</Label>
-              <Input type="number" id="cpf" />
-            </div>
-            <div className="grid w-full items-center gap-1.5 max-w-80">
-              <Label htmlFor="telefone">Telefone</Label>
-              <Input type="tel" id="telefone" />
-            </div>
-            <div className="grid w-full items-center gap-1.5 min-w-80">
-              <Label htmlFor="nomeMae">Nome da mãe</Label>
-              <Input type="text" id="nomeMae" />
-            </div>
-          </div>
           {/* Endereço */}
-            {/* <h1 className="text-xl font-bold text-blue/03">Endereço</h1>
-          <div className="flex gap-5">
-            <div className="grid w-full items-center gap-1.5 min-w-80">
-              <Label htmlFor="cep">CEP</Label>
-              <Input type="number" id="cep" />
+          <section className="flex flex-col gap-2">
+            <h1 className="text-xl font-bold text-blue/03">Endereço</h1>
+            <div className="flex w-full gap-5">
+              <FormField
+                control={form.control}
+                name="cep"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="cep">CEP</Label>
+                        <Input
+                          id="cep"
+                          type="number"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cidade"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="cidade">Cidade</Label>
+                        <Input
+                          id="cidade"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bairro"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="bairro">Bairro</Label>
+                        <Input
+                          id="bairro"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="rua"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="rua">Rua</Label>
+                        <Input
+                          id="rua"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="numero"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="numero">Número</Label>
+                        <Input
+                          id="numero"
+                          type="number"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div className="grid w-full items-center gap-1.5 min-w-80">
-              <Label htmlFor="cep">CEP</Label>
-              <Input type="number" id="cep" />
-            </div> */}
-          </div>
+          </section>
+
+          {/* Contato de Emergência */}
+          <section className="flex flex-col gap-2">
+            <h1 className="text-xl font-bold text-blue/03">
+              Contato de Emergência
+            </h1>
+            <div className="flex w-full gap-5">
+              <FormField
+                control={form.control}
+                name="nomeContatoEmergencia"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 min-w-96 label">
+                        <Label htmlFor="nomeContatoEmergencia">
+                          Nome do contato de emergência
+                        </Label>
+                        <Input
+                          id="nomeContatoEmergencia"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="parentesco"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="parentesco">Parentesco</Label>
+                        <Input
+                          id="parentesco"
+                          type="text"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="telefoneContatoEmergencia"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid w-full items-center gap-1.5 label">
+                        <Label htmlFor="telefoneContatoEmergencia">
+                          Telefone de emergência
+                        </Label>
+                        <Input
+                          id="telefoneContatoEmergencia"
+                          type="tel"
+                          {...field}
+                          className="p-[10px] border-2 border-blue/07 rounded-[10px] focus:border-blue/06 focus-visible:ring-0"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </section>
         </form>
       </Form>
     </section>
