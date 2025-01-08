@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PiTrashFill } from 'react-icons/pi';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
+import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -24,7 +25,7 @@ interface Field {
   type: string;
 }
 
-const linkList = [
+const linkList: ListLink[] = [
   { label: 'Atendimentos', route: '/atendimentos' },
   { label: 'Novo Atendimento', route: '/atendimentos/listaAtendimentos' },
   {
@@ -195,7 +196,7 @@ export default function NovoPaciente() {
       </Form>
       {emergencyContacts.length < 3 && (
         <Button
-          className="bg-blue/04 w-fit button hover:bg-blue/03"
+          className="bg-blue/04 w-fit button hover:bg-blue/02"
           onClick={addEmergencyContact}
         >
           + CONTATO DE EMERGÊNCIA
