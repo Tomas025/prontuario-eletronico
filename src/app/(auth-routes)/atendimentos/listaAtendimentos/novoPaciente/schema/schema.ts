@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const mySchema = z.object({
-  nomeCompleto: z.string().nonempty({ message: 'Campo obrigatório' }),
+  nomeCompleto: z.string({ required_error: 'Campo obrigatório' }),
   nomeSocial: z.string().optional(),
   dataNascimento: z
     .string()
@@ -21,8 +21,7 @@ export const mySchema = z.object({
       message: 'Número do SUS inválido'
     }),
   cpf: z
-    .string()
-    .nonempty({ message: 'Campo obrigatório' })
+    .string({ required_error: 'Campo obrigatório' })
     .refine((cpf) => /^\d{11}$/.test(cpf), { message: 'CPF inválido' }),
   rg: z
     .string()
