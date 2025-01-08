@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import React, { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
@@ -37,7 +38,16 @@ export default function Triagem() {
   // Definição das colunas
   const columns = useMemo(
     () => [
-      { accessorKey: 'paciente', header: 'PACIENTE' },
+      {
+        accessorKey: 'paciente',
+        header: 'PACIENTE',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        cell: ({ cell }: any) => (
+          <Link href={`/paciente/${cell.row.original.id}`}>
+            <div className="text-blue/05 font-bold">{cell.getValue()}</div>
+          </Link>
+        )
+      },
       { accessorKey: 'horario', header: 'HORÁRIO DE ENTRADA' },
       {
         accessorKey: 'acao',
@@ -45,21 +55,17 @@ export default function Triagem() {
         header: '',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
-          <button
-            onClick={() => handleIniciarTriagem(row.original.id)}
+          <Link
+            href={`/triagem/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
             INICIAR TRIAGEM
-          </button>
+          </Link>
         )
       }
     ],
     []
   );
-
-  const handleIniciarTriagem = (id: number): void => {
-    alert(`Iniciando triagem para o paciente com ID: ${id}`);
-  };
 
   return (
     <div className="p-4">

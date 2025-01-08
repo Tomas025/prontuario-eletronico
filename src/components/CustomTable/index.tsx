@@ -7,7 +7,8 @@ import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel
+  getPaginationRowModel,
+  ColumnFiltersState
 } from '@tanstack/react-table';
 
 import {
@@ -29,25 +30,31 @@ type CustomTableProps = {
   columns: Column[];
   data: any[];
   itemsPerPageOptions?: number[];
+  showClassificationFilter?: boolean; // Controla a exibição do filtro de classificação
 };
 
 export function CustomTable({
   columns,
   data,
-  itemsPerPageOptions = [10, 20, 30, 40, 50]
+  itemsPerPageOptions = [10, 20, 30, 40, 50],
+  showClassificationFilter = false // Padrão: não mostrar filtro de classificação
 }: CustomTableProps) {
   const [globalFilter, setGlobalFilter] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(itemsPerPageOptions[0]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  // Configuração da tabela com TanStack Table
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter,
+      columnFilters, // Adicionando estado para filtros de coluna
       pagination: { pageIndex, pageSize }
     },
     onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters, // Controle de filtros por coluna
     onPaginationChange: (updater) => {
       if (typeof updater === 'function') {
         const newPagination = updater({ pageIndex, pageSize });
@@ -68,16 +75,56 @@ export function CustomTable({
 
   return (
     <div>
-      <div className="relative mb-4">
-        <IoIosSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 size-6 text-blue/06" />
-        <input
-          type="text"
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Pesquise paciente, status, data..."
-          className="p-1 pl-10 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07 placeholder-gray/01"
-        />
+      {/* Barra de pesquisa e filtro de classificação */}
+      <div className="flex items-center space-x-4 mb-4">
+        <div
+          className={`relative ${showClassificationFilter ? 'w-3/4' : 'w-full'}`}
+        >
+          <IoIosSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 size-6 text-blue/06" />
+          <input
+            type="text"
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Pesquise paciente"
+            className="p-2 pl-10 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07 placeholder-gray/01"
+          />
+        </div>
+        {showClassificationFilter && (
+          <div className="relative w-1/4">
+            <select
+              value={
+                (columnFilters.find((filter) => filter.id === 'classificacao')
+                  ?.value as string) || 'Todos'
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === 'Todos') {
+                  setColumnFilters((filters) =>
+                    filters.filter((filter) => filter.id !== 'classificacao')
+                  );
+                } else {
+                  setColumnFilters((filters) => [
+                    ...filters.filter(
+                      (filter) => filter.id !== 'classificacao'
+                    ),
+                    { id: 'classificacao', value }
+                  ]);
+                }
+              }}
+              className="p-2 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07"
+            >
+              <option value="Todos">Classificação - Todos</option>
+              <option value="Emergência">Emergência</option>
+              <option value="Muito Urgentes">Muito Urgentes</option>
+              <option value="Urgência">Urgência</option>
+              <option value="Menos Graves">Menos Graves</option>
+              <option value="Leves">Leves</option>
+            </select>
+          </div>
+        )}
       </div>
+
+      {/* Tabela */}
       <div className="w-full bg-white shadow-md rounded-lg font-sans">
         <Table>
           <TableHeader>
@@ -118,6 +165,8 @@ export function CustomTable({
             ))}
           </TableBody>
         </Table>
+
+        {/* Controles de Paginação */}
         <div className="flex justify-between items-center px-4 py-3 bg-white border-t">
           <div></div>
 

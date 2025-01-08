@@ -13,7 +13,7 @@ type RowData = {
   classificacao: string;
 };
 
-export default function AtendimentoMedico() {
+export default function EquipeMultiprofissional() {
   // Mock data para a tabela
   const data: RowData[] = [
     {
@@ -235,10 +235,10 @@ export default function AtendimentoMedico() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
           <Link
-            href={`/atendimentoMedico/${row.original.id}`}
+            href={`/equipeMultiprofissional/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
-            INICIAR ATENDIMENTO
+            REALIZAR ANOTAÇÃO
           </Link>
         )
       }
