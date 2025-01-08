@@ -108,9 +108,9 @@ export default function BodyTriagem() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <div className="flex justify-content align-center">
-                                                <FormLabel className="pt-3 pr-1">Pressão Art.:</FormLabel>
+                                                <FormLabel className="pt-3 pr-1 ">Pressão Art.:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="14/7" {...field} className="w-14 mr-4"/>
+                                                    <Input placeholder="14/7" {...field} className="w-14 mr-4 border-blue-200 bg-blue-50"/>
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -125,7 +125,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Glicose:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="130mg/dl" className="w-24 mr-4" {...field} />
+                                                    <Input placeholder="130mg/dl" className="w-24 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -140,7 +140,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Temperatura:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="37°" className="w-12 mr-4" {...field} />
+                                                    <Input placeholder="37°" className="w-12 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -155,7 +155,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Peso:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="64kg" className="w-16 mr-4" {...field} />
+                                                    <Input placeholder="64kg" className="w-16 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -170,7 +170,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Freq. Card.:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="70 bpm" className="w-20 mr-4" {...field} />
+                                                    <Input placeholder="70 bpm" className="w-20 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -185,7 +185,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Freq. Resp.:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="45 ipm" className="w-20 mr-4" {...field} />
+                                                    <Input placeholder="45 ipm" className="w-20 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -200,7 +200,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Tipo Sang.:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="O-" className="w-12"{...field} />
+                                                    <Input placeholder="O-" className="w-12 border-blue-200 bg-blue-50"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -217,7 +217,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Saturação:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="99 SpO2" className="w-24 mr-4" {...field} />
+                                                    <Input placeholder="99 SpO2" className="w-24 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -232,7 +232,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Altura:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="1,67m" className="w-16 mr-4" {...field} />
+                                                    <Input placeholder="1,67m" className="w-16 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -247,7 +247,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Antec.Patológicos:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Sim" className="w-14 mr-4" {...field} />
+                                                    <Input placeholder="Sim" className="w-14 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -262,7 +262,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Neces. Psicobio.:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Sim" className="w-14 mr-4" {...field} />
+                                                    <Input placeholder="Sim" className="w-14 mr-4 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -277,7 +277,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Diabetes:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Sim" className="w-14 mr-4"{...field} />
+                                                    <Input placeholder="Sim" className="w-14 mr-4 border-blue-200 bg-blue-50"{...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -292,7 +292,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Medicamentos em Uso:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="sim" className="w-14" {...field} />
+                                                    <Input placeholder="sim" className="w-14 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -309,7 +309,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Uso de prótese:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="sim" className="w-14" {...field} />
+                                                    <Input placeholder="sim" className="w-14 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
@@ -324,7 +324,7 @@ export default function BodyTriagem() {
                                             <div className="flex justify-content align-center">
                                                 <FormLabel className="pt-3 pr-1">Alergias:</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="sim" className="w-14" {...field} />
+                                                    <Input placeholder="sim" className="w-14 border-blue-200 bg-blue-50" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </div>
