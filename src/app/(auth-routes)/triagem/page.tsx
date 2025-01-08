@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
 
@@ -10,7 +10,6 @@ type RowData = {
 };
 
 export default function Triagem() {
-
   // Mock data para a tabela
   const data: RowData[] = [
     { id: 1, paciente: 'Lucas Silva', horario: '14:00' },
@@ -36,23 +35,27 @@ export default function Triagem() {
   ];
 
   // Definição das colunas
-  const columns = useMemo(() => [
-    { accessorKey: 'paciente', header: 'PACIENTE' },
-    { accessorKey: 'horario', header: 'HORÁRIO DE ENTRADA' },
-    {
-      accessorKey: 'acao',
-      id: 'acao',
-      header: '',
-      cell: ({ row }: any) => (
-        <button
-          onClick={() => handleIniciarTriagem(row.original.id)}
-          className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
-        >
-          INICIAR TRIAGEM
-        </button>
-      )
-    }
-  ], []);
+  const columns = useMemo(
+    () => [
+      { accessorKey: 'paciente', header: 'PACIENTE' },
+      { accessorKey: 'horario', header: 'HORÁRIO DE ENTRADA' },
+      {
+        accessorKey: 'acao',
+        id: 'acao',
+        header: '',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        cell: ({ row }: any) => (
+          <button
+            onClick={() => handleIniciarTriagem(row.original.id)}
+            className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
+          >
+            INICIAR TRIAGEM
+          </button>
+        )
+      }
+    ],
+    []
+  );
 
   const handleIniciarTriagem = (id: number): void => {
     alert(`Iniciando triagem para o paciente com ID: ${id}`);
@@ -60,7 +63,6 @@ export default function Triagem() {
 
   return (
     <div className="p-4">
-
       {/* Tabela personalizada */}
       <CustomTable
         columns={columns}
