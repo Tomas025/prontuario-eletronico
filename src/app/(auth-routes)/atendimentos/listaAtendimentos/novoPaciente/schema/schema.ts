@@ -48,7 +48,19 @@ export const mySchema = z.object({
       message: 'Número inválido'
     }),
   nomeContatoEmergencia: z.string().optional(),
-  parentesco: z.string().optional(),
+  parentesco: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        !value ||
+        ['Pai', 'Mãe', 'Irmão(a)', 'Esposo(a)', 'Filho(a)', 'Outro'].includes(
+          value
+        ),
+      {
+        message: 'Parentesco inválido'
+      }
+    ),
   telefoneContatoEmergencia: z
     .string()
     .optional()

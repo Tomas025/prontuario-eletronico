@@ -15,6 +15,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 
 import { useNovoPaciente } from './hooks/useNovoPaciente';
 
@@ -23,6 +31,7 @@ interface Field {
   label: string;
   required?: boolean;
   type: string;
+  options?: string[];
 }
 
 const linkList: ListLink[] = [
@@ -61,7 +70,12 @@ const initialEmergencyContactFields: Field[] = [
     label: 'Nome do contato de emergência',
     type: 'text'
   },
-  { name: 'parentesco', label: 'Parentesco', type: 'text' },
+  {
+    name: 'parentesco',
+    label: 'Parentesco',
+    type: 'select',
+    options: ['Pai', 'Mãe', 'Irmão(a)', 'Esposo(a)']
+  },
   {
     name: 'telefoneContatoEmergencia',
     label: 'Telefone de emergência',
@@ -109,16 +123,42 @@ export default function NovoPaciente() {
                   {field.label}
                   {field.required && <span className="text-red/01">*</span>}
                 </Label>
-                <Input
-                  id={field.name}
-                  type={field.type}
-                  {...controlField}
-                  className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                    fieldState.invalid
-                      ? 'border-red/01 bg-red/03'
-                      : 'border-blue/07'
-                  }`}
-                />
+                {field.type === 'select' && field.options ? (
+                  <Select
+                    onValueChange={(value) => controlField.onChange(value)}
+                    value={controlField.value || ''}
+                  >
+                    <SelectTrigger
+                      className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                        fieldState.invalid
+                          ? 'border-red/01 bg-red/03'
+                          : 'border-blue/07'
+                      }`}
+                    >
+                      <SelectValue placeholder="Selecione" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {field.options.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Input
+                    id={field.name}
+                    type={field.type}
+                    {...controlField}
+                    className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                      fieldState.invalid
+                        ? 'border-red/01 bg-red/03'
+                        : 'border-blue/07'
+                    }`}
+                  />
+                )}
               </div>
             </FormControl>
             <FormMessage />
