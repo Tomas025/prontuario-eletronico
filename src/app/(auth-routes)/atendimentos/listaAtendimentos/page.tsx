@@ -210,8 +210,11 @@ export default function NovoAtendimento() {
   );
 
   return (
-    <div className="p-4">
-      <BreadCrumb linkList={breadcrumbLinks} />
+    <div className="pt-1 px-4">
+      <div className='pb-4'>
+        
+        <BreadCrumb linkList={breadcrumbLinks} />
+      </div>
 
       <CustomTable
         columns={columns}
