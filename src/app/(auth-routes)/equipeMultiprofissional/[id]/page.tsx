@@ -13,7 +13,7 @@ import {
   FormItem,
   FormMessage
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 import { useAnotacao } from './hook/useAnotacao';
 
@@ -104,8 +104,8 @@ export default function EquipeMultiprofissionalPaciente() {
                 render={({ field, fieldState }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus:border-blue/06 focus-visible:ring-0 ${
+                      <Textarea
+                        className={`h-auto min-h-[40px] max-h-[200px] p-[10px] border-2 rounded-[10px] bg-gray/04 focus:border-blue/06 focus-visible:ring-0 ${
                           fieldState.invalid
                             ? 'border-red/01 bg-red/03'
                             : 'border-blue/07'
@@ -122,7 +122,7 @@ export default function EquipeMultiprofissionalPaciente() {
           </Form>
         </section>
 
-        {/* Cards para cada anotação */}
+        {/* Cards para cada anotações prévias */}
         <section className="flex flex-col gap-4">
           <h1 className="text-xl font-bold text-blue/03">
             Anotações anteriores
