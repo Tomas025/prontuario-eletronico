@@ -16,63 +16,10 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "../ui/select";
 import { SelectContent, SelectValue } from "@radix-ui/react-select";
+import { useAnamnesisForm } from "./hooks/useBodyTriagem";
 
-const formSchema = z.object({
-  pressao: z.string().nonempty("Preencha a pressão arterial"),
-  glicose: z.string().nonempty("Preencha a glicose"),
-  temperatura: z.string().nonempty("Preencha a temperatura"),
-  peso: z.string().nonempty("Preencha o peso"),
-  freqCardiaca: z.string().nonempty("Preencha a frequência cardíaca"),
-  freqResp: z.string().nonempty("Preencha a frequência respiratória"),
-  tipoSang: z.string().nonempty("Preencha o tipo sanguíneo"),
-  saturacao: z.string().nonempty("Preencha a saturação"),
-  altura: z.string(),
-  antPato: z.string(),
-  necesPsicobio: z.string(),
-  diabetes: z.string(),
-  medicUso: z.string(),
-  protese: z.string(),
-  temAlergia: z.string(),
-  alergias: z.string().optional(),
-  antecedentes: z.string().optional(),
-  medicamentos: z.string().optional(),
-  cirurgias: z.string().optional(),
-  sintomas: z.string().optional(),
-});
-
-export default function BodyTriagem() {
-  // Configuração do React Hook Form
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      pressao: "",
-      glicose: "",
-      temperatura: "",
-      peso: "",
-      freqCardiaca: "",
-      freqResp: "",
-      tipoSang: "",
-      saturacao: "",
-      altura: "",
-      antPato: "",
-      necesPsicobio: "",
-      diabetes: "",
-      medicUso: "",
-      protese: "",
-      temAlergia: "",
-      alergias: "",
-      antecedentes: "",
-      medicamentos: "",
-      cirurgias: "",
-      sintomas: "",
-    },
-  });
-
-  // Submissão do formulário
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Dados enviados:", values);
-    alert("Formulário enviado com sucesso!");
-  }
+const BodyTriagem = () => {
+  const { form, onSubmit } = useAnamnesisForm();
 
   return (
     <div className="p-5 border-0">
@@ -233,7 +180,7 @@ export default function BodyTriagem() {
                       <div className="flex justify-content align-center">
                         <FormLabel className="pt-3 pr-1">Saturação:</FormLabel>
                         <FormControl>
-                          <Input placeholder="99 SpO2" className="w-24 mr-4 border-blue-200 bg-blue-50 text-blue-950" {...field} />
+                          <Input placeholder="99 SpO2" className="w-24 mr-4 border-blue-200 bg-blue-50 placeholder-blue-950" {...field} />
                         </FormControl>
                         <FormMessage />
                       </div>
@@ -505,3 +452,5 @@ export default function BodyTriagem() {
     </div>
   );
 }
+
+export default BodyTriagem;
