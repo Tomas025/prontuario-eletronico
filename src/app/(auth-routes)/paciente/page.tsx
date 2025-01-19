@@ -1,0 +1,157 @@
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { BreadCrumb } from '@/components/BreadCrumb';
+import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from '@/components/ui/dropdown-menu';
+import { DadosPessoais } from '@/components/DadosPessoais';
+import { CardProntuario } from '@/components/CardProntuario';
+
+const initialData = {
+  id: '1',
+  dadosPessoais: {
+    nomeCompleto: 'Maria Silva Nogueira',
+    nomeSocial: 'José Nogueira',
+    sus: '123456',
+    cpf: '123.456.789-10',
+    idade: 37,
+    nascimento: '09/03/2004',
+    sexo: 'Feminino',
+    rg: '578348949',
+    telefone: '(81) 99999-9999',
+    endereco: 'Rua Primeiro de Janeiro, São Pedro, 133, Belo Jardim',
+    contatosEmergencia: [
+      { tipo: 'Marido', telefone: '(81) 9999-9999' },
+      { tipo: 'Mãe', telefone: '(81) 9999-9999' }
+    ],
+    nomeMae: 'Eduarda Silva Nogueira'
+  },
+  prontuarios: [
+    {
+      id: '101',
+      data: '15/08',
+      sintomas: 'Febre, tosse e coriza',
+      pressao: '14/10',
+      glicose: '150',
+      classificacao: 'Emergência'
+    },
+    {
+      id: '102',
+      data: '15/08',
+      sintomas: 'Febre, tosse e coriza',
+      pressao: '14/10',
+      glicose: '150',
+      classificacao: 'Muito Urgentes'
+    },
+    {
+      id: '103',
+      data: '15/08',
+      sintomas: 'Febre, tosse e coriza',
+      pressao: '14/10',
+      glicose: '150',
+      classificacao: 'Urgência'
+    },
+    {
+      id: '104',
+      data: '15/08',
+      sintomas: 'Febre, tosse e coriza',
+      pressao: '14/10',
+      glicose: '150',
+      classificacao: 'Menos Graves'
+    },
+    {
+      id: '105',
+      data: '15/08',
+      sintomas: 'Febre, tosse e coriza',
+      pressao: '14/10',
+      glicose: '150',
+      classificacao: 'Leves'
+    }
+  ]
+};
+
+const MENU_OPTIONS = [
+  { label: 'Dados Pessoais', value: 'dados-pessoais' },
+  { label: 'Prontuários', value: 'prontuários' }
+];
+
+const linkList: ListLink[] = [
+  { label: 'Atendimentos', route: '/atendimentos' },
+  { label: 'Maria Silva', route: '' }
+];
+
+export default function Pacientes() {
+  const [selectedOption, setSelectedOption] = useState(MENU_OPTIONS[0]);
+  const router = useRouter();
+
+  const handleEdit = () => {
+    router.push(
+      `/atendimentos/listaAtendimentos/novoPaciente?id=${initialData.id}`
+    );
+  };
+
+  return (
+    <section className="flex flex-col gap-6 w-full">
+      <section className="flex justify-between items-center">
+        <BreadCrumb linkList={linkList} />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center justify-between px-4 py-2 w-48 border border-gray-300 rounded-md bg-white text-gray-900 hover:bg-gray-50">
+              {selectedOption.label}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 ml-2 text-gray-500"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.707a1 1 0 011.414 0L10 11.414l3.293-3.707a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48">
+            {MENU_OPTIONS.map((option) => (
+              <DropdownMenuItem
+                key={option.value}
+                onSelect={() => setSelectedOption(option)}
+                className="flex items-center px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </section>
+
+      {selectedOption.value === 'dados-pessoais' && (
+        <DadosPessoais data={initialData.dadosPessoais} onEdit={handleEdit} />
+      )}
+
+      {selectedOption.value === 'prontuários' && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
+          {initialData.prontuarios.map((prontuario) => (
+            <CardProntuario
+              key={prontuario.id}
+              pessoaId={initialData.id}
+              prontuarioId={prontuario.id}
+              data={prontuario.data}
+              sintomas={prontuario.sintomas}
+              pressao={prontuario.pressao}
+              glicose={prontuario.glicose}
+              classificacao={prontuario.classificacao}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
