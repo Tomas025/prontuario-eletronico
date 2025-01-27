@@ -30,31 +30,38 @@ type CustomTableProps = {
   columns: Column[];
   data: any[];
   itemsPerPageOptions?: number[];
-  showClassificationFilter?: boolean; // Controla a exibição do filtro de classificação
+  showClassificationFilter?: boolean;
+  showStatusFilter?: boolean;
+  customButton?: {
+    name: React.ReactNode;
+    link: string;
+    isActive: boolean;
+  }; 
 };
 
 export function CustomTable({
   columns,
   data,
   itemsPerPageOptions = [10, 20, 30, 40, 50],
-  showClassificationFilter = false // Padrão: não mostrar filtro de classificação
+  showClassificationFilter = false,
+  showStatusFilter = false, 
+  customButton
 }: CustomTableProps) {
   const [globalFilter, setGlobalFilter] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(itemsPerPageOptions[0]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  // Configuração da tabela com TanStack Table
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter,
-      columnFilters, // Adicionando estado para filtros de coluna
+      columnFilters,
       pagination: { pageIndex, pageSize }
     },
     onGlobalFilterChange: setGlobalFilter,
-    onColumnFiltersChange: setColumnFilters, // Controle de filtros por coluna
+    onColumnFiltersChange: setColumnFilters,
     onPaginationChange: (updater) => {
       if (typeof updater === 'function') {
         const newPagination = updater({ pageIndex, pageSize });
@@ -73,24 +80,27 @@ export function CustomTable({
   const totalPages = table.getPageCount();
   const visiblePages = Array.from({ length: totalPages }, (_, i) => i);
 
+  const placeholderText = `Pesquise ${columns
+    .map((col) => col.header.charAt(0).toUpperCase() + col.header.slice(1).toLowerCase())
+    .join(', ')
+    .replace(/,([^,]*)$/, ' $1')}`;
+
   return (
     <div>
-      {/* Barra de pesquisa e filtro de classificação */}
       <div className="flex items-center space-x-4 mb-4">
-        <div
-          className={`relative ${showClassificationFilter ? 'w-3/4' : 'w-full'}`}
-        >
+        <div className="relative flex-1">
           <IoIosSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 size-6 text-blue/06" />
           <input
             type="text"
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Pesquise paciente"
+            placeholder={placeholderText}
             className="p-2 pl-10 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07 placeholder-gray/01"
           />
         </div>
+
         {showClassificationFilter && (
-          <div className="relative w-1/4">
+          <div className="relative">
             <select
               value={
                 (columnFilters.find((filter) => filter.id === 'classificacao')
@@ -122,9 +132,53 @@ export function CustomTable({
             </select>
           </div>
         )}
+
+        {showStatusFilter && (
+          <div className="relative">
+            <select
+              value={
+                (columnFilters.find((filter) => filter.id === 'status')
+                  ?.value as string) || 'Todos'
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === 'Todos') {
+                  setColumnFilters((filters) =>
+                    filters.filter((filter) => filter.id !== 'status')
+                  );
+                } else {
+                  setColumnFilters((filters) => [
+                    ...filters.filter(
+                      (filter) => filter.id !== 'status'
+                    ),
+                    { id: 'status', value }
+                  ]);
+                }
+              }}
+              className="p-2 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07"
+            >
+              <option value="Todos">Status - Todos</option>
+              <option value="Triagem">Triagem</option>
+              <option value="Atend. Médico">Atend. Médico</option>
+              <option value="Enfermagem">Enfermagem</option>
+              <option value="Laboratório">Laboratório</option>
+              <option value="Internação">Internação</option>
+              <option value="Observação">Observação</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+        )}
+
+        {customButton?.isActive && (
+          <button
+            onClick={() => (window.location.href = customButton.link)}
+            className="p-2 px-4 bg-blue/02 text-white rounded shadow hover:bg-blue/04"
+          >
+            {customButton.name}
+          </button>
+        )}
       </div>
 
-      {/* Tabela */}
       <div className="w-full bg-white shadow-md rounded-lg font-sans">
         <Table>
           <TableHeader>
@@ -166,7 +220,6 @@ export function CustomTable({
           </TableBody>
         </Table>
 
-        {/* Controles de Paginação */}
         <div className="flex justify-between items-center px-4 py-3 bg-white border-t">
           <div></div>
 
@@ -199,9 +252,8 @@ export function CustomTable({
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-            !table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-          }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+            }`}
         >
           <FaAngleLeft />
         </button>
@@ -209,11 +261,10 @@ export function CustomTable({
           <button
             key={page}
             onClick={() => table.setPageIndex(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-              pageIndex === page
+            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${pageIndex === page
                 ? 'bg-blue/04 text-white'
                 : 'hover:bg-blue/07 text-blue/03'
-            }`}
+              }`}
           >
             {page + 1}
           </button>
@@ -221,9 +272,8 @@ export function CustomTable({
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-            !table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-          }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+            }`}
         >
           <FaAngleRight />
         </button>
