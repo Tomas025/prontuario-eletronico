@@ -1,16 +1,17 @@
 'use client';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
+import { CardProntuario } from '@/components/CardProntuario';
+import { DadosPessoais } from '@/components/DadosPessoais';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
-import { DadosPessoais } from '@/components/DadosPessoais';
-import { CardProntuario } from '@/components/CardProntuario';
 
 const initialData = {
   id: '1',

@@ -36,7 +36,7 @@ type CustomTableProps = {
     name: React.ReactNode;
     link: string;
     isActive: boolean;
-  }; 
+  };
 };
 
 export function CustomTable({
@@ -44,7 +44,7 @@ export function CustomTable({
   data,
   itemsPerPageOptions = [10, 20, 30, 40, 50],
   showClassificationFilter = false,
-  showStatusFilter = false, 
+  showStatusFilter = false,
   customButton
 }: CustomTableProps) {
   const [globalFilter, setGlobalFilter] = useState('');
@@ -81,7 +81,10 @@ export function CustomTable({
   const visiblePages = Array.from({ length: totalPages }, (_, i) => i);
 
   const placeholderText = `Pesquise ${columns
-    .map((col) => col.header.charAt(0).toUpperCase() + col.header.slice(1).toLowerCase())
+    .map(
+      (col) =>
+        col.header.charAt(0).toUpperCase() + col.header.slice(1).toLowerCase()
+    )
     .join(', ')
     .replace(/,([^,]*)$/, ' $1')}`;
 
@@ -148,9 +151,7 @@ export function CustomTable({
                   );
                 } else {
                   setColumnFilters((filters) => [
-                    ...filters.filter(
-                      (filter) => filter.id !== 'status'
-                    ),
+                    ...filters.filter((filter) => filter.id !== 'status'),
                     { id: 'status', value }
                   ]);
                 }
@@ -252,8 +253,9 @@ export function CustomTable({
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-            }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
         >
           <FaAngleLeft />
         </button>
@@ -261,10 +263,11 @@ export function CustomTable({
           <button
             key={page}
             onClick={() => table.setPageIndex(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${pageIndex === page
+            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+              pageIndex === page
                 ? 'bg-blue/04 text-white'
                 : 'hover:bg-blue/07 text-blue/03'
-              }`}
+            }`}
           >
             {page + 1}
           </button>
@@ -272,8 +275,9 @@ export function CustomTable({
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-            }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
         >
           <FaAngleRight />
         </button>
