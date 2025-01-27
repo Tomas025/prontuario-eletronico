@@ -24,8 +24,8 @@ import {
   SelectValue
 } from '@/components/ui/select';
 
-import { useNovoPaciente } from './hooks/useNovoPaciente';
 import { useEditarPaciente } from './hooks/useEditarPaciente';
+import { useNovoPaciente } from './hooks/useNovoPaciente';
 
 interface Field {
   name: string;
