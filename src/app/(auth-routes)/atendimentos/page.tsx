@@ -5,6 +5,9 @@ import { FaPlus } from 'react-icons/fa6';
 
 import { CustomTable } from '@/components/CustomTable';
 
+import { GetPatientFilter } from '@/services/PatientService';
+import { useQuery } from '@tanstack/react-query';
+
 type RowData = {
   id: number;
   paciente: string;
@@ -16,6 +19,13 @@ type RowData = {
 };
 
 export default function Atendimentos() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'IN_SERVICE'],
+    queryFn: () => GetPatientFilter('IN_SERVICE'),
+    staleTime: 1 * 60 * 1000
+  });
+
   const data: RowData[] = [
     {
       id: 1,
