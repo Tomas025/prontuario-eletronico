@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align='center'>
+	<img src="https://redesolpe.com.br/site/images/banner_ifpe.png" />
+</p>
+<p align='center'>
+  <img src="https://img.shields.io/github/forks/Erysilva98/infraNet?color=%23835afd" alt='Forks'/>
+  <img src="https://img.shields.io/github/stars/Erysilva98/infraNet?color=%23835afd" alt='stars'/>
+</p>
 
-## Getting Started
+# Projeto integrador
+## Este repositório é dedicado à disciplina de Projeto Integrador, ministrada pelo Professor Fábio.
+## 🖥️ Tecnologias
+Esse projeto está sendo feito na seguinte tecnologia:
+* TypeScript
 
-First, run the development server:
+### Codificação
+* Visual Studio code
+
+### Instalação do Projeto
+
+Siga os passos abaixo para configurar e executar o projeto em sua máquina local.
+
+#### 1. Clonar o Repositório
+
+Primeiro, clone o repositório para sua máquina local utilizando o seguinte comando:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Tomas025/prontuario-eletronico.git
+```
+#### 2. Instalação das Dependências
+Após clonar o repositório, você precisará instalar as dependências necessárias para o funcionamento do projeto.
+
+#### Instalação das Dependências
+* Navegue até o diretório prontuario-eletronico e execute o comando abaixo para instalar as dependências:
+```bash
+cd prontuario-eletronico
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### 2. Executar o Projeto
+* Depois de instalar todas as dependências, você pode iniciar o projeto.
+* Para iniciar utilize o comando:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
+# 👩🏼‍💻 Autores
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<a href="https://github.com/erison7596/">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/41303655?v=4" width="100px;" alt=""/>
+ <br />
+ <sub><b>Erison Cavalcante</b></sub></a> <a href="https://github.com/erison7596/" title="github">🚀</a>
+👋🏽 Entre em contato!
 
-## Learn More
+ [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/erison-cavalcante-9402a714a/)](https://www.linkedin.com/in/erison-cavalcante-9402a714a/) [![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:erison7596@gmail.com)](mailto:erison7596@gmail.com) 
 
-To learn more about Next.js, take a look at the following resources:
+<a href="https://github.com/Tomas025">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/69928207?v=4" width="100px;" alt=""/>
+ <br />
+ <sub><b>Tomas Braz</b></sub></a> <a href="https://github.com/Tomas025/" title="github">🚀</a>
+👋🏽 Entre em contato!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=#)](https://www.linkedin.com/in/#/) [![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:#)](mailto:#) 

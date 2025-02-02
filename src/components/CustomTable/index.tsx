@@ -1,7 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useMemo } from 'react';
-import { FaAngleLeft } from 'react-icons/fa6';
-import { FaAngleRight } from 'react-icons/fa6';
+import React, { useState } from 'react';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
+import { IoIosSearch } from 'react-icons/io';
+
+import {
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  ColumnFiltersState
+} from '@tanstack/react-table';
 
 import {
   Table,
@@ -13,152 +21,209 @@ import {
 } from '../ui/table';
 
 type Column = {
-  key: string;
-  label: string;
-  render?: (data: any) => React.ReactNode;
+  accessorKey: string;
+  header: string;
+  cell?: (info: any) => React.ReactNode;
 };
 
 type CustomTableProps = {
   columns: Column[];
   data: any[];
-  pagination?: boolean;
   itemsPerPageOptions?: number[];
-  searchQuery?: string;
-  statusFilter?: string;
+  showClassificationFilter?: boolean;
+  showStatusFilter?: boolean;
+  customButton?: {
+    name: React.ReactNode;
+    link: string;
+    isActive: boolean;
+  };
 };
 
 export function CustomTable({
   columns,
   data,
-  pagination = true,
   itemsPerPageOptions = [10, 20, 30, 40, 50],
-  searchQuery = '',
-  statusFilter = ''
+  showClassificationFilter = false,
+  showStatusFilter = false,
+  customButton
 }: CustomTableProps) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(itemsPerPageOptions[0]);
-  pagination = true;
-  // Filtragem por barra de pesquisa e status
-  const filteredData = useMemo(() => {
-    return data.filter((row) => {
-      const matchesSearchQuery = searchQuery
-        ? columns.some((column) => {
-            const cellValue = column.render
-              ? String(column.render(row))
-                  .replace(/<[^>]+>/g, '')
-                  .trim()
-              : String(row[column.key]);
-            return cellValue.toLowerCase().includes(searchQuery.toLowerCase());
-          })
-        : true;
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState(itemsPerPageOptions[0]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-      const matchesStatusFilter = statusFilter
-        ? row.status === statusFilter
-        : true;
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      globalFilter,
+      columnFilters,
+      pagination: { pageIndex, pageSize }
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
+    onPaginationChange: (updater) => {
+      if (typeof updater === 'function') {
+        const newPagination = updater({ pageIndex, pageSize });
+        setPageIndex(newPagination.pageIndex);
+        setPageSize(newPagination.pageSize);
+      } else {
+        setPageIndex(updater.pageIndex);
+        setPageSize(updater.pageSize);
+      }
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel()
+  });
 
-      return matchesSearchQuery && matchesStatusFilter;
-    });
-  }, [data, columns, searchQuery, statusFilter]);
+  const totalPages = table.getPageCount();
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i);
 
-  // Calcular dados da página atual
-  const paginatedData = useMemo(() => {
-    if (!pagination) return filteredData;
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredData.slice(startIndex, endIndex);
-  }, [filteredData, currentPage, itemsPerPage, pagination]);
-  // Calcular número total de páginas
-  const totalPages = useMemo(() => {
-    if (!pagination) return 1;
-    return Math.ceil(filteredData.length / itemsPerPage);
-  }, [filteredData, itemsPerPage, pagination]);
-  // Função para determinar páginas visíveis
-  const visiblePages = useMemo(() => {
-    const pages = [];
-    for (
-      let i = Math.max(1, currentPage - 2);
-      i <= Math.min(totalPages, currentPage + 2);
-      i++
-    ) {
-      pages.push(i);
-    }
-    return pages;
-  }, [currentPage, totalPages]);
+  const placeholderText = `Pesquise ${columns
+    .map(
+      (col) =>
+        col.header.charAt(0).toUpperCase() + col.header.slice(1).toLowerCase()
+    )
+    .join(', ')
+    .replace(/,([^,]*)$/, ' $1')}`;
 
   return (
-    <div className="w-full bg-white shadow-md rounded-lg font-sans">
-      <Table>
-        <TableHeader>
-          {/* n sei pq mas o hover ficava branco se eu não deixasse assim */}
-          <TableRow className="bg-blue/09 hover:bg-blue/09">
-            {columns.map((column) => (
-              <TableHead
-                key={column.key}
-                className="p-4 font-semibold text-blue/03 text-lg"
-              >
-                {column.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedData.map((row, index) => (
-            <TableRow
-              key={index}
-              className="border-b border-gray-200 hover:bg-gray-50"
-            >
-              {columns.map((column) => (
-                <TableCell
-                  key={column.key}
-                  className="p-4 text-blue/03 text-base"
-                >
-                  {column.render ? column.render(row) : row[column.key]}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div>
+      <div className="flex items-center space-x-4 mb-4">
+        <div className="relative flex-1">
+          <IoIosSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 size-6 text-blue/06" />
+          <input
+            type="text"
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder={placeholderText}
+            className="p-2 pl-10 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07 placeholder-gray/01"
+          />
+        </div>
 
-      {pagination && filteredData.length > itemsPerPageOptions[0] && (
+        {showClassificationFilter && (
+          <div className="relative">
+            <select
+              value={
+                (columnFilters.find((filter) => filter.id === 'classificacao')
+                  ?.value as string) || 'Todos'
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === 'Todos') {
+                  setColumnFilters((filters) =>
+                    filters.filter((filter) => filter.id !== 'classificacao')
+                  );
+                } else {
+                  setColumnFilters((filters) => [
+                    ...filters.filter(
+                      (filter) => filter.id !== 'classificacao'
+                    ),
+                    { id: 'classificacao', value }
+                  ]);
+                }
+              }}
+              className="p-2 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07"
+            >
+              <option value="Todos">Classificação - Todos</option>
+              <option value="Emergência">Emergência</option>
+              <option value="Muito Urgentes">Muito Urgentes</option>
+              <option value="Urgência">Urgência</option>
+              <option value="Menos Graves">Menos Graves</option>
+              <option value="Leves">Leves</option>
+            </select>
+          </div>
+        )}
+
+        {showStatusFilter && (
+          <div className="relative">
+            <select
+              value={
+                (columnFilters.find((filter) => filter.id === 'status')
+                  ?.value as string) || 'Todos'
+              }
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === 'Todos') {
+                  setColumnFilters((filters) =>
+                    filters.filter((filter) => filter.id !== 'status')
+                  );
+                } else {
+                  setColumnFilters((filters) => [
+                    ...filters.filter((filter) => filter.id !== 'status'),
+                    { id: 'status', value }
+                  ]);
+                }
+              }}
+              className="p-2 border border-blue/07 bg-gray/04 rounded-md shadow-sm w-full focus:outline-none focus:ring-2 focus:ring-blue/07"
+            >
+              <option value="Todos">Status - Todos</option>
+              <option value="Triagem">Triagem</option>
+              <option value="Atend. Médico">Atend. Médico</option>
+              <option value="Enfermagem">Enfermagem</option>
+              <option value="Laboratório">Laboratório</option>
+              <option value="Internação">Internação</option>
+              <option value="Observação">Observação</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+        )}
+
+        {customButton?.isActive && (
+          <button
+            onClick={() => (window.location.href = customButton.link)}
+            className="p-2 px-4 bg-blue/02 text-white rounded shadow hover:bg-blue/04"
+          >
+            {customButton.name}
+          </button>
+        )}
+      </div>
+
+      <div className="w-full bg-white shadow-md rounded-lg font-sans">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="border-b border-blue/08"
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="p-5 font-semibold text-blue/03 text-sm hover:bg-blue/09 bg-blue/09"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : typeof header.column.columnDef.header === 'function'
+                        ? header.column.columnDef.header(header.getContext())
+                        : header.column.columnDef.header}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="border-b border-blue/08">
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className="p-5 text-blue/03 text-sm bg-gray/04"
+                  >
+                    {typeof cell.column.columnDef.cell === 'function'
+                      ? cell.column.columnDef.cell(cell.getContext())
+                      : cell.getValue()}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+
         <div className="flex justify-between items-center px-4 py-3 bg-white border-t">
           <div></div>
-          <div className="flex items-center">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-                currentPage === 1 ? 'text-blue/04' : 'hover:bg-blue/07'
-              }`}
-            >
-              <FaAngleLeft />
-            </button>
-            {visiblePages.map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-                  currentPage === page
-                    ? 'bg-blue/04 text-white'
-                    : 'hover:bg-blue/07 text-blue/03'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-                currentPage === totalPages ? 'text-blue/04' : 'hover:bg-blue/07'
-              }`}
-            >
-              <FaAngleRight />
-            </button>
-          </div>
+
           <div className="flex items-center">
             <label
               htmlFor="itemsPerPage"
@@ -168,10 +233,10 @@ export function CustomTable({
             </label>
             <select
               id="itemsPerPage"
-              value={itemsPerPage}
+              value={pageSize}
               onChange={(e) => {
-                setItemsPerPage(Number(e.target.value));
-                setCurrentPage(1);
+                setPageSize(Number(e.target.value));
+                setPageIndex(0);
               }}
               className="ml-2 px-3 py-1 border rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
@@ -183,7 +248,40 @@ export function CustomTable({
             </select>
           </div>
         </div>
-      )}
+      </div>
+      <div className="flex items-center justify-center mt-4">
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
+        >
+          <FaAngleLeft />
+        </button>
+        {visiblePages.map((page) => (
+          <button
+            key={page}
+            onClick={() => table.setPageIndex(page)}
+            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+              pageIndex === page
+                ? 'bg-blue/04 text-white'
+                : 'hover:bg-blue/07 text-blue/03'
+            }`}
+          >
+            {page + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
+        >
+          <FaAngleRight />
+        </button>
+      </div>
     </div>
   );
 }
