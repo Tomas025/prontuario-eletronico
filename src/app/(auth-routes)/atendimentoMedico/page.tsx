@@ -4,6 +4,9 @@ import React, { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
 
+import { GetPatientFilter } from '@/services/PatientService';
+import { useQuery } from '@tanstack/react-query';
+
 type RowData = {
   id: number;
   paciente: string;
@@ -14,169 +17,15 @@ type RowData = {
 };
 
 export default function AtendimentoMedico() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'MEDICAL_CARE'],
+    queryFn: () => GetPatientFilter(null, 'MEDICAL_CARE'),
+    staleTime: 1 * 60 * 1000
+  });
+
   // Mock data para a tabela
-  const data: RowData[] = [
-    {
-      id: 1,
-      paciente: 'Lucas Silva',
-      horario: '08:00',
-      idade: '30 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 2,
-      paciente: 'Ana Costa',
-      horario: '08:15',
-      idade: '45 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 3,
-      paciente: 'Carlos Almeida',
-      horario: '08:30',
-      idade: '29 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 4,
-      paciente: 'Juliana Oliveira',
-      horario: '08:45',
-      idade: '22 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 5,
-      paciente: 'Gabriela Santos',
-      horario: '09:00',
-      idade: '37 anos',
-      status: 'Alta',
-      classificacao: 'Leves'
-    },
-    {
-      id: 6,
-      paciente: 'Marcos Pereira',
-      horario: '09:15',
-      idade: '40 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 7,
-      paciente: 'Patrícia Ribeiro',
-      horario: '09:30',
-      idade: '28 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 8,
-      paciente: 'Ricardo Lima',
-      horario: '09:45',
-      idade: '31 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 9,
-      paciente: 'Fernanda Almeida',
-      horario: '10:00',
-      idade: '39 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 10,
-      paciente: 'Eduardo Rocha',
-      horario: '10:15',
-      idade: '33 anos',
-      status: 'Internação',
-      classificacao: 'Leves'
-    },
-    {
-      id: 11,
-      paciente: 'Aline Santos',
-      horario: '10:30',
-      idade: '42 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 12,
-      paciente: 'Tiago Costa',
-      horario: '10:45',
-      idade: '50 anos',
-      status: 'Alta',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 13,
-      paciente: 'Mariana Martins',
-      horario: '11:00',
-      idade: '27 anos',
-      status: 'Internação',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 14,
-      paciente: 'Ricardo Souza',
-      horario: '11:15',
-      idade: '25 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 15,
-      paciente: 'Clara Gomes',
-      horario: '11:30',
-      idade: '34 anos',
-      status: 'Alta',
-      classificacao: 'Leves'
-    },
-    {
-      id: 16,
-      paciente: 'Bruna Rocha',
-      horario: '11:45',
-      idade: '48 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 17,
-      paciente: 'Daniela Pereira',
-      horario: '12:00',
-      idade: '38 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 18,
-      paciente: 'Felipe Oliveira',
-      horario: '12:15',
-      idade: '41 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 19,
-      paciente: 'Sofia Lima',
-      horario: '12:30',
-      idade: '26 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 20,
-      paciente: 'Vitor Costa',
-      horario: '12:45',
-      idade: '29 anos',
-      status: 'Internação',
-      classificacao: 'Leves'
-    }
-  ];
+  const data: RowData[] = [];
 
   // Mapeamento de cores para as classificações
   const classificationColors: Record<string, string> = {

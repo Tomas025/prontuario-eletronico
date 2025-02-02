@@ -4,6 +4,9 @@ import React, { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
 
+import { GetPatientFilter } from '@/services/PatientService';
+import { useQuery } from '@tanstack/react-query';
+
 type RowData = {
   id: number;
   paciente: string;
@@ -11,6 +14,13 @@ type RowData = {
 };
 
 export default function Triagem() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'SCREENING'],
+    queryFn: () => GetPatientFilter(null, 'SCREENING'),
+    staleTime: 1 * 60 * 1000
+  });
+
   // Mock data para a tabela
   const data: RowData[] = [
     { id: 1, paciente: 'Lucas Silva', horario: '14:00' },

@@ -4,7 +4,10 @@ import { AxiosError } from 'axios';
 
 import { api } from './api';
 
-export async function GetPatientFilter(filter?: string, status?: string) {
+export async function GetPatientFilter(
+  filter: string | null = null,
+  status: string | null = null
+) {
   const session = await getSession();
 
   try {

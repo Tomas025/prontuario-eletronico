@@ -4,6 +4,9 @@ import React, { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
 
+import { GetPatientFilter } from '@/services/PatientService';
+import { useQuery } from '@tanstack/react-query';
+
 type RowData = {
   id: number;
   paciente: string;
@@ -14,6 +17,13 @@ type RowData = {
 };
 
 export default function EquipeMultiprofissional() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'IN_SERVICE'],
+    queryFn: () => GetPatientFilter('IN_SERVICE'),
+    staleTime: 1 * 60 * 1000
+  });
+
   // Mock data para a tabela
   const data: RowData[] = [
     {
