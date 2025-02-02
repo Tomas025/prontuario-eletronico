@@ -64,7 +64,7 @@ export function CardLogin() {
             <FormField
               control={form.control}
               name="password"
-              render={({ field }) => (
+              render={({ field: controlField, fieldState }) => (
                 <FormItem>
                   <FormControl>
                     <div className="flex flex-col gap-y-[10px]">
@@ -76,18 +76,22 @@ export function CardLogin() {
                           id="password"
                           placeholder="Senha"
                           className="border-0 p-0 h-auto rounded-none shadow-none focus-visible:ring-0"
-                          {...field}
+                          {...controlField}
                         />
                       </div>
-                      <Link
-                        href="/recoverPassword"
-                        className="self-end text-[13px] text-blue/03 font-medium hover:text-blue/02 hover:underline"
+                      <div
+                        className={`flex w-full ${fieldState.invalid ? 'justify-between' : 'justify-end'}`}
                       >
-                        Esqueci minha senha
-                      </Link>
+                        <FormMessage />
+                        <Link
+                          href="/recoverPassword"
+                          className="text-[13px] text-blue/03 font-medium hover:text-blue/02 hover:underline"
+                        >
+                          Esqueci minha senha
+                        </Link>
+                      </div>
                     </div>
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
