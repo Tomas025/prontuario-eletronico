@@ -6,11 +6,21 @@ import { FaPlus } from 'react-icons/fa6';
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { CustomTable } from '@/components/CustomTable';
 
+import { GetPatientFilter } from '@/services/PatientService';
+import { useQuery } from '@tanstack/react-query';
+
 export default function NovoAtendimento() {
   const breadcrumbLinks = [
     { label: 'Atendimento', route: '/atendimentos' },
     { label: 'Novo Atendimento', route: '/atendimentos/listaAtendimentos' }
   ];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'NO_SERVICE'],
+    queryFn: () => GetPatientFilter('NO_SERVICE'),
+    staleTime: 1 * 60 * 1000
+  });
 
   const data = [
     {
