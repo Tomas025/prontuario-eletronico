@@ -2,6 +2,8 @@
 import { useSession } from 'next-auth/react';
 import { FaUserCircle } from 'react-icons/fa';
 
+import { ConvertPositionEnums } from '@/utils/ConvertEnums';
+
 export function UserComponent() {
   const session = useSession();
 
@@ -10,7 +12,7 @@ export function UserComponent() {
       <div className="text-right">
         <p>{session.data?.user.unique_name}</p>
         <p className="text-sm text-gray-400">
-          {session.data?.user.position || 'TESTE'}
+          {ConvertPositionEnums(session.data?.user.position || '')}
         </p>
       </div>
       <FaUserCircle className="text-3xl" />

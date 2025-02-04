@@ -51,7 +51,7 @@ export const nextAuthOptions: NextAuthOptions = {
             active: decodeToken.active,
             email: decodeToken.email,
             firstAccess: decodeToken.firstAccess,
-            // position: decodeToken.position,
+            position: decodeToken.position,
             role: decodeToken.role,
             unique_name: decodeToken.unique_name,
             token: response.data.token
@@ -74,7 +74,7 @@ export const nextAuthOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstAccess = user.firstAccess;
         token.unique_name = user.unique_name;
-        // token.position = user.position;
+        token.position = user.position;
         token.role = user.role;
       }
       return token;
@@ -86,7 +86,7 @@ export const nextAuthOptions: NextAuthOptions = {
       session.user.email = token.email;
       session.user.firstAccess = token.firstAccess;
       session.user.role = token.role;
-      // session.user.position = token.position;
+      session.user.position = token.position;
       return session;
     }
   }
