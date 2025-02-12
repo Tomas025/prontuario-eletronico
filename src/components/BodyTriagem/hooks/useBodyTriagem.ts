@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { anamnesisSchema, AnamnesisFormData } from "../schemas/schema"; 
+import { api } from "@/services/api";
 
 export function useAnamnesisForm() {
   const form = useForm<AnamnesisFormData>({
@@ -30,8 +31,14 @@ export function useAnamnesisForm() {
   });
 
   const onSubmit: SubmitHandler<AnamnesisFormData> = async (data) => {
-    console.log("Dados submetidos:", data);
-    // Aqui você pode process ou envia para um backend
+    try {
+      const response = await api.post("/MedicalRecord/anamnese", data);
+      console.log("Dados enviados com sucesso!", response.data);
+      alert("Anamnese cadastrada!");
+    } catch (error) {
+      console.error("Erro ao enviar os dados:", error);
+      alert("Erro ao cadastrar anamnese.");
+    }
   };
 
   return {
