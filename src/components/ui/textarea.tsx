@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<'textarea'>
+  // eslint-disable-next-line react/prop-types
 >(({ className, ...props }, ref) => {
   return (
     <textarea

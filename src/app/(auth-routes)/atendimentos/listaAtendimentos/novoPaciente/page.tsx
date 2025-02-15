@@ -24,8 +24,8 @@ import {
   SelectValue
 } from '@/components/ui/select';
 
-import { useNovoPaciente } from './hooks/useNovoPaciente';
 import { useEditarPaciente } from './hooks/useEditarPaciente';
+import { useNovoPaciente } from './hooks/useNovoPaciente';
 
 interface Field {
   name: string;
@@ -118,7 +118,25 @@ export default function NovoPaciente() {
       <FormField
         key={field.name}
         control={form.control}
-        name={field.name}
+        name={
+          field.name as
+            | 'nomeCompleto'
+            | 'nomeSocial'
+            | 'dataNascimento'
+            | 'sus'
+            | 'cpf'
+            | 'rg'
+            | 'telefone'
+            | 'nomeMae'
+            | 'cep'
+            | 'cidade'
+            | 'bairro'
+            | 'rua'
+            | 'numero'
+            | 'nomeContatoEmergencia'
+            | 'parentesco'
+            | 'telefoneContatoEmergencia'
+        }
         render={({ field: controlField, fieldState }) => (
           <FormItem
             className={`min-w-[150px] ${
