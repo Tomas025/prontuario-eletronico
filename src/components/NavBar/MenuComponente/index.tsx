@@ -35,8 +35,8 @@ export function MenuComponent() {
       icon: <PiSyringeFill size={20} />
     },
     {
-      label: 'Laboratório',
-      route: '/laboratorio',
+      label: 'Internação',
+      route: '/internacao',
       icon: <PiPulseFill size={20} />
     },
     {
