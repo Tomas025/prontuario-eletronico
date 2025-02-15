@@ -22,7 +22,9 @@ export const mySchema = z.object({
     }),
   cpf: z
     .string({ required_error: 'Campo obrigatório' })
-    .refine((cpf) => /^\d{11}$/.test(cpf), { message: 'CPF inválido' }),
+    .refine((cpf) => /^\d{3}[.]\d{3}[.]\d{3}[-]\d{2}$/.test(cpf), {
+      message: 'CPF inválido'
+    }),
   rg: z
     .string()
     .optional()
@@ -37,7 +39,9 @@ export const mySchema = z.object({
   cep: z
     .string()
     .optional()
-    .refine((cep) => !cep || /^\d{8}$/.test(cep), { message: 'CEP inválido' }),
+    .refine((cep) => !cep || /^\d{5}[-]\d{3}$/.test(cep), {
+      message: 'CEP inválido'
+    }),
   cidade: z.string().optional(),
   bairro: z.string().optional(),
   rua: z.string().optional(),
@@ -47,26 +51,30 @@ export const mySchema = z.object({
     .refine((numero) => !numero || /^\d+$/.test(numero), {
       message: 'Número inválido'
     }),
-  nomeContatoEmergencia: z.string().optional(),
-  parentesco: z
-    .string()
-    .optional()
-    .refine(
-      (value) =>
-        !value ||
-        ['Pai', 'Mãe', 'Irmão(a)', 'Esposo(a)', 'Filho(a)', 'Outro'].includes(
-          value
+  emergencyContact: z
+    .object({
+      nomeContatoEmergencia: z.string().optional(),
+      parentesco: z
+        .string()
+        .optional()
+        .refine(
+          (value) =>
+            !value ||
+            ['FATHER', 'MOTHER', 'SIBLING', 'SPOUSE', 'SON', 'OUTHER'].includes(
+              value
+            ),
+          {
+            message: 'Parentesco inválido'
+          }
         ),
-      {
-        message: 'Parentesco inválido'
-      }
-    ),
-  telefoneContatoEmergencia: z
-    .string()
-    .optional()
-    .refine((telefone) => !telefone || /^\d{10,11}$/.test(telefone), {
-      message: 'Telefone de emergência inválido'
+      telefoneContatoEmergencia: z
+        .string()
+        .optional()
+        .refine((telefone) => !telefone || /^\d{10,11}$/.test(telefone), {
+          message: 'Telefone de emergência inválido'
+        })
     })
+    .array()
 });
 
 export type typeMySchema = z.infer<typeof mySchema>;

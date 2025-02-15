@@ -20,7 +20,7 @@ export default function AtendimentoMedico() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: dataBack, isLoading } = useQuery({
     queryKey: ['Patient', 'MEDICAL_CARE'],
-    queryFn: () => GetPatientFilter(null, 'MEDICAL_CARE'),
+    queryFn: () => GetPatientFilter('MEDICAL_CARE'),
     staleTime: 1 * 60 * 1000
   });
 

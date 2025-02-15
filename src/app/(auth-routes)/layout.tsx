@@ -14,7 +14,7 @@ export default async function PrivateLayout({
 }) {
   const session = await getServerSession(nextAuthOptions);
   if (!session) {
-    redirect('/login');
+    redirect('/');
   }
 
   return (

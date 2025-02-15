@@ -38,5 +38,8 @@ export function ConvertPositionEnums(position: string) {
 
     case 'LABORATORY_TECHNICIAN':
       return 'Tecnico de Laboratorio';
+
+    default:
+      return 'Desconhecido';
   }
 }

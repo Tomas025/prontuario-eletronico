@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
 import { FiUser } from 'react-icons/fi';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
@@ -15,6 +14,8 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 
+import { ConvertPositionEnums } from '@/utils/ConvertEnums';
+
 import { useAnotacao } from './hook/useAnotacao';
 
 const linkList: ListLink[] = [
@@ -22,55 +23,15 @@ const linkList: ListLink[] = [
   { label: 'Paciente', route: '/equipeMultiprofissional/[id]' }
 ];
 
-interface Anotacao {
-  id: number;
-  texto: string;
-  data: string;
-  hora: string;
-  autor: string;
-  cargo: string;
-}
-
-// Dados simulados para anotações pré-existentes
-const anotacoesExemplo: Anotacao[] = [
-  {
-    id: 1,
-    texto: 'Paciente apresenta melhora em relação a última consulta',
-    data: '21/09/2021',
-    hora: '15:30',
-    autor: 'Maria Silva',
-    cargo: 'Enfermeira'
-  },
-  {
-    id: 2,
-    texto: 'Paciente apresenta melhora em relação a última consulta',
-    data: '21/09/2021',
-    hora: '15:30',
-    autor: 'Maria Silva',
-    cargo: 'Enfermeira'
-  },
-  {
-    id: 3,
-    texto:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus. Nullam quis imperdiet augue. Vestibulum auctor ornare leo, non suscipit magna interdum eu. Curabitur pellentesque nibh nibh, at maximus ante fermentum sit amet.',
-    data: '21/09/2021',
-    hora: '15:30',
-    autor: 'Maria Silva',
-    cargo: 'Enfermeira'
-  }
-];
-
 export default function EquipeMultiprofissionalPaciente() {
-  const { form, submitForm } = useAnotacao();
-
-  // Estado para armazenar anotações
-  const [anotacoes] = useState(anotacoesExemplo);
+  const { form, submitForm, anotacoes } = useAnotacao();
 
   return (
     <section className="flex flex-col gap-6 w-full">
       {/* Header */}
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
+        {/* Adicionar renderização condicional */}
         <div className="flex gap-4">
           <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
             <Link href={'/equipeMultiprofissional'}>CANCELAR</Link>
@@ -105,12 +66,12 @@ export default function EquipeMultiprofissionalPaciente() {
                   <FormItem>
                     <FormControl>
                       <Textarea
+                        placeholder="Digite aqui"
                         className={`h-auto min-h-[40px] max-h-[200px] p-[10px] border-2 rounded-[10px] bg-gray/04 focus:border-blue/06 focus-visible:ring-0 ${
                           fieldState.invalid
                             ? 'border-red/01 bg-red/03'
                             : 'border-blue/07'
                         }`}
-                        placeholder="Digite aqui"
                         {...field}
                       />
                     </FormControl>
@@ -127,9 +88,9 @@ export default function EquipeMultiprofissionalPaciente() {
           <h1 className="text-xl font-bold text-blue/03">
             Anotações anteriores
           </h1>
-          {anotacoes.map(({ id, texto, data, hora, autor, cargo }) => (
+          {anotacoes?.data.map((anotacao) => (
             <div
-              key={id}
+              key={anotacao.id}
               className="grid gap-2 border border-blue/07 p-3 rounded-[10px] bg-white"
             >
               <div className="flex justify-between">
@@ -138,17 +99,28 @@ export default function EquipeMultiprofissionalPaciente() {
                     <FiUser className="text-3xl" />
                   </div>
                   <div>
-                    <h2 className="subTitle text-lg">{autor}</h2>
-                    <p className="text">{cargo}</p>
+                    <h2 className="subTitle text-lg">{anotacao.nameUser}</h2>
+                    <p className="text">
+                      {ConvertPositionEnums(anotacao.positionUser)}
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-4">
-                  <p className="subTitle text-base text-blue/03">{data}</p>
-                  <p className="subTitle text-base text-blue/03">{hora}</p>
+                  <p className="subTitle text-base text-blue/03">
+                    {new Date(anotacao.createdAt).toLocaleDateString('pt-BR')}
+                  </p>
+                  <p className="subTitle text-base text-blue/03">
+                    {new Date(anotacao.createdAt).toLocaleTimeString('pt-BR', {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
                 </div>
               </div>
               <div className="border-b border-blue/07" />
-              <p className="text-base text text-blue/01">{texto}</p>
+              <p className="text-base text text-blue/01">
+                {anotacao.description}
+              </p>
             </div>
           ))}
         </section>

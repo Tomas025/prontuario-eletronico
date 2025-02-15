@@ -20,7 +20,7 @@ export default function Internacao() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: dataBack, isLoading } = useQuery({
     queryKey: ['Patient', 'ADMISSION'],
-    queryFn: () => GetPatientFilter(null, 'ADMISSION'),
+    queryFn: () => GetPatientFilter('ADMISSION'),
     staleTime: 1 * 60 * 1000
   });
 

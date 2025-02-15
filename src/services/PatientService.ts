@@ -1,12 +1,13 @@
 import { getSession } from 'next-auth/react';
 
+import { typePatientForBack } from '@/app/(auth-routes)/atendimentos/listaAtendimentos/novoPaciente/hooks/useNovoPaciente';
 import { AxiosError } from 'axios';
 
 import { api } from './api';
 
 export async function GetPatientFilter(
-  filter: string | null = null,
-  status: string | null = null
+  status: string | null = null,
+  filter: string | null = null
 ) {
   const session = await getSession();
 
@@ -29,5 +30,25 @@ export async function GetPatientFilter(
     }
 
     throw new Error('Erro desconhecido carregar dados');
+  }
+}
+
+export async function PostNewPatient(data: typePatientForBack) {
+  const session = await getSession();
+
+  try {
+    const response = api.post('/Patient', data, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data || new Error('Erro ao criar novo paciente');
+    }
+
+    throw new Error('Erro desconhecido ao criar novo paciente');
   }
 }
