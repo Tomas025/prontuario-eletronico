@@ -35,21 +35,46 @@ export default function AtendimentoMedicoPaciente() {
     { label: 'Paciente', route: '' }
   ];
 
-  const renderSelect = (label: string, options: string[]) => (
-    <div className="flex items-center flex-wrap gap-1">
+  const renderSelect = (name: string, label: string, options: string[]) => (
+    <div className="flex items-center flex-wrap gap-1" key={name}>
       <p className="subTitle">{label}:</p>
-      <Select>
-        <SelectTrigger className="w-auto bg-gray/04 border-blue/07 text focus-visible:ring-0 focus:border-blue/06 focus:border-2 rounded-xl">
-          <SelectValue placeholder="Selecione" />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option} value={option}>
-              {option}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <FormField
+        control={form.control}
+        name={
+          name as
+            | 'respiratoryPattern'
+            | 'skinColor'
+            | 'heartSounds'
+            | 'pulse'
+            | 'rhythm'
+            | 'pupilReaction'
+            | 'speech'
+            | 'consciousnessLevel'
+            | 'motorResponse'
+        }
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Select
+                onValueChange={(value) => field.onChange(value)}
+                value={field.value || ''}
+              >
+                <SelectTrigger className="w-auto bg-gray/04 border-blue/07 text focus-visible:ring-0 focus:border-blue/06 focus:border-2 rounded-xl">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 
@@ -150,6 +175,7 @@ export default function AtendimentoMedicoPaciente() {
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
+                      name: 'respiratoryPattern',
                       label: 'Padrão Respiratório',
                       options: [
                         'Eupneico',
@@ -160,6 +186,7 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'pulmonaryAscultation',
                       label: 'Asculta Pulmonar',
                       options: [
                         'Murmúrios presentes bilateral',
@@ -170,6 +197,7 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'skinColor',
                       label: 'Coloração da pele',
                       options: [
                         'Normocorada',
@@ -183,19 +211,30 @@ export default function AtendimentoMedicoPaciente() {
                         'Presença de pústulas'
                       ]
                     }
-                  ].map(({ label, options }) =>
+                  ].map(({ name, label, options }) =>
                     label === 'Asculta Pulmonar' ? (
-                      <div className="flex items-center gap-1" key={label}>
+                      <div className="flex items-center gap-1" key={name}>
                         <p className="subTitle">{label}:</p>
-                        <Input
-                          type="number"
-                          placeholder="mv+"
-                          className="max-w-24 p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06"
-                          {...form.register('pulmonaryAscultation')}
+                        <FormField
+                          control={form.control}
+                          name="pulmonaryAscultation"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="mv+"
+                                  className="max-w-24 p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
                       </div>
                     ) : (
-                      renderSelect(label, options)
+                      renderSelect(name, label, options)
                     )
                   )}
                 </div>
@@ -206,6 +245,7 @@ export default function AtendimentoMedicoPaciente() {
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
+                      name: 'heartSounds',
                       label: 'Bulhas cardíacas',
                       options: [
                         'Normofonéticas',
@@ -215,6 +255,7 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'pulse',
                       label: 'Pulso',
                       options: [
                         'Filiforme',
@@ -224,10 +265,13 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'rhythm',
                       label: 'Ritmo',
                       options: ['Sinusal', 'Taquicardia', 'Bradicardia']
                     }
-                  ].map(({ label, options }) => renderSelect(label, options))}
+                  ].map(({ name, label, options }) =>
+                    renderSelect(name, label, options)
+                  )}
                 </div>
               </div>
               <hr className="border-blue/06" />
@@ -236,6 +280,7 @@ export default function AtendimentoMedicoPaciente() {
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
+                      name: 'pupilReaction',
                       label: 'Pupila',
                       options: [
                         'Isocórica',
@@ -245,10 +290,12 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'speech',
                       label: 'Fala',
                       options: ['Afasia', 'Disfasia', 'Disartria']
                     },
                     {
+                      name: 'consciousnessLevel',
                       label: 'Nível de consciência',
                       options: [
                         'Consciente',
@@ -259,6 +306,7 @@ export default function AtendimentoMedicoPaciente() {
                       ]
                     },
                     {
+                      name: 'motorResponse',
                       label: 'Resposta motora',
                       options: [
                         'Plegia',
@@ -267,7 +315,9 @@ export default function AtendimentoMedicoPaciente() {
                         'Claudicação'
                       ]
                     }
-                  ].map(({ label, options }) => renderSelect(label, options))}
+                  ].map(({ name, label, options }) =>
+                    renderSelect(name, label, options)
+                  )}
                 </div>
               </div>
             </div>
