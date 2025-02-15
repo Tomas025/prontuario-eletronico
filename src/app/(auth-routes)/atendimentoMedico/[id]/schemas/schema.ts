@@ -3,8 +3,16 @@ import { z } from 'zod';
 export const mySchema = z.object({
   // Preenchimento Médico
   medicalHypothesis: z.string().trim(),
-  medicationPrescription: z.string().trim(),
-  examsPrescription: z.string().trim(),
+  medicationPrescription: z
+    .object({
+      medication: z.string().trim()
+    })
+    .array(),
+  examsPrescription: z
+    .object({
+      exam: z.string().trim()
+    })
+    .array(),
 
   // Outros campos
   signsAndSymptoms: z.string().trim(),

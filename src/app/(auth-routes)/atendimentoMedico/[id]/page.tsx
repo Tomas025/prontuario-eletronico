@@ -24,7 +24,12 @@ import {
 import { useNewAtendimentoMedico } from './hooks/useNewAtendimentoMedico';
 
 export default function AtendimentoMedicoPaciente() {
-  const { form, submitForm } = useNewAtendimentoMedico();
+  const {
+    form,
+    submitForm,
+    arrayFieldExamsPrescription,
+    arrayFieldMedicationPrescription
+  } = useNewAtendimentoMedico();
   const linkList: ListLink[] = [
     { label: 'Atendimento Médico', route: '/atendimentoMedico' },
     { label: 'Paciente', route: '' }
@@ -333,52 +338,60 @@ export default function AtendimentoMedicoPaciente() {
                 <div className="flex flex-col justify-center gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Prescrição de Medicação</h1>
                   <hr className="border-blue/06" />
-                  <FormField
-                    control={form.control}
-                    name="medicationPrescription"
-                    render={({ field: controlField, fieldState }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Digite aqui"
-                            className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                              fieldState.invalid
-                                ? 'border-red/01 bg-red/03'
-                                : 'border-blue/07'
-                            }`}
-                            {...controlField}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {arrayFieldMedicationPrescription.fields.map(
+                    (field, index) => (
+                      <FormField
+                        key={field.id}
+                        control={form.control}
+                        name={`medicationPrescription.${index}.medication`}
+                        render={({ field: controlField, fieldState }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Digite aqui"
+                                className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                  fieldState.invalid
+                                    ? 'border-red/01 bg-red/03'
+                                    : 'border-blue/07'
+                                }`}
+                                {...controlField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )
+                  )}
                 </div>
                 <div className="flex flex-col justify-center gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Prescrição de Exames</h1>
                   <hr className="border-blue/06" />
-                  <FormField
-                    control={form.control}
-                    name="examsPrescription"
-                    render={({ field: controlField, fieldState }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Digite aqui"
-                            className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                              fieldState.invalid
-                                ? 'border-red/01 bg-red/03'
-                                : 'border-blue/07'
-                            }`}
-                            {...controlField}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {arrayFieldExamsPrescription.fields.map((field, index) => (
+                    <FormField
+                      key={field.id}
+                      control={form.control}
+                      name={`examsPrescription.${index}.exam`}
+                      render={({ field: controlField, fieldState }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Digite aqui"
+                              className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                fieldState.invalid
+                                  ? 'border-red/01 bg-red/03'
+                                  : 'border-blue/07'
+                              }`}
+                              {...controlField}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
