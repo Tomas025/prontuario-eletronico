@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { PiTrashFill } from 'react-icons/pi';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+
+import { normalizeCEP, normalizeCPF } from '@/utils/MaskInput';
 
 import { useEditarPaciente } from './hooks/useEditarPaciente';
 import { useNovoPaciente } from './hooks/useNovoPaciente';
@@ -54,64 +56,30 @@ const personalDataFields: Field[] = [
   { name: 'nomeSocial', label: 'Nome social', type: 'text' },
   { name: 'dataNascimento', label: 'Data de nascimento', type: 'date' },
   { name: 'sus', label: 'SUS', type: 'number' },
-  { name: 'cpf', label: 'CPF', required: true, type: 'number' }
+  { name: 'cpf', label: 'CPF', required: true, type: 'text' },
+  { name: 'rg', label: 'RG', type: 'number' },
+  { name: 'telefone', label: 'Telefone', type: 'number' },
+  { name: 'nomeMae', label: 'Nome da Mãe', type: 'text' }
 ];
 
 const addressFields: Field[] = [
-  { name: 'cep', label: 'CEP', type: 'number' },
+  { name: 'cep', label: 'CEP', type: 'text' },
   { name: 'cidade', label: 'Cidade', type: 'text' },
   { name: 'bairro', label: 'Bairro', type: 'text' },
   { name: 'rua', label: 'Rua', type: 'text' },
   { name: 'numero', label: 'Número', type: 'number' }
 ];
 
-const initialEmergencyContactFields: Field[] = [
-  {
-    name: 'nomeContatoEmergencia',
-    label: 'Nome do contato de emergência',
-    type: 'text'
-  },
-  {
-    name: 'parentesco',
-    label: 'Parentesco',
-    type: 'select',
-    options: ['Pai', 'Mãe', 'Irmão(a)', 'Esposo(a)']
-  },
-  {
-    name: 'telefoneContatoEmergencia',
-    label: 'Telefone de emergência',
-    type: 'tel'
-  }
-];
-
 export default function NovoPaciente() {
-  const { form, submitForm } = useNovoPaciente();
+  const { form, submitForm, emergencyContactFields, append, remove } =
+    useNovoPaciente();
   const { dadosPaciente, loading } = useEditarPaciente();
-  const [emergencyContacts, setEmergencyContacts] = useState<Field[][]>([
-    initialEmergencyContactFields
-  ]);
 
   useEffect(() => {
     if (!loading && dadosPaciente) {
       form.reset(dadosPaciente); // Preenche os valores do formulário
     }
   }, [dadosPaciente, loading, form]);
-
-  const addEmergencyContact = () => {
-    if (emergencyContacts.length < 3) {
-      setEmergencyContacts((prev) => [
-        ...prev,
-        initialEmergencyContactFields.map((field) => ({
-          ...field,
-          name: `${field.name}${prev.length + 1}`
-        }))
-      ]);
-    }
-  };
-
-  const removeEmergencyContact = (index: number) => {
-    setEmergencyContacts((prev) => prev.filter((_, i) => i !== index));
-  };
 
   const renderFields = (fields: Field[]) =>
     fields.map((field) => (
@@ -133,9 +101,6 @@ export default function NovoPaciente() {
             | 'bairro'
             | 'rua'
             | 'numero'
-            | 'nomeContatoEmergencia'
-            | 'parentesco'
-            | 'telefoneContatoEmergencia'
         }
         render={({ field: controlField, fieldState }) => (
           <FormItem
@@ -173,6 +138,40 @@ export default function NovoPaciente() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                ) : field.name === 'cpf' ? (
+                  <Input
+                    id={field.name}
+                    type={field.type}
+                    maxLength={14}
+                    {...controlField}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      event.target.value = normalizeCPF(value);
+                      controlField.onChange(event.target.value);
+                    }}
+                    className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                      fieldState.invalid
+                        ? 'border-red/01 bg-red/03'
+                        : 'border-blue/07'
+                    }`}
+                  />
+                ) : field.name === 'cep' ? (
+                  <Input
+                    id={field.name}
+                    type={field.type}
+                    maxLength={9}
+                    {...controlField}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      event.target.value = normalizeCEP(value);
+                      controlField.onChange(event.target.value);
+                    }}
+                    className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                      fieldState.invalid
+                        ? 'border-red/01 bg-red/03'
+                        : 'border-blue/07'
+                    }`}
+                  />
                 ) : (
                   <Input
                     id={field.name}
@@ -236,19 +235,114 @@ export default function NovoPaciente() {
 
           {/* Contatos de Emergência */}
           <section className="flex flex-col gap-2">
-            {emergencyContacts.length > 0 && (
+            {emergencyContactFields.length > 0 && (
               <h1 className="text-xl font-bold text-blue/03">
                 Contatos de Emergência
               </h1>
             )}
-            {emergencyContacts.map((fields, index) => (
-              <div key={index} className="flex flex-col gap-2">
+            {emergencyContactFields.map((field, index) => (
+              <div key={field.id} className="flex flex-col gap-2">
                 <div className="flex flex-wrap gap-5">
-                  {renderFields(fields)}
+                  <FormField
+                    control={form.control}
+                    name={`emergencyContact.${index}.nomeContatoEmergencia`}
+                    render={({ field: controlField, fieldState }) => (
+                      <FormItem className={'min-w-[150px] flex-grow'}>
+                        <FormControl>
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="nomeContatoEmergencia">
+                              Nome do contato de emergência
+                            </Label>
+                            <Input
+                              id="nomeContatoEmergencia"
+                              type="text"
+                              {...controlField}
+                              className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                fieldState.invalid
+                                  ? 'border-red/01 bg-red/03'
+                                  : 'border-blue/07'
+                              }`}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`emergencyContact.${index}.parentesco`}
+                    render={({ field: controlField, fieldState }) => (
+                      <FormItem className={'min-w-[150px] flex-grow'}>
+                        <FormControl>
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="parentesco">Parentesco</Label>
+                            <Select
+                              onValueChange={(value) =>
+                                controlField.onChange(value)
+                              }
+                              value={controlField.value || ''}
+                            >
+                              <SelectTrigger
+                                className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                  fieldState.invalid
+                                    ? 'border-red/01 bg-red/03'
+                                    : 'border-blue/07'
+                                }`}
+                              >
+                                <SelectValue placeholder="Selecione" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectItem value="FATHER">Pai</SelectItem>
+                                  <SelectItem value="MOTHER">Mãe</SelectItem>
+                                  <SelectItem value="SIBLING">
+                                    Irmão(a)
+                                  </SelectItem>
+                                  <SelectItem value="SPOUSE">
+                                    Esposo(a)
+                                  </SelectItem>
+                                  <SelectItem value="SON">Filho(a)</SelectItem>
+                                  <SelectItem value="OUTHER">Outro</SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`emergencyContact.${index}.telefoneContatoEmergencia`}
+                    render={({ field: controlField, fieldState }) => (
+                      <FormItem className={'min-w-[150px] flex-grow'}>
+                        <FormControl>
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="telefoneContatoEmergencia">
+                              Telefone de emergência
+                            </Label>
+                            <Input
+                              id="telefoneContatoEmergencia"
+                              type="tel"
+                              {...controlField}
+                              className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                fieldState.invalid
+                                  ? 'border-red/01 bg-red/03'
+                                  : 'border-blue/07'
+                              }`}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   {index >= 0 && ( // Excluir apenas contatos adicionais
                     <Button
                       className="bg-red/01 self-end w-fit button hover:bg-red/02"
-                      onClick={() => removeEmergencyContact(index)}
+                      onClick={() => remove(index)}
                       type="button"
                     >
                       <PiTrashFill />
@@ -260,10 +354,16 @@ export default function NovoPaciente() {
           </section>
         </form>
       </Form>
-      {emergencyContacts.length < 3 && (
+      {emergencyContactFields.length < 3 && (
         <Button
           className="bg-blue/04 w-fit button hover:bg-blue/02"
-          onClick={addEmergencyContact}
+          onClick={() =>
+            append({
+              nomeContatoEmergencia: '',
+              parentesco: '',
+              telefoneContatoEmergencia: ''
+            })
+          }
         >
           + CONTATO DE EMERGÊNCIA
         </Button>
