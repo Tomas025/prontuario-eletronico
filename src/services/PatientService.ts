@@ -6,8 +6,8 @@ import { AxiosError } from 'axios';
 import { api } from './api';
 
 export async function GetPatientFilter(
-  filter: string | null = null,
-  status: string | null = null
+  status: string | null = null,
+  filter: string | null = null
 ) {
   const session = await getSession();
 

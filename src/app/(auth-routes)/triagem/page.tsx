@@ -17,7 +17,7 @@ export default function Triagem() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: dataBack, isLoading } = useQuery({
     queryKey: ['Patient', 'SCREENING'],
-    queryFn: () => GetPatientFilter(null, 'SCREENING'),
+    queryFn: () => GetPatientFilter('SCREENING'),
     staleTime: 1 * 60 * 1000
   });
 
