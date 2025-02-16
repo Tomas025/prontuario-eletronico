@@ -1,8 +1,0 @@
-(Exemplo de arquivo de utilidades)
-
-- Pasta para armazenar funções úteis que podem ser usadas em vários lugares do código.
-- Um arquivo pode conter mais de uma função, com tanto que todas as funções tenham a ver com o nome do arquivo.
-
-(
-  OBS.: exemplos de funções que podem estar no arquivo maskInput.ts: normalizeTelephone, normalizeCPF, normalizeRG, normalizeCEP, etc. Todas essas funções têm a mesma apresenta o nome do arquivo, são máscaras de input.
-)

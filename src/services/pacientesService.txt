@@ -1,3 +1,0 @@
-(Exemplo de arquivo para as requisições de pacientes)
-
-- Todas as requisições que têm a ver com os pacientes serão colocadas neste service e os outros seguem a mesma lógica.

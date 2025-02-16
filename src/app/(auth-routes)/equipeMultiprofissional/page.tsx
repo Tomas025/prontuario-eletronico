@@ -1,8 +1,13 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { CustomTable } from '@/components/CustomTable';
+
+import { GetPatientFilter } from '@/services/PatientService';
+import { isMultidisciplinary } from '@/utils/ConvertEnums';
+import { useQuery } from '@tanstack/react-query';
 
 type RowData = {
   id: number;
@@ -14,6 +19,14 @@ type RowData = {
 };
 
 export default function EquipeMultiprofissional() {
+  const session = useSession();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: dataBack, isLoading } = useQuery({
+    queryKey: ['Patient', 'IN_SERVICE'],
+    queryFn: () => GetPatientFilter('IN_SERVICE'),
+    staleTime: 1 * 60 * 1000
+  });
+
   // Mock data para a tabela
   const data: RowData[] = [
     {
@@ -238,7 +251,9 @@ export default function EquipeMultiprofissional() {
             href={`/equipeMultiprofissional/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
-            REALIZAR ANOTAÇÃO
+            {isMultidisciplinary(session.data?.user.position as string)
+              ? 'REALIZAR ANOTAÇÃO'
+              : 'VER ANOTAÇÕES'}
           </Link>
         )
       }

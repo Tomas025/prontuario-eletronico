@@ -2,9 +2,6 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
-import { MenuComponent } from '../../components/NavBar/MenuComponente';
-import { UserComponent } from '../../components/NavBar/PerfilComponente';
-
 import { nextAuthOptions } from '@/services/authOptions';
 
 export default async function PrivateLayout({
@@ -14,16 +11,8 @@ export default async function PrivateLayout({
 }) {
   const session = await getServerSession(nextAuthOptions);
   if (!session) {
-    redirect('/');
+    // redirect('/');
   }
 
-  return (
-    <>
-      <header>
-        <UserComponent />
-        <MenuComponent />
-      </header>
-      <main className="p-[30px]">{children}</main>
-    </>
-  );
+  return children;
 }
