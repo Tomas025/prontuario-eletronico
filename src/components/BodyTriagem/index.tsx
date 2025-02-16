@@ -17,28 +17,81 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "../ui/select";
 import { SelectContent, SelectValue } from "@radix-ui/react-select";
 import { useAnamnesisForm } from "./hooks/useBodyTriagem";
+import { BsPrinter } from 'react-icons/bs';
+import { FiCheck } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
+import { ListLink } from '../BreadCrumb/types/typesBreadCrumb';
+import { BreadCrumb } from '../BreadCrumb';
 
 const BodyTriagem = () => {
-  const { form, onSubmit } = useAnamnesisForm();
+  const { form, onSubmit, loading } = useAnamnesisForm();
+
+  const linkListBreadCrumb: ListLink[] = [
+      {
+        label: 'Triagem',
+        route: '/triagem'
+      },
+      {
+        label: 'Paciente',
+        route: ''
+      }
+    ];
 
   return (
     <div className="p-5 border-0">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="border-0">
+        <div className="flex justify-between w-full items-center mb-[25px]">
+          <BreadCrumb linkList={linkListBreadCrumb} />
+
+          <div className="flex gap-x-4">
+            {/* IMPRIMIR */}
+            <Button
+              className="bg-blue-950 w-28 text-sm"
+              type="button"
+              onClick={() => window.print()} // Salvar página como PDF
+            >
+              <BsPrinter />
+              IMPRIMIR
+            </Button>
+
+            {/* CANCELAR */}
+            <Button
+              className="bg-red-500 w-28 text-sm"
+              type="button"
+              onClick={() => window.history.back()} // Voltar para a página anterior
+            >
+              <FiX />
+              CANCELAR
+            </Button>
+
+            {/* ENCAMINHAR PARA MÉDICO */}
+            <Button
+              className="bg-green-700 w-60 text-sm"
+              type="submit" // Agora esse botão submete o formulário
+              disabled={loading} // Desabilita se estiver carregando
+            >
+              <FiCheck />
+              {loading ? "ENVIANDO..." : "ENCAMINHAR PARA MÉDICO"}
+            </Button>
+          </div>
+        </div>
           <Card className="border-blue-200 rounded-md m-1">
             <CardHeader>
               <div className="flex justify-between align-center">
                 <CardTitle className="pt-2 text-xl text-blue-950">Anamnese</CardTitle>
                 <div className="w-16">
                   <Select>
-                    <SelectTrigger className="bg-white border-blue-300 w-16">
+                    <SelectTrigger className="bg-white border-blue-300 w-16 absolute">
                       <SelectValue placeholder="🟡" />
                     </SelectTrigger>
                     <SelectContent className="border-2 bg-white border-blue-200 rounded-md" position="popper">
-                      <SelectGroup className="border-blue-200">
-                        <SelectItem value="Leve" className="border-blue-200 border-b-2 rounded-none w-14">🟢</SelectItem>
-                        <SelectItem value="Moderado" className="border-blue-200 border-b-2 rounded-none w-14">🟡</SelectItem>
-                        <SelectItem value="Grave" className="border-blue-200 w-14">🔴</SelectItem>
+                      <SelectGroup className="border-blue-200 ">
+                        <SelectItem value="EMERGENCY" className="border-blue-200 border-b-2 rounded-none w-14">🔴</SelectItem>
+                        <SelectItem value="VERY_URGENT" className="border-blue-200 border-b-2 rounded-none w-14">🟠</SelectItem>
+                        <SelectItem value="URGENCY" className="border-blue-200 border-b-2 rounded-none w-14">🟡</SelectItem>
+                        <SelectItem value="LESS_SERIOUS" className="border-blue-200 border-b-2 rounded-none w-14">🟢</SelectItem>
+                        <SelectItem value="LIGHTWEIGHT" className="border-blue-200 w-14">🔵</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -50,7 +103,7 @@ const BodyTriagem = () => {
               <div className="flex gap-2 pb-4 border-b-2 border-blue-100 border-dashed text-blue-950">
                 {/* Primeira linha */}
                 <FormField
-                  name="pressao"
+                  name="bloodPressure"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -65,7 +118,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="glicose"
+                  name="glucose"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -80,7 +133,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="temperatura"
+                  name="temperature"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -95,7 +148,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="peso"
+                  name="weight"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -110,7 +163,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="freqCardiaca"
+                  name="heartRate"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -125,7 +178,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="freqResp"
+                  name="respiratoryRate"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -140,7 +193,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="tipoSang"
+                  name="bloodType"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -173,7 +226,7 @@ const BodyTriagem = () => {
               </div>
               <div className="flex gap-1 pb-4 pt-2 border-b-2 border-blue-100 border-dashed text-blue-950">
                 <FormField
-                  name="saturacao"
+                  name="saturation"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -188,7 +241,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="altura"
+                  name="height"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -203,7 +256,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="antPato"
+                  name="antecPathological"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -278,7 +331,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="medicUso"
+                  name="medicationsInUse"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -305,7 +358,7 @@ const BodyTriagem = () => {
               </div>
               <div className="grid grid-cols-6 gap-1 pt-2 text-blue-950">
                 <FormField
-                  name="protese"
+                  name="useOfProthesis"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -330,7 +383,7 @@ const BodyTriagem = () => {
                   )}
                 />
                 <FormField
-                  name="temAlergia"
+                  name="allergies"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -362,7 +415,7 @@ const BodyTriagem = () => {
               <CardContent>
                 {/* Seções adicionais */}
                 <FormField
-                  name="alergias"
+                  name="allergiesType"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -379,7 +432,7 @@ const BodyTriagem = () => {
             <Card className="border-blue-200 rounded-md m-2 pt-2">
               <CardContent>
                 <FormField
-                  name="antecedentes"
+                  name="antecPathologicalType"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -396,7 +449,7 @@ const BodyTriagem = () => {
             <Card className="border-blue-200 rounded-md m-2 pt-2">
               <CardContent>
                 <FormField
-                  name="medicamentos"
+                  name="medicationInUseType"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -415,7 +468,7 @@ const BodyTriagem = () => {
             <Card className="border-blue-200 rounded-md m-2 pt-2">
               <CardContent>
                 <FormField
-                  name="cirurgias"
+                  name="previousSurgeries"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
@@ -432,7 +485,7 @@ const BodyTriagem = () => {
             <Card className="border-blue-200 rounded-md m-2 pt-2">
               <CardContent>
                 <FormField
-                  name="sintomas"
+                  name="signsAndSymptoms"
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>

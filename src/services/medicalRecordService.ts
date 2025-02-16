@@ -1,7 +1,8 @@
 import { getSession } from 'next-auth/react';
 import { AxiosError } from 'axios';
 import { api } from './api';
-import { AnamneseData, FinalizePatientExamMedicationData, PatientExamMedicationData, PatientMonitoringData } from '@/utils/interfacesMedicalRecord';
+import { FinalizePatientExamMedicationData, PatientExamMedicationData, PatientMonitoringData } from '@/utils/interfacesMedicalRecord';
+import { typeTriagemAnamnesi } from '@/components/BodyTriagem/hooks/useBodyTriagem';
 
 export async function GetMedicalRecordById(medicalRecordId: number) {
   const session = await getSession();
@@ -27,7 +28,7 @@ export async function GetMedicalRecordById(medicalRecordId: number) {
   }
 }
 
-export async function postAnamnese(anamneseData: AnamneseData) {
+export async function postAnamnese(data: typeTriagemAnamnesi) {
   const session = await getSession();
 
   if (!session?.user.accessToken) {
@@ -35,14 +36,14 @@ export async function postAnamnese(anamneseData: AnamneseData) {
   }
 
   try {
-    const response = await api.post('/api/MedicalRecord/anamnese', anamneseData, {
+    const response = await api.post('api/MedicalRecord/anamnese', data, {
       headers: {
         Authorization: `Bearer ${session.user.accessToken}`,
         'Content-Type': 'application/json',
       },
     });
 
-    return response.data;
+    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       throw new Error(error.response?.data?.message || 'Erro ao adicionar anamnese');
