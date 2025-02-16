@@ -10,3 +10,12 @@ export function normalizeCPF(value: string) {
 export function normalizeCEP(value: string) {
   return noMask(value).replace(/(\d{5})(\d)/, '$1-$2');
 }
+
+export function normalizeTelephone(value: string) {
+  return noMask(value)
+    .replace(/(\d{2})(\d)/, '($1) $2')
+    .replace(
+      noMask(value).length >= 11 ? /(\d{5})(\d)/ : /(\d{4})(\d)/,
+      '$1-$2'
+    );
+}

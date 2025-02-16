@@ -43,3 +43,28 @@ export function ConvertPositionEnums(position: string) {
       return 'Desconhecido';
   }
 }
+
+export function ConvertRelationshipEnums(relationship: string) {
+  switch (relationship) {
+    case 'FATHER':
+      return 'Pai';
+
+    case 'MOTHER':
+      return 'Mãe';
+
+    case 'SIBLING':
+      return 'Irmão(a)';
+
+    case 'SPOUSE':
+      return 'Esposo(a)';
+
+    case 'SON':
+      return 'Filho(a)';
+
+    case 'OUTHER':
+      return 'Outro';
+
+    default:
+      return 'Desconhecido';
+  }
+}

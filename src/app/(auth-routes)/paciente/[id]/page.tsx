@@ -1,6 +1,5 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
@@ -13,88 +12,20 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
 
-const initialData = {
-  id: '1',
-  dadosPessoais: {
-    nomeCompleto: 'Maria Silva Nogueira',
-    nomeSocial: 'José Nogueira',
-    sus: '123456',
-    cpf: '123.456.789-10',
-    idade: 37,
-    nascimento: '09/03/2004',
-    sexo: 'Feminino',
-    rg: '578348949',
-    telefone: '(81) 99999-9999',
-    endereco: 'Rua Primeiro de Janeiro, São Pedro, 133, Belo Jardim',
-    contatosEmergencia: [
-      { tipo: 'Marido', telefone: '(81) 9999-9999' },
-      { tipo: 'Mãe', telefone: '(81) 9999-9999' }
-    ],
-    nomeMae: 'Eduarda Silva Nogueira'
-  },
-  prontuarios: [
-    {
-      id: '101',
-      data: '15/08',
-      sintomas: 'Febre, tosse e coriza',
-      pressao: '14/10',
-      glicose: '150',
-      classificacao: 'Emergência'
-    },
-    {
-      id: '102',
-      data: '15/08',
-      sintomas: 'Febre, tosse e coriza',
-      pressao: '14/10',
-      glicose: '150',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: '103',
-      data: '15/08',
-      sintomas: 'Febre, tosse e coriza',
-      pressao: '14/10',
-      glicose: '150',
-      classificacao: 'Urgência'
-    },
-    {
-      id: '104',
-      data: '15/08',
-      sintomas: 'Febre, tosse e coriza',
-      pressao: '14/10',
-      glicose: '150',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: '105',
-      data: '15/08',
-      sintomas: 'Febre, tosse e coriza',
-      pressao: '14/10',
-      glicose: '150',
-      classificacao: 'Leves'
-    }
-  ]
-};
+import { usePaciente } from './hooks/usePaciente';
 
 const MENU_OPTIONS = [
   { label: 'Dados Pessoais', value: 'dados-pessoais' },
   { label: 'Prontuários', value: 'prontuários' }
 ];
 
-const linkList: ListLink[] = [
-  { label: 'Atendimentos', route: '/atendimentos' },
-  { label: 'Maria Silva', route: '' }
-];
-
 export default function Pacientes() {
   const [selectedOption, setSelectedOption] = useState(MENU_OPTIONS[0]);
-  const router = useRouter();
-
-  const handleEdit = () => {
-    router.push(
-      `/atendimentos/listaAtendimentos/novoPaciente?id=${initialData.id}`
-    );
-  };
+  const { patientDate, isLoading } = usePaciente();
+  const linkList: ListLink[] = [
+    { label: 'Atendimentos', route: '/atendimentos' },
+    { label: patientDate?.data.name, route: '' }
+  ];
 
   return (
     <section className="flex flex-col gap-6 w-full">
@@ -133,13 +64,13 @@ export default function Pacientes() {
         </DropdownMenu>
       </section>
 
-      {selectedOption.value === 'dados-pessoais' && (
-        <DadosPessoais data={initialData.dadosPessoais} onEdit={handleEdit} />
+      {selectedOption.value === 'dados-pessoais' && !isLoading && (
+        <DadosPessoais data={patientDate?.data} />
       )}
 
       {selectedOption.value === 'prontuários' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-          {initialData.prontuarios.map((prontuario) => (
+          {/* {initialData.prontuarios.map((prontuario) => (
             <CardProntuario
               key={prontuario.id}
               pessoaId={initialData.id}
@@ -150,7 +81,7 @@ export default function Pacientes() {
               glicose={prontuario.glicose}
               classificacao={prontuario.classificacao}
             />
-          ))}
+          ))} */}
         </div>
       )}
     </section>
