@@ -21,7 +21,9 @@ export default function EncaminharPaciente() {
       {/* Select principal */}
       <div className="relative">
         <Select onValueChange={setEncaminhamento} value={encaminhamento}>
-          <SelectTrigger className="bg-otherBlue text-white pr-6">
+          <SelectTrigger
+            className={`bg-otherBlue text-white ${encaminhamento && 'pr-6'}`}
+          >
             <SelectValue placeholder="ENCAMINHAR PACIENTE" />
           </SelectTrigger>
           <SelectContent>
@@ -45,7 +47,9 @@ export default function EncaminharPaciente() {
       {encaminhamento === 'Alta' && (
         <div className="relative">
           <Select onValueChange={setTipoAlta} value={tipoAlta}>
-            <SelectTrigger className="bg-otherBlue text-white pr-6">
+            <SelectTrigger
+              className={`bg-otherBlue text-white ${tipoAlta && 'pr-6'}`}
+            >
               <SelectValue placeholder="Tipo de Alta" />
             </SelectTrigger>
             <SelectContent>
