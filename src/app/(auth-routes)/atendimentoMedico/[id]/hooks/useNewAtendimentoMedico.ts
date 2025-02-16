@@ -8,21 +8,17 @@ export function useNewAtendimentoMedico() {
   const form = useForm<typeMySchema>({
     resolver: zodResolver(mySchema),
     defaultValues: {
-      // Preenchimento Médico
       medicalHypothesis: 'Gastrite aguda',
       medicationPrescription: [
-        {
-          medication: 'Omeprazol 20mg, 1x ao dia por 7 dias'
-        }
+        { medication: 'Omeprazol 20mg, 1x ao dia por 7 dias' },
+        { medication: 'Dipirona 1g, 1x ao dia por 7 dias' }
       ],
-      examsPrescription: [{ exam: 'Exame de sangue, ultrassom abdominal' }],
-      // Outros campos
+      examsPrescription: [{ exam: 'Exame de sangue' }],
       allergies: 'Nenhuma conhecida',
       pathologicalHistory: 'Nenhum histórico de doenças graves',
       currentMedications: 'Nenhum medicamento atualmente',
       previousSurgeries: 'Apendicectomia em 2015',
       signsAndSymptoms: 'Dor abdominal intensa, náusea e febre',
-      // Anamnese
       bloodPressure: '120/80 mmHg',
       glucose: '95 mg/dL',
       temperature: '37.2°C',
@@ -37,15 +33,12 @@ export function useNewAtendimentoMedico() {
       allergie: 'Não',
       prosthesisUse: 'Não',
       currentMedication: 'Sim',
-      // Necessidades Psico
       respiratoryPattern: '',
       pulmonaryAscultation: '',
       skinColor: '',
-      // Cardio
       heartSounds: '',
       pulse: '',
       rhythm: '',
-      // Neuro
       pupilReaction: '',
       speech: '',
       consciousnessLevel: '',
@@ -53,12 +46,20 @@ export function useNewAtendimentoMedico() {
     }
   });
 
-  const arrayFieldMedicationPrescription = useFieldArray({
+  const {
+    fields: medicationFields,
+    append: appendMedication,
+    remove: removeMedication
+  } = useFieldArray({
     control: form.control,
     name: 'medicationPrescription'
   });
 
-  const arrayFieldExamsPrescription = useFieldArray({
+  const {
+    fields: examFields,
+    append: appendExam,
+    remove: removeExam
+  } = useFieldArray<typeMySchema, 'examsPrescription'>({
     control: form.control,
     name: 'examsPrescription'
   });
@@ -70,7 +71,11 @@ export function useNewAtendimentoMedico() {
   return {
     form,
     submitForm,
-    arrayFieldMedicationPrescription,
-    arrayFieldExamsPrescription
+    medicationFields,
+    appendMedication,
+    removeMedication,
+    examFields,
+    appendExam,
+    removeExam
   };
 }

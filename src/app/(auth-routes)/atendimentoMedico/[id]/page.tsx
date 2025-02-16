@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { PiTrashFill } from 'react-icons/pi';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
@@ -27,9 +28,14 @@ export default function AtendimentoMedicoPaciente() {
   const {
     form,
     submitForm,
-    arrayFieldExamsPrescription,
-    arrayFieldMedicationPrescription
+    examFields,
+    medicationFields,
+    appendExam,
+    appendMedication,
+    removeExam,
+    removeMedication
   } = useNewAtendimentoMedico();
+
   const linkList: ListLink[] = [
     { label: 'Atendimento Médico', route: '/atendimentoMedico' },
     { label: 'Paciente', route: '' }
@@ -68,6 +74,14 @@ export default function AtendimentoMedicoPaciente() {
                       {option}
                     </SelectItem>
                   ))}
+                  <button
+                    onClick={() => {
+                      form.setValue(field.name, '');
+                    }}
+                    className="w-full p-2 text-red/01 text rounded-sm hover:bg-red/03"
+                  >
+                    Limpar
+                  </button>
                 </SelectContent>
               </Select>
             </FormControl>
@@ -385,17 +399,16 @@ export default function AtendimentoMedicoPaciente() {
                 />
               </div>
               <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col justify-center gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
+                <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Prescrição de Medicação</h1>
                   <hr className="border-blue/06" />
-                  {arrayFieldMedicationPrescription.fields.map(
-                    (field, index) => (
+                  {medicationFields.map((medication, index) => (
+                    <div className="flex gap-x-2 w-full" key={medication.id}>
                       <FormField
-                        key={field.id}
                         control={form.control}
                         name={`medicationPrescription.${index}.medication`}
                         render={({ field: controlField, fieldState }) => (
-                          <FormItem>
+                          <FormItem className="w-full">
                             <FormControl>
                               <Input
                                 type="text"
@@ -412,36 +425,69 @@ export default function AtendimentoMedicoPaciente() {
                           </FormItem>
                         )}
                       />
-                    )
-                  )}
+                      <Button
+                        className="bg-red/01 self-end w-fit button hover:bg-red/02"
+                        onClick={() => removeMedication(index)}
+                        type="button"
+                      >
+                        <PiTrashFill />
+                      </Button>
+                    </div>
+                  ))}
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      type="button"
+                      onClick={() => appendMedication({ medication: '' })}
+                      className="bg-green/01 text-white px-6 py-2 rounded-[8px] hover:bg-green/02"
+                    >
+                      + MEDICAÇÃO
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex flex-col justify-center gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
+                <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Prescrição de Exames</h1>
                   <hr className="border-blue/06" />
-                  {arrayFieldExamsPrescription.fields.map((field, index) => (
-                    <FormField
-                      key={field.id}
-                      control={form.control}
-                      name={`examsPrescription.${index}.exam`}
-                      render={({ field: controlField, fieldState }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Digite aqui"
-                              className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                                fieldState.invalid
-                                  ? 'border-red/01 bg-red/03'
-                                  : 'border-blue/07'
-                              }`}
-                              {...controlField}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                  {examFields.map((exam, index) => (
+                    <div className="flex gap-x-2 w-full" key={exam.id}>
+                      <FormField
+                        control={form.control}
+                        name={`examsPrescription.${index}.exam`}
+                        render={({ field: controlField, fieldState }) => (
+                          <FormItem className="w-full">
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Digite aqui"
+                                className={`p-[10px] border-2 w-full rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                  fieldState.invalid
+                                    ? 'border-red/01 bg-red/03'
+                                    : 'border-blue/07'
+                                }`}
+                                {...controlField}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        className="bg-red/01 self-end w-fit button hover:bg-red/02"
+                        onClick={() => removeExam(index)}
+                        type="button"
+                      >
+                        <PiTrashFill />
+                      </Button>
+                    </div>
                   ))}
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      type="button"
+                      onClick={() => appendExam({ exam: '' })}
+                      className="bg-green/01 text-white px-6 py-2 rounded-[8px] hover:bg-green/02"
+                    >
+                      + EXAME
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
