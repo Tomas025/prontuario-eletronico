@@ -1,4 +1,5 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { FiUser } from 'react-icons/fi';
 
@@ -14,7 +15,10 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 
-import { ConvertPositionEnums } from '@/utils/ConvertEnums';
+import {
+  ConvertPositionEnums,
+  isMultidisciplinary
+} from '@/utils/ConvertEnums';
 
 import { useAnotacao } from './hook/useAnotacao';
 
@@ -24,6 +28,10 @@ const linkList: ListLink[] = [
 ];
 
 export default function EquipeMultiprofissionalPaciente() {
+  const session = useSession();
+  const checkMultidisciplinary = isMultidisciplinary(
+    session.data?.user.position as string
+  );
   const { form, submitForm, anotacoes } = useAnotacao();
 
   return (
@@ -32,61 +40,65 @@ export default function EquipeMultiprofissionalPaciente() {
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
         {/* Adicionar renderização condicional */}
-        <div className="flex gap-4">
-          <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
-            <Link href={'/equipeMultiprofissional'}>CANCELAR</Link>
-          </Button>
-          <Button
-            className="bg-green/01 w-full button hover:bg-green/02"
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            form="formAnotacao"
-          >
-            SALVAR ANOTAÇÃO
-          </Button>
-        </div>
+        {checkMultidisciplinary && (
+          <div className="flex gap-4">
+            <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
+              <Link href={'/equipeMultiprofissional'}>CANCELAR</Link>
+            </Button>
+            <Button
+              className="bg-green/01 w-full button hover:bg-green/02"
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              form="formAnotacao"
+            >
+              SALVAR ANOTAÇÃO
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* Body */}
       <section className="flex flex-col gap-3">
         {/* Formulário para nova anotação */}
-        <section className="flex flex-col gap-3 border border-blue/07 p-3 rounded-[10px]">
-          <h1 className="text-xl font-bold text-blue/03">Nova Anotação</h1>
-          <div className="border-b border-blue/07" />
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(submitForm)}
-              className="space-y-4"
-              id="formAnotacao"
-            >
-              <FormField
-                name="anotacao"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Digite aqui"
-                        className={`h-auto min-h-[40px] max-h-[200px] p-[10px] border-2 rounded-[10px] bg-gray/04 focus:border-blue/06 focus-visible:ring-0 ${
-                          fieldState.invalid
-                            ? 'border-red/01 bg-red/03'
-                            : 'border-blue/07'
-                        }`}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </section>
+        {isMultidisciplinary(session.data?.user.position as string) && (
+          <section className="flex flex-col gap-3 border border-blue/07 p-3 rounded-[10px]">
+            <h1 className="text-xl font-bold text-blue/03">Nova Anotação</h1>
+            <div className="border-b border-blue/07" />
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(submitForm)}
+                className="space-y-4"
+                id="formAnotacao"
+              >
+                <FormField
+                  name="anotacao"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Digite aqui"
+                          className={`h-auto min-h-[40px] max-h-[200px] p-[10px] border-2 rounded-[10px] bg-gray/04 focus:border-blue/06 focus-visible:ring-0 ${
+                            fieldState.invalid
+                              ? 'border-red/01 bg-red/03'
+                              : 'border-blue/07'
+                          }`}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+          </section>
+        )}
 
         {/* Cards para cada anotações prévias */}
         <section className="flex flex-col gap-4">
           <h1 className="text-xl font-bold text-blue/03">
-            Anotações anteriores
+            {checkMultidisciplinary ? 'Anotações anteriores' : 'Anotações'}
           </h1>
           {anotacoes?.data.map((anotacao) => (
             <div

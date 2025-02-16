@@ -9,7 +9,7 @@ declare module 'next-auth' {
       active: boolean;
       email: string;
       firstAccess: boolean;
-      position?: string;
+      position: string;
       role: string;
       unique_name: string;
     };
