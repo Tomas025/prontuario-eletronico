@@ -1,12 +1,14 @@
 import { getSession } from 'next-auth/react';
 
-import { typeAnotacao } from '@/app/(auth-routes)/equipeMultiprofissional/[id]/hook/useAnotacao';
+import {
+  typeDataForCreateNote,
+  typeAnotacao
+} from '@/app/(auth-routes)/equipeMultiprofissional/[id]/hook/useAnotacao';
 import { AxiosError } from 'axios';
 
 import { api } from './api';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function PostNotes(data: any) {
+export async function PostNotes(data: typeDataForCreateNote) {
   const session = await getSession();
 
   try {
