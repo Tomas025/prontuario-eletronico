@@ -27,7 +27,6 @@
     "lucide-react": "^0.454.0",
     "next": "14.2.15",
     "next-auth": "^4.24.8",
-    "prontuario-eletronico": "file:",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.2",
