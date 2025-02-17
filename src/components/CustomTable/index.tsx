@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
+import { FaSpinner } from 'react-icons/fa';
 import { IoIosSearch } from 'react-icons/io';
 
 import {
@@ -29,6 +30,7 @@ type Column = {
 type CustomTableProps = {
   columns: Column[];
   data: any[];
+  loading?: boolean; // Propriedade de loading adicionada
   itemsPerPageOptions?: number[];
   showClassificationFilter?: boolean;
   showStatusFilter?: boolean;
@@ -42,6 +44,7 @@ type CustomTableProps = {
 export function CustomTable({
   columns,
   data,
+  loading = false,
   itemsPerPageOptions = [10, 20, 30, 40, 50],
   showClassificationFilter = false,
   showStatusFilter = false,
@@ -204,20 +207,35 @@ export function CustomTable({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className="border-b border-blue/08">
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="p-5 text-blue/03 text-sm bg-gray/04"
-                  >
-                    {typeof cell.column.columnDef.cell === 'function'
-                      ? cell.column.columnDef.cell(cell.getContext())
-                      : cell.getValue()}
-                  </TableCell>
-                ))}
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="p-5 text-center">
+                  <FaSpinner className="animate-spin inline-block mr-2" />
+                  Carregando...
+                </TableCell>
               </TableRow>
-            ))}
+            ) : table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} className="border-b border-blue/08">
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className="p-5 text-blue/03 text-sm bg-gray/04"
+                    >
+                      {typeof cell.column.columnDef.cell === 'function'
+                        ? cell.column.columnDef.cell(cell.getContext())
+                        : cell.getValue()}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="p-5 text-center">
+                  Ainda não há dados para exibir.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
 
@@ -253,9 +271,8 @@ export function CustomTable({
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-            !table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-          }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+            }`}
         >
           <FaAngleLeft />
         </button>
@@ -263,11 +280,10 @@ export function CustomTable({
           <button
             key={page}
             onClick={() => table.setPageIndex(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-              pageIndex === page
+            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${pageIndex === page
                 ? 'bg-blue/04 text-white'
                 : 'hover:bg-blue/07 text-blue/03'
-            }`}
+              }`}
           >
             {page + 1}
           </button>
@@ -275,9 +291,8 @@ export function CustomTable({
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
-            !table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-          }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+            }`}
         >
           <FaAngleRight />
         </button>

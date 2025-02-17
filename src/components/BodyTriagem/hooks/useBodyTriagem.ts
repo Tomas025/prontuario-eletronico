@@ -3,9 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { anamnesisSchema, AnamnesisFormData } from "../schemas/schema"; 
 import { api } from "@/services/api";
 import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
+import { GetPatientService } from "@/services/ServiceService";
 
 export type typeTriagemAnamnesi = {
   bloodPressure: string;
@@ -32,16 +33,29 @@ export type typeTriagemAnamnesi = {
   classificationStatus: string;
 }
 
+
+
 export function useAnamnesisForm() {
   const queryClient = useQueryClient();
   const {push} = useRouter();
+
+  const getServiceMutation = useMutation({
+      mutationFn: (data: number) => GetPatientService(data),
+      onSuccess: async () => {
+        await queryClient.refetchQueries({
+          queryKey: ['Patient', 'NO_SERVICE'],
+          exact: true
+        });
+      }
+    }
+  );
 
   const [loading, setLoading] = useState(false);
   
   const form = useForm<AnamnesisFormData>({
     resolver: zodResolver(anamnesisSchema),
     defaultValues: {
-      serviceId: 1, //arrumar dps, ver a maneira de pegar este valor
+      serviceId: localStorage.getItem("lastServiceId") ?? undefined, //arrumar dps, ver a maneira de pegar este valor
       bloodPressure: "",
       glucose: "",
       temperature: "",

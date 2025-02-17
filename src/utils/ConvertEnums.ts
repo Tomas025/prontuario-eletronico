@@ -7,7 +7,7 @@ export function ConvertPositionEnums(position: string) {
       return 'Gerente';
 
     case 'DOCTOR':
-      return 'Doutor(a)';
+      return 'Médico(a)';
 
     case 'NURSE':
       return 'Enfermeiro(a)';
@@ -41,5 +41,61 @@ export function ConvertPositionEnums(position: string) {
 
     default:
       return 'Desconhecido';
+  }
+}
+
+export function ConvertRelationshipEnums(relationship: string) {
+  switch (relationship) {
+    case 'FATHER':
+      return 'Pai';
+
+    case 'MOTHER':
+      return 'Mãe';
+
+    case 'SIBLING':
+      return 'Irmão(a)';
+
+    case 'SPOUSE':
+      return 'Esposo(a)';
+
+    case 'SON':
+      return 'Filho(a)';
+
+    case 'OUTHER':
+      return 'Outro';
+
+    default:
+      return 'Desconhecido';
+  }
+}
+
+export function isMultidisciplinary(position: string) {
+  switch (position) {
+    case 'PHYSIOTHERAPIST':
+      return true;
+
+    case 'PSYCHOLOGIST':
+      return true;
+
+    case 'NUTRITIONIST':
+      return true;
+
+    case 'PHARMACEUTICAL':
+      return true;
+
+    case 'OCCUPATIONAL_THERAPIST':
+      return true;
+
+    case 'BIOCHEMICAL':
+      return true;
+
+    case 'X_RAY_TECHNICIAN':
+      return true;
+
+    case 'LABORATORY_TECHNICIAN':
+      return true;
+
+    default:
+      return false;
   }
 }

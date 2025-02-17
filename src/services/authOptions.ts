@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Login } from './AuthService';
 
 type decodeTokenType = {
+  userId: string;
   active: boolean;
   email: string;
   firstAccess: boolean;
@@ -48,6 +49,7 @@ export const nextAuthOptions: NextAuthOptions = {
         if (response.status === 200) {
           const decodeToken: decodeTokenType = jwtDecode(response.data.token);
           const user: User = {
+            id: decodeToken.userId,
             active: decodeToken.active,
             email: decodeToken.email,
             firstAccess: decodeToken.firstAccess,
@@ -69,6 +71,7 @@ export const nextAuthOptions: NextAuthOptions = {
   callbacks: {
     jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.active = user.active;
         token.accessToken = user.token;
         token.email = user.email;
@@ -80,6 +83,7 @@ export const nextAuthOptions: NextAuthOptions = {
       return token;
     },
     session({ session, token }) {
+      session.user.id = token.id;
       session.user.unique_name = token.unique_name;
       session.user.accessToken = token.accessToken;
       session.user.active = token.active;

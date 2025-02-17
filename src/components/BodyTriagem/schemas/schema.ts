@@ -3,7 +3,7 @@ import * as z from "zod";
 
 
 export const anamnesisSchema = z.object({
-  serviceId: z.number().int().positive(),
+  serviceId: z.string(),
   bloodPressure: z.string()
     .regex(/^\d{1,3}\/\d{1,3}$/, "Insira a pressão no formato correto (ex: 120/80)")
     .nonempty("Pressão arterial é obrigatória."),

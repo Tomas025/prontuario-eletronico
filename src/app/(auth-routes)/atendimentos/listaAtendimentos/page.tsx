@@ -7,9 +7,12 @@ import { BreadCrumb } from '@/components/BreadCrumb';
 import { CustomTable } from '@/components/CustomTable';
 
 import { GetPatientFilter } from '@/services/PatientService';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { GetPatientService, initService } from '@/services/ServiceService';
 
 export default function NovoAtendimento() {
+  const {push} = useRouter();
   const breadcrumbLinks = [
     { label: 'Atendimento', route: '/atendimentos' },
     { label: 'Novo Atendimento', route: '/atendimentos/listaAtendimentos' }
@@ -21,6 +24,8 @@ export default function NovoAtendimento() {
     queryFn: () => GetPatientFilter('NO_SERVICE'),
     staleTime: 1 * 60 * 1000
   });
+
+  const queryClient = useQueryClient();
 
   const data = [
     {
@@ -185,6 +190,46 @@ export default function NovoAtendimento() {
     }
   ];
 
+  const postInitServiceMutation = useMutation({
+    mutationFn: (data: number) => initService(data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['Patient', 'NO_SERVICE'],
+        exact: true
+      });
+    }
+  });
+
+  const getServiceMutation = useMutation({
+    mutationFn: (data: number) => GetPatientService(data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['Patient', 'NO_SERVICE'],
+        exact: true
+      });
+    }
+  });
+
+  const getServiceId = async () => {
+    const response = GetPatientFilter('IN_SERVICE');
+    const data = (await response).data.data; 
+
+    if (data.length > 0) {
+      const lastPatient = data[data.length - 1]; // Último paciente retornado
+      const lastService = lastPatient.services?.[lastPatient.services.length - 1]; // Último serviço do paciente
+
+      if (lastService) {
+        const lastId = lastService.id;
+        console.log("Último ID:", lastId);
+
+        // Salvando no localStorage
+        localStorage.setItem("lastServiceId", lastId.toString());
+      } else {
+        console.warn("Paciente não tem serviços cadastrados.");
+      }
+    }    
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -207,12 +252,13 @@ export default function NovoAtendimento() {
         header: '',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
-          <Link
-            href={`/triagem/${row.original.id}`}
+          <button
+            // href={`/triagem/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
+            onClick={async () => {getServiceId();const response = await postInitServiceMutation.mutateAsync(row.original.id);if(response.status == 200) push(`/triagem/${row.original.id}`); }}
           >
             TRIAGEM
-          </Link>
+          </button>
         )
       }
     ],
