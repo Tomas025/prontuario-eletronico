@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -9,187 +10,13 @@ import { GetPatientFilter } from '@/services/PatientService';
 import { isMultidisciplinary } from '@/utils/ConvertEnums';
 import { useQuery } from '@tanstack/react-query';
 
-type RowData = {
-  id: number;
-  paciente: string;
-  horario: string;
-  idade: string;
-  status: string;
-  classificacao: string;
-};
-
 export default function EquipeMultiprofissional() {
   const session = useSession();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: dataBack, isLoading } = useQuery({
     queryKey: ['Patient', 'IN_SERVICE'],
     queryFn: () => GetPatientFilter('IN_SERVICE'),
     staleTime: 1 * 60 * 1000
   });
-
-  // Mock data para a tabela
-  const data: RowData[] = [
-    {
-      id: 1,
-      paciente: 'Lucas Silva',
-      horario: '08:00',
-      idade: '30 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 2,
-      paciente: 'Ana Costa',
-      horario: '08:15',
-      idade: '45 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 3,
-      paciente: 'Carlos Almeida',
-      horario: '08:30',
-      idade: '29 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 4,
-      paciente: 'Juliana Oliveira',
-      horario: '08:45',
-      idade: '22 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 5,
-      paciente: 'Gabriela Santos',
-      horario: '09:00',
-      idade: '37 anos',
-      status: 'Alta',
-      classificacao: 'Leves'
-    },
-    {
-      id: 6,
-      paciente: 'Marcos Pereira',
-      horario: '09:15',
-      idade: '40 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 7,
-      paciente: 'Patrícia Ribeiro',
-      horario: '09:30',
-      idade: '28 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 8,
-      paciente: 'Ricardo Lima',
-      horario: '09:45',
-      idade: '31 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 9,
-      paciente: 'Fernanda Almeida',
-      horario: '10:00',
-      idade: '39 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 10,
-      paciente: 'Eduardo Rocha',
-      horario: '10:15',
-      idade: '33 anos',
-      status: 'Internação',
-      classificacao: 'Leves'
-    },
-    {
-      id: 11,
-      paciente: 'Aline Santos',
-      horario: '10:30',
-      idade: '42 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 12,
-      paciente: 'Tiago Costa',
-      horario: '10:45',
-      idade: '50 anos',
-      status: 'Alta',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 13,
-      paciente: 'Mariana Martins',
-      horario: '11:00',
-      idade: '27 anos',
-      status: 'Internação',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 14,
-      paciente: 'Ricardo Souza',
-      horario: '11:15',
-      idade: '25 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 15,
-      paciente: 'Clara Gomes',
-      horario: '11:30',
-      idade: '34 anos',
-      status: 'Alta',
-      classificacao: 'Leves'
-    },
-    {
-      id: 16,
-      paciente: 'Bruna Rocha',
-      horario: '11:45',
-      idade: '48 anos',
-      status: 'Internação',
-      classificacao: 'Emergência'
-    },
-    {
-      id: 17,
-      paciente: 'Daniela Pereira',
-      horario: '12:00',
-      idade: '38 anos',
-      status: 'Internação',
-      classificacao: 'Muito Urgentes'
-    },
-    {
-      id: 18,
-      paciente: 'Felipe Oliveira',
-      horario: '12:15',
-      idade: '41 anos',
-      status: 'Alta',
-      classificacao: 'Urgência'
-    },
-    {
-      id: 19,
-      paciente: 'Sofia Lima',
-      horario: '12:30',
-      idade: '26 anos',
-      status: 'Internação',
-      classificacao: 'Menos Graves'
-    },
-    {
-      id: 20,
-      paciente: 'Vitor Costa',
-      horario: '12:45',
-      idade: '29 anos',
-      status: 'Internação',
-      classificacao: 'Leves'
-    }
-  ];
 
   // Mapeamento de cores para as classificações
   const classificationColors: Record<string, string> = {
@@ -204,22 +31,32 @@ export default function EquipeMultiprofissional() {
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'paciente',
+        accessorKey: 'name',
         header: 'PACIENTE',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ cell }: any) => (
           <Link href={`/paciente/${cell.row.original.id}`}>
             <div className="text-blue/05 font-bold">{cell.getValue()}</div>
           </Link>
         )
       },
-      { accessorKey: 'horario', header: 'HORÁRIO DE ENTRADA' },
+      {
+        accessorKey: 'services',
+        header: 'HORÁRIO DE ENTRADA',
+        cell: ({ cell }: any) => {
+          return new Date(cell.getValue()[0].serviceDate).toLocaleTimeString(
+            'pt-BR',
+            {
+              hour: '2-digit',
+              minute: '2-digit'
+            }
+          );
+        }
+      },
       { accessorKey: 'idade', header: 'IDADE' },
       {
         accessorKey: 'status',
         header: 'STATUS',
         // Renderiza um badge para o status
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ cell }: any) => (
           <span className="bg-blue/05 text-white px-2 py-1 rounded-xl">
             {cell.getValue()}
@@ -230,7 +67,6 @@ export default function EquipeMultiprofissional() {
         accessorKey: 'classificacao',
         header: 'CLASSIFICAÇÃO',
         // Renderiza uma cor associada à classificação
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ cell }: any) => {
           const value = cell.getValue() as string;
           return (
@@ -245,7 +81,6 @@ export default function EquipeMultiprofissional() {
         accessorKey: 'acao',
         id: 'acao',
         header: '',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
           <Link
             href={`/equipeMultiprofissional/${row.original.id}`}
@@ -266,7 +101,8 @@ export default function EquipeMultiprofissional() {
       {/* Tabela personalizada */}
       <CustomTable
         columns={columns}
-        data={data}
+        data={dataBack?.data.data || []}
+        loading={isLoading}
         itemsPerPageOptions={[10, 20, 30]}
         showClassificationFilter // Ativa o filtro de classificação
       />
