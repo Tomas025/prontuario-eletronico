@@ -6,7 +6,7 @@ import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import EncaminharPaciente from '@/components/SelectEncaminharPaciente/select';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+// import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -257,7 +257,7 @@ export default function EnfermagemPaciente() {
                           <FormItem className="w-full">
                             <FormControl>
                               <div className="flex items-center space-x-2">
-                                <Checkbox id="terms" />
+                                {/* <Checkbox id="terms" /> */}
                                 <label
                                   htmlFor="terms"
                                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
