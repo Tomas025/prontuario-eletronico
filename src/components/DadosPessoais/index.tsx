@@ -57,46 +57,40 @@ export const DadosPessoais = ({ data }: { data: typePatientDate }) => {
     return idade;
   }
 
-  // Função para gerar as colunas de dados
-  const gerarColunas = () => {
-    return [
-      [
-        { label: 'Nome', value: data.name },
-        { label: 'Nome Social', value: data.socialName },
-        { label: 'SUS', value: data.sus },
-        { label: 'CPF', value: data.cpf }
-      ],
-      [
-        { label: 'Idade', value: calcularIdade(data.birthDate) },
-        {
-          label: 'Data de Nascimento',
-          value: new Date(data.birthDate).toLocaleDateString('pt-BR')
-        },
-        // { label: 'Sexo', value: data.sexo },
-        { label: 'RG', value: data.rg }
-      ],
-      [
-        { label: 'Telefone', value: normalizeTelephone(noMask(data.phone)) },
-        {
-          label: 'Endereço',
-          value: `${data.address.street}, ${data.address.neighborhood}, ${data.address.number}, ${data.address.city}`
-        },
-        {
-          label: 'Contatos de emergência',
-          value: data.emergencyContactDetails.map((contact) => (
-            <p key={contact.id}>
-              {contact.name} - {ConvertRelationshipEnums(contact.relationship)}{' '}
-              - {normalizeTelephone(noMask(contact.phone))}
-            </p>
-          ))
-        },
-        { label: 'Nome da Mãe', value: data.motherName }
-      ]
-    ];
-  };
-
-  // Gerar colunas uma vez
-  const colunas = gerarColunas();
+  const colunas = [
+    [
+      { label: 'Nome', value: data.name },
+      { label: 'Nome Social', value: data.socialName },
+      { label: 'SUS', value: data.sus },
+      { label: 'CPF', value: data.cpf }
+    ],
+    [
+      { label: 'Idade', value: calcularIdade(data.birthDate) },
+      {
+        label: 'Data de Nascimento',
+        value: new Date(data.birthDate).toLocaleDateString('pt-BR')
+      },
+      // { label: 'Sexo', value: data.sexo },
+      { label: 'RG', value: data.rg }
+    ],
+    [
+      { label: 'Telefone', value: normalizeTelephone(noMask(data.phone)) },
+      {
+        label: 'Endereço',
+        value: `${data.address.street}, ${data.address.neighborhood}, ${data.address.number}, ${data.address.city}`
+      },
+      {
+        label: 'Contatos de emergência',
+        value: data.emergencyContactDetails.map((contact) => (
+          <p key={contact.id}>
+            {contact.name} - {ConvertRelationshipEnums(contact.relationship)} -{' '}
+            {normalizeTelephone(noMask(contact.phone))}
+          </p>
+        ))
+      },
+      { label: 'Nome da Mãe', value: data.motherName }
+    ]
+  ];
 
   return (
     <section className="p-6 border border-blue/06 rounded-md">
