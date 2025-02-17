@@ -1,8 +1,10 @@
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { PostNewPatient } from '@/services/PatientService';
+import { GetUniquePatient, PostNewPatient } from '@/services/PatientService';
+import { noMask } from '@/utils/MaskInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -32,10 +34,68 @@ export type typePatientForBack = {
 };
 
 export function useNovoPaciente() {
+  const params = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(params);
   const queryClient = useQueryClient();
   const { push } = useRouter();
   const form = useForm<typeMySchema>({
-    resolver: zodResolver(mySchema)
+    resolver: zodResolver(mySchema),
+    defaultValues: async () => {
+      setIsLoading(true);
+
+      const result = await GetUniquePatient(Number(params.id[0]));
+
+      if (params.id[0]) {
+        setIsLoading(false);
+        return {
+          bairro: result.data.address.neighborhood,
+          cep: result.data.address.cep,
+          cidade: result.data.address.city,
+          cpf: result.data.cpf,
+          dataNascimento: result.data.birthDate,
+          nomeCompleto: result.data.name,
+          nomeMae: result.data.motherName,
+          nomeSocial: result.data.socialName,
+          numero: result.data.address.number.toString(),
+          rg: noMask(result.data.rg),
+          rua: result.data.address.street,
+          sus: result.data.sus,
+          telefone: Number(noMask(result.data.phone)),
+          emergencyContact: [
+            {
+              nomeContatoEmergencia: '',
+              parentesco: '',
+              telefoneContatoEmergencia: ''
+            }
+          ]
+        };
+      } else {
+        setIsLoading(false);
+        return {
+          bairro: '',
+          cep: '',
+          cidade: '',
+          cpf: '',
+          dataNascimento: '',
+          nomeCompleto: '',
+          nomeMae: '',
+          nomeSocial: '',
+          numero: '',
+          rg: '',
+          rua: '',
+          sus: '',
+          telefone: '',
+          emergencyContact: [
+            {
+              nomeContatoEmergencia: '',
+              parentesco: '',
+              telefoneContatoEmergencia: ''
+            }
+          ]
+        };
+      }
+    }
   });
 
   const {
@@ -105,6 +165,7 @@ export function useNovoPaciente() {
     submitForm,
     emergencyContactFields,
     append,
-    remove
+    remove,
+    isLoading
   };
 }
