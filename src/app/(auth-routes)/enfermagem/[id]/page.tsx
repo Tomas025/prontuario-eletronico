@@ -6,7 +6,7 @@ import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import EncaminharPaciente from '@/components/SelectEncaminharPaciente/select';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+//import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -40,7 +40,7 @@ export default function EnfermagemPaciente() {
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
         <div className="flex gap-4">
-          <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
+          <Button className="bg-red/01 w-full button hover:bg-red/02">
             <Link href={'/atendimentoMedico'}>CANCELAR</Link>
           </Button>
           <Button
@@ -256,15 +256,6 @@ export default function EnfermagemPaciente() {
                         render={({ field: controlField, fieldState }) => (
                           <FormItem className="w-full">
                             <FormControl>
-                              <div className="flex items-center space-x-2">
-                                <Checkbox id="terms" />
-                                <label
-                                  htmlFor="terms"
-                                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                  Accept terms and conditions
-                                </label>
-                              </div>
                               <Input
                                 type="text"
                                 placeholder="Digite aqui"
