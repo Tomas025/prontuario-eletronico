@@ -99,7 +99,7 @@ export default function AtendimentoMedico() {
         header: '',
         cell: ({ row }: any) => (
           <Link
-            href={`/atendimentoMedico/${row.original.id}`}
+            href={`/atendimentoMedico/${row.original.services[0].medicalRecord.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
             INICIAR ATENDIMENTO
