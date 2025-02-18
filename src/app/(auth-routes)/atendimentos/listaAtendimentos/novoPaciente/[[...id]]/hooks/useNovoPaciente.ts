@@ -48,15 +48,15 @@ export function useNovoPaciente() {
     defaultValues: async () => {
       setIsLoading(true);
 
-      const result = await GetUniquePatient(Number(params.id[0]));
+      if (params.id?.[0]) {
+        const result = await GetUniquePatient(Number(params.id[0]));
 
-      const date = new Date(result.data.birthDate);
+        const date = new Date(result.data.birthDate);
 
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
 
-      if (params.id[0]) {
         setIsLoading(false);
         return {
           bairro: result.data.address.neighborhood,
@@ -172,7 +172,7 @@ export function useNovoPaciente() {
       )
     };
 
-    if (params.id[0]) {
+    if (params.id?.[0]) {
       const objectPut = Object.assign(dataForBack, {
         id: Number(params.id[0])
       });

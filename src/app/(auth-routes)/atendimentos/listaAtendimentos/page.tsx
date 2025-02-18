@@ -58,7 +58,13 @@ export default function NovoAtendimento() {
         accessorKey: 'address',
         header: 'ENDEREÇO',
         cell: ({ cell }: any) => {
-          return `${cell.getValue().street}, ${cell.getValue().neighborhood}, ${cell.getValue().number}, ${cell.getValue().city}`;
+          return (
+            (cell.getValue().street ||
+              cell.getValue().neighborhood ||
+              cell.getValue().number ||
+              cell.getValue().city) &&
+            `${cell.getValue().street}, ${cell.getValue().neighborhood}, ${cell.getValue().number}, ${cell.getValue().city}`
+          );
         }
       },
       {

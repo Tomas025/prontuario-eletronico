@@ -44,19 +44,32 @@ export const DadosPessoais = ({ data }: { data: typePatientDate }) => {
       { label: 'CPF', value: data.cpf }
     ],
     [
-      { label: 'Idade', value: calcularIdade(data.birthDate) },
+      {
+        label: 'Idade',
+        value: data.birthDate ? calcularIdade(data.birthDate) : ''
+      },
       {
         label: 'Data de Nascimento',
-        value: new Date(data.birthDate).toLocaleDateString('pt-BR')
+        value: data.birthDate
+          ? new Date(data.birthDate).toLocaleDateString('pt-BR')
+          : ''
       },
       // { label: 'Sexo', value: data.sexo },
       { label: 'RG', value: data.rg }
     ],
     [
-      { label: 'Telefone', value: normalizeTelephone(noMask(data.phone)) },
+      {
+        label: 'Telefone',
+        value: data.phone ? normalizeTelephone(noMask(data.phone)) : ''
+      },
       {
         label: 'Endereço',
-        value: `${data.address.street}, ${data.address.neighborhood}, ${data.address.number}, ${data.address.city}`
+        value:
+          (data.address.street ||
+            data.address.neighborhood ||
+            data.address.number ||
+            data.address.city) &&
+          `${data.address.street}, ${data.address.neighborhood}, ${data.address.number}, ${data.address.city}`
       },
       {
         label: 'Contatos de emergência',
