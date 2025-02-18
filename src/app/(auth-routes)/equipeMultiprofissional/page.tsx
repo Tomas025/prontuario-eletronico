@@ -7,10 +7,7 @@ import { useMemo } from 'react';
 import { CustomTable } from '@/components/CustomTable';
 
 import { GetPatientFilter } from '@/services/PatientService';
-import {
-  ConvertClassificationStatus,
-  isMultidisciplinary
-} from '@/utils/ConvertEnums';
+import { ConvertClassificationStatus } from '@/utils/ConvertEnums';
 import { calcularIdade } from '@/utils/UtilsFunction';
 import { useQuery } from '@tanstack/react-query';
 
@@ -106,7 +103,8 @@ export default function EquipeMultiprofissional() {
             href={`/equipeMultiprofissional/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
-            {isMultidisciplinary(session.data?.user.position as string)
+            {session.data?.user.role === 'INTITUATIONMANAGEMENT' ||
+            session.data?.user.role === 'ADMIN'
               ? 'REALIZAR ANOTAÇÃO'
               : 'VER ANOTAÇÕES'}
           </Link>

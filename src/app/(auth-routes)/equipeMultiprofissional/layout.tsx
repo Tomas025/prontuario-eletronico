@@ -10,8 +10,8 @@ export default async function PrivateLayout({
   children: ReactNode;
 }) {
   const session = await getServerSession(nextAuthOptions);
-  if (!session) {
-    // redirect('/');
+  if (!session || session.user.role === 'RECEPTIONTEAM') {
+    redirect('/');
   }
 
   return children;

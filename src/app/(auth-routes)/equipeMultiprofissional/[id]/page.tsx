@@ -15,10 +15,7 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 
-import {
-  ConvertPositionEnums,
-  isMultidisciplinary
-} from '@/utils/ConvertEnums';
+import { ConvertPositionEnums } from '@/utils/ConvertEnums';
 
 import { useAnotacao } from './hook/useAnotacao';
 
@@ -29,9 +26,6 @@ const linkList: ListLink[] = [
 
 export default function EquipeMultiprofissionalPaciente() {
   const session = useSession();
-  const checkMultidisciplinary = isMultidisciplinary(
-    session.data?.user.position as string
-  );
   const { form, submitForm, anotacoes } = useAnotacao();
 
   return (
@@ -40,7 +34,8 @@ export default function EquipeMultiprofissionalPaciente() {
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
         {/* Adicionar renderização condicional */}
-        {checkMultidisciplinary && (
+        {(session.data?.user.role === 'INTITUATIONMANAGEMENT' ||
+          session.data?.user.role === 'ADMIN') && (
           <div className="flex gap-4">
             <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
               <Link href={'/equipeMultiprofissional'}>CANCELAR</Link>
@@ -60,7 +55,8 @@ export default function EquipeMultiprofissionalPaciente() {
       {/* Body */}
       <section className="flex flex-col gap-3">
         {/* Formulário para nova anotação */}
-        {isMultidisciplinary(session.data?.user.position as string) && (
+        {(session.data?.user.role === 'INTITUATIONMANAGEMENT' ||
+          session.data?.user.role === 'ADMIN') && (
           <section className="flex flex-col gap-3 border border-blue/07 p-3 rounded-[10px]">
             <h1 className="text-xl font-bold text-blue/03">Nova Anotação</h1>
             <div className="border-b border-blue/07" />
@@ -98,7 +94,10 @@ export default function EquipeMultiprofissionalPaciente() {
         {/* Cards para cada anotações prévias */}
         <section className="flex flex-col gap-4">
           <h1 className="text-xl font-bold text-blue/03">
-            {checkMultidisciplinary ? 'Anotações anteriores' : 'Anotações'}
+            {session.data?.user.role === 'INTITUATIONMANAGEMENT' ||
+            session.data?.user.role === 'ADMIN'
+              ? 'Anotações anteriores'
+              : 'Anotações'}
           </h1>
           {anotacoes?.data.map((anotacao) => (
             <div
