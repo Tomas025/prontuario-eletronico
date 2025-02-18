@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { FaSpinner } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { IoIosSearch } from 'react-icons/io';
 
 import {
@@ -271,8 +271,9 @@ export function CustomTable({
         <button
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-            }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanPreviousPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
         >
           <FaAngleLeft />
         </button>
@@ -280,10 +281,11 @@ export function CustomTable({
           <button
             key={page}
             onClick={() => table.setPageIndex(page)}
-            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${pageIndex === page
+            className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+              pageIndex === page
                 ? 'bg-blue/04 text-white'
                 : 'hover:bg-blue/07 text-blue/03'
-              }`}
+            }`}
           >
             {page + 1}
           </button>
@@ -291,8 +293,9 @@ export function CustomTable({
         <button
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${!table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
-            }`}
+          className={`w-8 h-8 flex justify-center items-center rounded-full mx-1 ${
+            !table.getCanNextPage() ? 'text-blue/04' : 'hover:bg-blue/07'
+          }`}
         >
           <FaAngleRight />
         </button>

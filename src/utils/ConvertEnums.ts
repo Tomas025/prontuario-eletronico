@@ -99,3 +99,22 @@ export function isMultidisciplinary(position: string) {
       return false;
   }
 }
+
+export function ConvertClassificationStatus(status: string) {
+  switch (status) {
+    case 'EMERGENCY':
+      return 'Emergência';
+
+    case 'VERY_URGENT':
+      return 'Muito Urgente';
+
+    case 'URGENCY':
+      return 'Urgência';
+
+    case 'LESS_SERIOUS':
+      return 'Menos Grave';
+
+    case 'LIGHTWEIGHT':
+      return 'Leve';
+  }
+}

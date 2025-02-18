@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ConvertRelationshipEnums } from '@/utils/ConvertEnums';
 import { noMask, normalizeTelephone } from '@/utils/MaskInput';
+import { calcularIdade } from '@/utils/UtilsFunction';
 
 type typePatientDate = {
   id: number;
@@ -34,28 +35,6 @@ type typePatientDate = {
 
 export const DadosPessoais = ({ data }: { data: typePatientDate }) => {
   const params = useParams();
-
-  function calcularIdade(dataNascimento: string): number {
-    const nascimento = new Date(dataNascimento);
-    const hoje = new Date();
-
-    let idade = hoje.getFullYear() - nascimento.getFullYear();
-    const mesAtual = hoje.getMonth();
-    const diaAtual = hoje.getDate();
-
-    const mesNascimento = nascimento.getMonth();
-    const diaNascimento = nascimento.getDate();
-
-    // Se o aniversário ainda não ocorreu este ano, subtrai 1 da idade
-    if (
-      mesAtual < mesNascimento ||
-      (mesAtual === mesNascimento && diaAtual < diaNascimento)
-    ) {
-      idade--;
-    }
-
-    return idade;
-  }
 
   const colunas = [
     [
