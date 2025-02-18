@@ -3,6 +3,8 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { mySchema, typeMySchema } from '../schemas/schema';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export function useNewInternacao() {
   const form = useForm<typeMySchema>({
@@ -92,8 +94,13 @@ export function useNewInternacao() {
     name: 'patientMonitoring'
   });
 
+  const router = useRouter();
+
   const submitForm: SubmitHandler<typeMySchema> = (data) => {
-    console.log(data);
+    setTimeout(() => {
+      toast.success('Internação cadastrada com sucesso');
+    }, 1000);
+    router.push('/internacao');
   };
 
   return {

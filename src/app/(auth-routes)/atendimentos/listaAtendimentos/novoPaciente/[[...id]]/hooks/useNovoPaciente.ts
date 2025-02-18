@@ -47,9 +47,9 @@ export function useNovoPaciente() {
     resolver: zodResolver(mySchema),
     defaultValues: async () => {
       setIsLoading(true);
-
-      if (params.id?.[0]) {
-        const result = await GetUniquePatient(Number(params.id[0]));
+      
+      if (params && params.id?.[0]) {
+      const result = await GetUniquePatient(Number(params.id[0]));
 
         const date = new Date(result.data.birthDate);
 
