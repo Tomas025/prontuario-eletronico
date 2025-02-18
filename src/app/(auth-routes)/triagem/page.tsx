@@ -47,7 +47,7 @@ export default function Triagem() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
           <Link
-            href={`/triagem/${row.original.id}`}
+            href={`/triagem/${row.original.services[0].id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
           >
             INICIAR TRIAGEM

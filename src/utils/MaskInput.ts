@@ -12,35 +12,35 @@ export function normalizeCEP(value: string) {
 }
 
 export const formatPressure = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{2,3})[^\d]+(\d{2,3})/, "$1/$2");
+  return value.replace(/\s/g, '').replace(/(\d{2,3})[^\d]+(\d{2,3})/, '$1/$2');
 };
 
 export const formatGlicose = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d+)$/, "$1mg/dl");
+  return value.replace(/\s/g, '').replace(/(\d+)$/, '$1mg/dl');
 };
 
 export const formatTemperature = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1,2}(\.\d)?)/, "$1°");
+  return value.replace(/\s/g, '').replace(/(\d{1,2}(\.\d)?)/, '$1°');
 };
 
 export const formatWeight = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1,3})$/, "$1kg");
+  return value.replace(/\s/g, '').replace(/(\d{1,3})$/, '$1kg');
 };
 
 export const formatHeartRate = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1,3})$/, "$1 bpm");
+  return value.replace(/\s/g, '').replace(/(\d{1,3})$/, '$1 bpm');
 };
 
 export const formatRespiratoryRate = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1,3})$/, "$1 ipm");
+  return value.replace(/\s/g, '').replace(/(\d{1,3})$/, '$1 ipm');
 };
 
 export const formatSaturation = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1,3})$/, "$1 SpO2");
+  return value.replace(/\s/g, '').replace(/(\d{1,3})$/, '$1 SpO2');
 };
 
 export const formatHeight = (value: string) => {
-  return value.replace(/\s/g, "").replace(/(\d{1}),?(\d{2})/, "$1,$2m");
+  return value.replace(/\s/g, '').replace(/(\d{1}),?(\d{2})/, '$1,$2m');
 };
 
 export function normalizeTelephone(value: string) {
