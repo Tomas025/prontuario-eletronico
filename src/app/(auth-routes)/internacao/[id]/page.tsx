@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import Link from 'next/link';
 import { PiTrashFill } from 'react-icons/pi';
@@ -7,8 +6,6 @@ import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import EncaminharPaciente from '@/components/SelectEncaminharPaciente/select';
 import { Button } from '@/components/ui/button';
-//import { Checkbox } from '@/components/ui/checkbox';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -18,18 +15,18 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
-  SelectGroup,
-  SelectItem
-} from '@radix-ui/react-select';
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 
 import { useNewInternacao } from './hooks/useNewInternacao';
-export default function EnfermagemPaciente() {
+import { Checkbox } from '@/components/ui/checkbox';
+
+export default function InternacaoPaciente() {
   const antecedentes = [
     { id: 'has', label: 'HAS' },
     { id: 'dm', label: 'DM' },
@@ -51,6 +48,23 @@ export default function EnfermagemPaciente() {
     { id: '3', label: 'Medicação 2', checked: false }
   ];
 
+  const patientMonitoringFields = [
+    {
+      hour: '10:00',
+      bloodPressure: '14/7',
+      glucose: '95 mg/dL',
+      temperature: '37.2°C',
+      saturation: '99 SpO2'
+    },
+    {
+      hour: '10:00',
+      bloodPressure: '14/7',
+      glucose: '95 mg/dL',
+      temperature: '37.2°C',
+      saturation: '99 SpO2'
+    }
+  ];
+
   const {
     form,
     submitForm,
@@ -58,30 +72,78 @@ export default function EnfermagemPaciente() {
     medicationFields,
     appendExam,
     appendMedication,
-    patientMonitoringFields,
-    appendMonitoring,
-    removeMonitoring,
     removeExam,
     removeMedication
   } = useNewInternacao();
 
   const linkList: ListLink[] = [
-    { label: 'Enfermagem', route: '/enfermagem' },
+    { label: 'Atendimento Médico', route: '/atendimentoMedico' },
     { label: 'Paciente', route: '' }
   ];
+
+  const renderSelect = (name: string, label: string, options: string[]) => (
+    <div className="flex items-center flex-wrap gap-1" key={name}>
+      <p className="subTitle">{label}:</p>
+      <FormField
+        control={form.control}
+        name={
+          name as
+          | 'respiratoryPattern'
+          | 'skinColor'
+          | 'heartSounds'
+          | 'pulse'
+          | 'rhythm'
+          | 'pupilReaction'
+          | 'speech'
+          | 'consciousnessLevel'
+          | 'motorResponse'
+        }
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Select
+                onValueChange={(value) => field.onChange(value)}
+                value={field.value || ''}
+              >
+                <SelectTrigger className="w-auto bg-gray/04 border-blue/07 text focus-visible:ring-0 focus:border-blue/06 focus:border-2 rounded-xl">
+                  <SelectValue placeholder="Selecione" />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                  <button
+                    onClick={() => {
+                      form.setValue(field.name, '');
+                    }}
+                    className="w-full p-2 text-red/01 text rounded-sm hover:bg-red/03"
+                  >
+                    Limpar
+                  </button>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
+  );
 
   return (
     <div className="flex flex-col gap-6">
       <section className="flex justify-between">
         <BreadCrumb linkList={linkList} />
         <div className="flex gap-4">
-          <Button className="bg-red/01 w-full button hover:bg-red/02">
-            <Link href={'/atendimentoMedico'}>CANCELAR</Link>
+          <Button asChild className="bg-red/01 w-full button hover:bg-red/02">
+            <Link href={'/internacao'}>CANCELAR</Link>
           </Button>
           <Button
             className="bg-green/01 w-full button hover:bg-green/02"
             type="submit"
-            //disabled={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting}
             form="formAtendimentoMedico"
           >
             SALVAR
@@ -104,7 +166,7 @@ export default function EnfermagemPaciente() {
                   <div className="flex items-center gap-x-5">
                     <span className="bg-yellow w-[15px] h-[15px] rounded-full" />
                     <span className="rounded-[100px] px-[10px] py-[5px] bg-blue/05 text-white tagText">
-                      Enfermagem
+                      Atend. Médico
                     </span>
                   </div>
                 </div>
@@ -164,73 +226,152 @@ export default function EnfermagemPaciente() {
               <hr className="border-blue/06" />
               <div className="flex flex-col gap-y-[10px]">
                 <h1 className="title">Necessidades Psicobiológicas</h1>
-                <div className="flex flex-wrap gap-x-5 gap-y-1">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
+                      name: 'respiratoryPattern',
                       label: 'Padrão Respiratório',
-                      value: form.watch('respiratoryPattern')
+                      options: [
+                        'Eupneico',
+                        'Dispnéico',
+                        'Taquipnéico',
+                        'Bradipnéico',
+                        'Apneia'
+                      ]
                     },
                     {
+                      name: 'pulmonaryAscultation',
                       label: 'Asculta Pulmonar',
-                      value: form.watch('pulmonaryAscultation')
+                      options: [
+                        'Murmúrios presentes bilateral',
+                        'Roncos',
+                        'Sibilos',
+                        'Creptos',
+                        'Estertores'
+                      ]
                     },
                     {
+                      name: 'skinColor',
                       label: 'Coloração da pele',
-                      value: form.watch('skinColor')
+                      options: [
+                        'Normocorada',
+                        'Hipocorada',
+                        'Hipercorada',
+                        'Presença de lesão por pressão',
+                        'Presença de máculas',
+                        'Presença de petéquias',
+                        'Presença de pápulas',
+                        'Presença de vesículas',
+                        'Presença de pústulas'
+                      ]
                     }
-                  ].map(({ label, value }) => (
-                    <p className="subTitle" key={label}>
-                      {label}: <span className="text">{value}</span>
-                    </p>
-                  ))}
+                  ].map(({ name, label, options }) =>
+                    label === 'Asculta Pulmonar' ? (
+                      <div className="flex items-center gap-1" key={name}>
+                        <p className="subTitle">{label}:</p>
+                        <FormField
+                          control={form.control}
+                          name="pulmonaryAscultation"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="mv+"
+                                  className="max-w-24 p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    ) : (
+                      renderSelect(name, label, options)
+                    )
+                  )}
                 </div>
               </div>
               <hr className="border-blue/06" />
               <div className="flex flex-col gap-y-[10px]">
                 <h1 className="title">Cardio</h1>
-                <div className="flex flex-wrap gap-x-5 gap-y-1">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
-                      label: 'Bulhas Cardíacas',
-                      value: form.watch('heartSounds')
+                      name: 'heartSounds',
+                      label: 'Bulhas cardíacas',
+                      options: [
+                        'Normofonéticas',
+                        'Hipofonéticas',
+                        'Hiperfonéticas',
+                        'Presença de sopro'
+                      ]
                     },
                     {
+                      name: 'pulse',
                       label: 'Pulso',
-                      value: form.watch('pulse')
+                      options: [
+                        'Filiforme',
+                        'Normoesfigmico',
+                        'Taquieafigmico',
+                        'Bradesfigmico'
+                      ]
                     },
                     {
+                      name: 'rhythm',
                       label: 'Ritmo',
-                      value: form.watch('rhythm')
+                      options: ['Sinusal', 'Taquicardia', 'Bradicardia']
                     }
-                  ].map(({ label, value }) => (
-                    <p className="subTitle" key={label}>
-                      {label}: <span className="text">{value}</span>
-                    </p>
-                  ))}
+                  ].map(({ name, label, options }) =>
+                    renderSelect(name, label, options)
+                  )}
                 </div>
               </div>
               <hr className="border-blue/06" />
               <div className="flex flex-col gap-y-[10px]">
                 <h1 className="title">Neuro</h1>
-                <div className="flex flex-wrap gap-x-5 gap-y-1">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
                   {[
                     {
+                      name: 'pupilReaction',
                       label: 'Pupila',
-                      value: form.watch('pupilReaction')
+                      options: [
+                        'Isocórica',
+                        'Anisocórica',
+                        'Midríase',
+                        'Miótica'
+                      ]
                     },
                     {
+                      name: 'speech',
                       label: 'Fala',
-                      value: form.watch('speech')
+                      options: ['Afasia', 'Disfasia', 'Disartria']
                     },
                     {
+                      name: 'consciousnessLevel',
                       label: 'Nível de consciência',
-                      value: form.watch('consciousnessLevel')
+                      options: [
+                        'Consciente',
+                        'Letárgico',
+                        'Inconsciente',
+                        'Resposta ao estímulo doloroso',
+                        'Resposta ao estímulo verbal'
+                      ]
+                    },
+                    {
+                      name: 'motorResponse',
+                      label: 'Resposta motora',
+                      options: [
+                        'Plegia',
+                        'Deambula sem auxílio',
+                        'Deambula com auxílio',
+                        'Claudicação'
+                      ]
                     }
-                  ].map(({ label, value }) => (
-                    <p className="subTitle" key={label}>
-                      {label}: <span className="text">{value}</span>
-                    </p>
-                  ))}
+                  ].map(({ name, label, options }) =>
+                    renderSelect(name, label, options)
+                  )}
                 </div>
               </div>
               <hr className="border-blue/06" />
@@ -462,43 +603,9 @@ export default function EnfermagemPaciente() {
                   <hr className="border-blue/06" />
                   <div className="flex flex-wrap gap-x-5 gap-y-1">
                     {patientMonitoringFields.map((monitoring, index) => (
-                      <div
-                        className="flex gap-x-2 items-center w-full"
-                        key={index}
-                      >
-                        <label
-                          htmlFor={`monitoring-${index}`}
-                          className="text-blue/04 text font-bold"
-                        >
-                          {monitoring.hour}
-                        </label>
-                        <span className="font-bold">Pressão Art.:</span>
-                        <label
-                          htmlFor={`monitoring-${index}`}
-                          className="text-blue/04 text"
-                        >
-                          {monitoring.bloodPressure}
-                        </label>
-                        <span className="font-bold">Glicose:</span>
-                        <label
-                          htmlFor={`monitoring-${index}`}
-                          className="text-blue/04 text"
-                        >
-                          {monitoring.glucose}
-                        </label>
-                        <span className="font-bold">Temperatura:</span>
-                        <label
-                          htmlFor={`monitoring-${index}`}
-                          className="text-blue/04 text"
-                        >
-                          {monitoring.temperature}
-                        </label>
-                        <span className="font-bold">Saturação:</span>
-                        <label
-                          htmlFor={`monitoring-${index}`}
-                          className="text-blue/04 text"
-                        >
-                          {monitoring.saturation}
+                      <div className="flex gap-x-2 items-center w-full" key={index}>
+                        <label htmlFor={`monitoring-${index}`} className="text-blue/04 text">
+                          {`${monitoring.hour} - Pressão: ${monitoring.bloodPressure}, Glicose: ${monitoring.glucose}, Temp: ${monitoring.temperature}, Saturação: ${monitoring.saturation}`}
                         </label>
                       </div>
                     ))}
@@ -512,12 +619,10 @@ export default function EnfermagemPaciente() {
                   <div className="flex flex-wrap gap-x-5 gap-y-1">
                     {[
                       {
-                        value: 'Pressão subiu - 17/10 às 14h'
-                      }
-                    ].map(({ value }, index) => (
-                      <span key={index} className="text">
-                        {value}
-                      </span>
+                        value: "Pressão subiu - 17/10 às 14h"
+                      },
+                    ].map(({ value }) => (
+                      <span className="text">{value}</span>
                     ))}
                   </div>
                 </div>
