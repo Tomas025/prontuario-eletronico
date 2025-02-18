@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Link from 'next/link';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { FaPlus } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
 import { CustomTable } from '@/components/CustomTable';
 
 import { GetPatientFilter } from '@/services/PatientService';
-import { useQuery } from '@tanstack/react-query';
+import { initService } from '@/services/ServiceService';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function NovoAtendimento() {
   const breadcrumbLinks = [
@@ -20,6 +22,22 @@ export default function NovoAtendimento() {
     queryKey: ['Patient', 'NO_SERVICE'],
     queryFn: () => GetPatientFilter('NO_SERVICE'),
     staleTime: 1 * 60 * 1000
+  });
+
+  const queryClient = useQueryClient();
+
+  const postInitServiceMutation = useMutation({
+    mutationFn: (data: number) => initService(data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['Patient', 'NO_SERVICE'],
+        exact: true
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['Patient', 'SCREENING'],
+        exact: true
+      });
+    }
   });
 
   const columns = useMemo(
@@ -48,12 +66,22 @@ export default function NovoAtendimento() {
         id: 'acao',
         header: '',
         cell: ({ row }: any) => (
-          <Link
-            href={`/triagem/${row.original.id}`}
+          <button
+            // href={`/triagem/${row.original.id}`}
             className="bg-blue/02 text-white px-4 py-2 rounded-md hover:bg-blue/04"
+            onClick={async () => {
+              const response = await postInitServiceMutation.mutateAsync(
+                row.original.id
+              );
+              if (response.status == 200) {
+                toast.success('Paciente encaminhado para triagem');
+              } else {
+                toast.error('Erro ao encaminhar paciente');
+              }
+            }}
           >
             TRIAGEM
-          </Link>
+          </button>
         )
       }
     ],

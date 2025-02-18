@@ -61,3 +61,11 @@ npm run dev
 👋🏽 Entre em contato!
 
  [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=#)](https://www.linkedin.com/in/#/) [![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:#)](mailto:#) 
+
+ <a href="https://github.com/JoseNNeto">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/64179002?v=4" width="100px;" alt=""/>
+ <br />
+ <sub><b>José Neto</b></sub></a> <a href="https://github.com/JoseNNeto/" title="github">🚀</a>
+👋🏽 Entre em contato!
+
+ [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=#)](https://www.linkedin.com/in/jose-nunes-de-almeida-neto/) [![Gmail Badge](https://img.shields.io/badge/-Gmail-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:#)](mailto:josenunesalmeidaneto@gmail.com) 

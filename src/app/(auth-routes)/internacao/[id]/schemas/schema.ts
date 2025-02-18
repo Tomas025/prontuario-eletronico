@@ -1,34 +1,16 @@
 import { z } from 'zod';
 
 export const mySchema = z.object({
-  //Preenchimento Enfermeiro
-  patientMonitoring: z
-    .object({
-      bloodPressureNursing: z.string().trim(),
-      glucoseNursing: z.string().trim(),
-      temperatureNursing: z.string().trim(),
-      toxygenSaturationNursing: z.string().trim(),
-      isBackEnd: z.boolean()
-    })
-    .array(),
-  nursingNotes: z
-    .object({
-      note: z.string().trim(),
-      isBackEnd: z.boolean()
-    })
-    .array(),
   // Preenchimento Médico
   medicalHypothesis: z.string().trim(),
   medicationPrescription: z
     .object({
-      medication: z.string().trim(),
-      isChecked: z.boolean()
+      medication: z.string().trim()
     })
     .array(),
   examsPrescription: z
     .object({
-      exam: z.string().trim(),
-      isChecked: z.boolean()
+      exam: z.string().trim()
     })
     .array(),
 
@@ -71,7 +53,22 @@ export const mySchema = z.object({
   pupilReaction: z.string().trim(),
   speech: z.string().trim(),
   consciousnessLevel: z.string().trim(),
-  motorResponse: z.string().trim()
+  motorResponse: z.string().trim(),
+
+  // Avaliacao
+  weight1: z.string().trim(),
+  FC: z.string().trim(),
+  PA: z.string().trim(),
+
+  patientMonitoring: z
+    .object({
+      hour: z.string().trim(),
+      bloodPressure: z.string().trim(),
+      glucose: z.string().trim(),
+      temperature: z.string().trim(),
+      saturation: z.string().trim()
+    })
+    .array()
 });
 
 export type typeMySchema = z.infer<typeof mySchema>;
