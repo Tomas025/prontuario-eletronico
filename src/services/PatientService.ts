@@ -75,3 +75,23 @@ export async function GetUniquePatient(patientId: number) {
     throw new Error('Erro desconhecido ao buscar as informações do paciente');
   }
 }
+
+export async function PutPatient(data: typePatientForBack & { id: number }) {
+  const session = await getSession();
+
+  try {
+    const response = api.put(`/Patient`, data, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`
+      }
+    });
+
+    return response;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error.response?.data || new Error('Erro ao atualizar paciente');
+    }
+
+    throw new Error('Erro desconhecido ao atualizar paciente');
+  }
+}
