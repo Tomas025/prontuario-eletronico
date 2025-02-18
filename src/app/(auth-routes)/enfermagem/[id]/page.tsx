@@ -6,7 +6,7 @@ import { BreadCrumb } from '@/components/BreadCrumb';
 import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import EncaminharPaciente from '@/components/SelectEncaminharPaciente/select';
 import { Button } from '@/components/ui/button';
-//import { Checkbox } from '@/components/ui/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -19,16 +19,7 @@ import { Input } from '@/components/ui/input';
 import { useNewEnfermagem } from './hooks/useNewEnfermagem';
 
 export default function EnfermagemPaciente() {
-  const {
-    form,
-    submitForm,
-    examFields,
-    medicationFields,
-    appendExam,
-    appendMedication,
-    removeExam,
-    removeMedication
-  } = useNewEnfermagem();
+  const { form, submitForm, examFields, medicationFields } = useNewEnfermagem();
 
   const linkList: ListLink[] = [
     { label: 'Enfermagem', route: '/enfermagem' },
@@ -249,91 +240,53 @@ export default function EnfermagemPaciente() {
                   <h1 className="title">Prescrição de Medicação</h1>
                   <hr className="border-blue/06" />
                   {medicationFields.map((medication, index) => (
-                    <div className="flex gap-x-2 w-full" key={medication.id}>
-                      <FormField
-                        control={form.control}
-                        name={`medicationPrescription.${index}.medication`}
-                        render={({ field: controlField, fieldState }) => (
-                          <FormItem className="w-full">
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Digite aqui"
-                                className={`p-[10px] border-2 rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                                  fieldState.invalid
-                                    ? 'border-red/01 bg-red/03'
-                                    : 'border-blue/07'
-                                }`}
-                                {...controlField}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                    <div
+                      className="flex gap-x-2 items-center w-full"
+                      key={medication.id}
+                    >
+                      <Checkbox
+                        id={`medication-${index}`}
+                        className="w-5 h-5 cursor-pointer"
                       />
-                      <Button
-                        className="bg-red/01 self-end w-fit button hover:bg-red/02"
-                        onClick={() => removeMedication(index)}
-                        type="button"
+                      <label
+                        htmlFor={`medication-${index}`}
+                        className="text-blue/04 text"
                       >
-                        <PiTrashFill />
-                      </Button>
+                        {medication.medication}{' '}
+                      </label>
                     </div>
                   ))}
-                  <div className="flex justify-end gap-4">
-                    <Button
-                      type="button"
-                      onClick={() => appendMedication({ medication: '' })}
-                      className="bg-green/01 text-white px-6 py-2 rounded-[8px] hover:bg-green/02"
-                    >
-                      + MEDICAÇÃO
-                    </Button>
-                  </div>
                 </div>
                 <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Prescrição de Exames</h1>
                   <hr className="border-blue/06" />
                   {examFields.map((exam, index) => (
-                    <div className="flex gap-x-2 w-full" key={exam.id}>
-                      <FormField
-                        control={form.control}
-                        name={`examsPrescription.${index}.exam`}
-                        render={({ field: controlField, fieldState }) => (
-                          <FormItem className="w-full">
-                            <FormControl>
-                              <Input
-                                type="text"
-                                placeholder="Digite aqui"
-                                className={`p-[10px] border-2 w-full rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
-                                  fieldState.invalid
-                                    ? 'border-red/01 bg-red/03'
-                                    : 'border-blue/07'
-                                }`}
-                                {...controlField}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                    <div
+                      className="flex gap-x-2 items-center w-full"
+                      key={exam.id}
+                    >
+                      <Checkbox
+                        id={`medication-${index}`}
+                        className="w-5 h-5 cursor-pointer"
                       />
-                      <Button
-                        className="bg-red/01 self-end w-fit button hover:bg-red/02"
-                        onClick={() => removeExam(index)}
-                        type="button"
+                      <label
+                        htmlFor={`medication-${index}`}
+                        className="text-blue/04 text"
                       >
-                        <PiTrashFill />
-                      </Button>
+                        {exam.exam}{' '}
+                      </label>
                     </div>
                   ))}
-                  <div className="flex justify-end gap-4">
-                    <Button
-                      type="button"
-                      onClick={() => appendExam({ exam: '' })}
-                      className="bg-green/01 text-white px-6 py-2 rounded-[8px] hover:bg-green/02"
-                    >
-                      + EXAME
-                    </Button>
-                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-5">
+                <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
+                  <h1 className="title">Monitoramento do Paciente</h1>
+                  <hr className="border-blue/06" />
+                </div>
+                <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
+                  <h1 className="title">Anotação de Enfermagem</h1>
+                  <hr className="border-blue/06" />
                 </div>
               </div>
             </div>
