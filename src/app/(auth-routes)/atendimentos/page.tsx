@@ -7,6 +7,8 @@ import { FaPlus } from 'react-icons/fa6';
 import { CustomTable } from '@/components/CustomTable';
 
 import { GetPatientFilter } from '@/services/PatientService';
+import { ConvertClassificationStatus } from '@/utils/ConvertEnums';
+import { calcularIdade } from '@/utils/UtilsFunction';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Atendimentos() {
@@ -17,11 +19,11 @@ export default function Atendimentos() {
   });
 
   const classificationColors: Record<string, string> = {
-    Emergência: 'bg-red/01',
-    'Muito Urgentes': 'bg-orange',
-    Urgência: 'bg-yellow',
-    'Menos Graves': 'bg-green/01',
-    Leves: 'bg-otherBlue'
+    EMERGENCY: 'bg-red/01',
+    VERY_URGENT: 'bg-orange',
+    URGENCY: 'bg-yellow',
+    LESS_SERIOUS: 'bg-green/01',
+    LIGHTWEIGHT: 'bg-otherBlue'
   };
 
   const columns = useMemo(
@@ -36,9 +38,16 @@ export default function Atendimentos() {
         )
       },
       { accessorKey: 'motherName', header: 'NOME DA MÃE' },
-      { accessorKey: 'idade', header: 'IDADE' },
+      {
+        accessorKey: 'birthDate',
+        header: 'IDADE',
+        cell: ({ cell }: any) => {
+          return calcularIdade(cell.getValue());
+        }
+      },
       {
         accessorKey: 'services',
+        id: 'horarioDeEntrada',
         header: 'HORÁRIO DE ENTRADA',
         cell: ({ cell }: any) => {
           return new Date(cell.getValue()[0].serviceDate).toLocaleTimeString(
@@ -51,26 +60,35 @@ export default function Atendimentos() {
         }
       },
       {
-        accessorKey: 'classificacao',
+        accessorKey: 'services',
+        id: 'classificacao',
         header: 'CLASSIFICAÇÃO',
         cell: ({ cell }: any) => {
-          const value = cell.getValue() as string;
+          const value =
+            cell.getValue()[0].medicalRecord.anamnese.classificationStatus;
           return (
             <div
               className={`w-4 h-4 rounded-full ${classificationColors[value]}`}
-              title={value}
+              title={ConvertClassificationStatus(value)}
             />
           );
         }
       },
       {
-        accessorKey: 'status',
+        accessorKey: 'services',
+        id: 'status',
         header: 'STATUS',
-        cell: ({ cell }: any) => (
-          <span className="bg-blue/05 text-white px-2 py-1 rounded-xl">
-            {cell.getValue()}
-          </span>
-        )
+        cell: ({ cell }: any) => {
+          if (cell.getValue()[0].medicalRecord.statusInCaseOfAdmission) {
+            return (
+              <span className="bg-blue/05 text-white px-2 py-1 rounded-xl">
+                {cell.getValue()}
+              </span>
+            );
+          } else {
+            return '';
+          }
+        }
       }
     ],
     []
