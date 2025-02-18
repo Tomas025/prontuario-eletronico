@@ -16,10 +16,19 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { Label } from '@radix-ui/react-label';
+
 import { useNewEnfermagem } from './hooks/useNewEnfermagem';
 
 export default function EnfermagemPaciente() {
-  const { form, submitForm, examFields, medicationFields } = useNewEnfermagem();
+  const {
+    form,
+    submitForm,
+    examFields,
+    medicationFields,
+    patientMonitoringFields,
+    nursingNotesFields
+  } = useNewEnfermagem();
 
   const linkList: ListLink[] = [
     { label: 'Enfermagem', route: '/enfermagem' },
@@ -37,7 +46,7 @@ export default function EnfermagemPaciente() {
           <Button
             className="bg-green/01 w-full button hover:bg-green/02"
             type="submit"
-            //disabled={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting}
             form="formAtendimentoMedico"
           >
             SALVAR
@@ -247,12 +256,26 @@ export default function EnfermagemPaciente() {
                       <Checkbox
                         id={`medication-${index}`}
                         className="w-5 h-5 cursor-pointer"
+                        {...form.register(
+                          `medicationPrescription.${index}.isChecked`
+                        )}
+                        checked={form.watch(
+                          `medicationPrescription.${index}.isChecked`
+                        )}
+                        disabled={medication.isChecked === true}
+                        onCheckedChange={(checked: boolean) => {
+                          // Atualiza o valor com o estado do checkbox
+                          form.setValue(
+                            `medicationPrescription.${index}.isChecked`,
+                            checked
+                          );
+                        }}
                       />
                       <label
                         htmlFor={`medication-${index}`}
                         className="text-blue/04 text"
                       >
-                        {medication.medication}{' '}
+                        {medication.medication}
                       </label>
                     </div>
                   ))}
@@ -266,14 +289,28 @@ export default function EnfermagemPaciente() {
                       key={exam.id}
                     >
                       <Checkbox
-                        id={`medication-${index}`}
+                        id={`exam-${index}`}
                         className="w-5 h-5 cursor-pointer"
+                        {...form.register(
+                          `examsPrescription.${index}.isChecked`
+                        )}
+                        checked={form.watch(
+                          `examsPrescription.${index}.isChecked`
+                        )}
+                        disabled={exam.isChecked === true}
+                        onCheckedChange={(checked: boolean) => {
+                          // Atualiza o valor com o estado do checkbox
+                          form.setValue(
+                            `examsPrescription.${index}.isChecked`,
+                            checked
+                          );
+                        }}
                       />
                       <label
-                        htmlFor={`medication-${index}`}
+                        htmlFor={`exam-${index}`}
                         className="text-blue/04 text"
                       >
-                        {exam.exam}{' '}
+                        {exam.exam}
                       </label>
                     </div>
                   ))}
@@ -283,10 +320,277 @@ export default function EnfermagemPaciente() {
                 <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Monitoramento do Paciente</h1>
                   <hr className="border-blue/06" />
+                  <div className="flex gap-4 w-full">
+                    <div className="flex flex-col items-center gap-2">
+                      {patientMonitoringFields.fields.map((field, index) => (
+                        <div className="flex gap-x-2 w-full" key={field.id}>
+                          <FormField
+                            control={form.control}
+                            name={`patientMonitoring.${index}.bloodPressureNursing`}
+                            render={({ field: controlField, fieldState }) => {
+                              if (field.isBackEnd === false) {
+                                return (
+                                  <FormItem className="w-full">
+                                    <FormControl>
+                                      <div className="flex items-center gap-1">
+                                        <Label
+                                          htmlFor="bloodPressureNursing"
+                                          className="subTitle"
+                                        >
+                                          Pressão Art.:
+                                        </Label>
+                                        <Input
+                                          id="bloodPressureNursing"
+                                          type="number"
+                                          placeholder="mv+"
+                                          className={`w-full p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06 ${
+                                            fieldState.invalid
+                                              ? 'border-red/01 bg-red/03'
+                                              : 'border-blue/07'
+                                          }`}
+                                          {...controlField}
+                                        />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                );
+                              } else {
+                                return (
+                                  <div className="flex gap-1 items-center">
+                                    <p className="subTitle">Pressão Art.:</p>
+                                    <p className="text text-blue/04">
+                                      {field.bloodPressureNursing}
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            }}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`patientMonitoring.${index}.glucoseNursing`}
+                            render={({ field: controlField, fieldState }) => {
+                              if (field.isBackEnd === false) {
+                                return (
+                                  <FormItem className="w-full">
+                                    <FormControl>
+                                      <div className="flex items-center gap-1">
+                                        <Label
+                                          htmlFor="glucoseNursing"
+                                          className="subTitle"
+                                        >
+                                          Glicose:
+                                        </Label>
+                                        <Input
+                                          id="glucoseNursing"
+                                          type="number"
+                                          placeholder="mg/dl"
+                                          className={`w-full p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06 ${
+                                            fieldState.invalid
+                                              ? 'border-red/01 bg-red/03'
+                                              : 'border-blue/07'
+                                          }`}
+                                          {...controlField}
+                                        />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                );
+                              } else {
+                                return (
+                                  <div className="flex gap-1 items-center">
+                                    <p className="subTitle">Glicose:</p>
+                                    <p className="text text-blue/04">
+                                      {field.glucoseNursing}
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            }}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`patientMonitoring.${index}.temperatureNursing`}
+                            render={({ field: controlField, fieldState }) => {
+                              if (field.isBackEnd === false) {
+                                return (
+                                  <FormItem className="w-full">
+                                    <FormControl>
+                                      <div className="flex items-center gap-1">
+                                        <Label
+                                          htmlFor="temperatureNursing"
+                                          className="subTitle"
+                                        >
+                                          Temperatura:
+                                        </Label>
+                                        <Input
+                                          id="temperatureNursing"
+                                          type="number"
+                                          placeholder="ºC"
+                                          className={`w-full p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06 ${
+                                            fieldState.invalid
+                                              ? 'border-red/01 bg-red/03'
+                                              : 'border-blue/07'
+                                          }`}
+                                          {...controlField}
+                                        />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                );
+                              } else {
+                                return (
+                                  <div className="flex gap-1 items-center">
+                                    <p className="subTitle">Temperatura:</p>
+                                    <p className="text text-blue/04">
+                                      {field.temperatureNursing}
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            }}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`patientMonitoring.${index}.toxygenSaturationNursing`}
+                            render={({ field: controlField, fieldState }) => {
+                              if (field.isBackEnd === false) {
+                                return (
+                                  <FormItem className="w-full">
+                                    <FormControl>
+                                      <div className="flex items-center gap-1">
+                                        <Label
+                                          htmlFor="toxygenSaturationNursing"
+                                          className="subTitle"
+                                        >
+                                          Saturação:
+                                        </Label>
+                                        <Input
+                                          id="toxygenSaturationNursing"
+                                          type="number"
+                                          placeholder="SpO2"
+                                          className={`w-full p-[10px] border-2 rounded-[10px] bg-gray/04 text-blue/03 border-blue/07 focus:border-blue/06 ${
+                                            fieldState.invalid
+                                              ? 'border-red/01 bg-red/03'
+                                              : 'border-blue/07'
+                                          }`}
+                                          {...controlField}
+                                        />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                );
+                              } else {
+                                return (
+                                  <div className="flex gap-1 items-center">
+                                    <p className="subTitle">Saturação:</p>
+                                    <p className="text text-blue/04">
+                                      {field.toxygenSaturationNursing}
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            }}
+                          />
+                          {field.isBackEnd === false && (
+                            <Button
+                              className="bg-red/01 self-end w-fit button hover:bg-red/02"
+                              onClick={() =>
+                                patientMonitoringFields.remove(index)
+                              }
+                              type="button"
+                            >
+                              <PiTrashFill />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      type="button"
+                      onClick={() =>
+                        patientMonitoringFields.append({
+                          bloodPressureNursing: '',
+                          glucoseNursing: '',
+                          temperatureNursing: '',
+                          toxygenSaturationNursing: '',
+                          isBackEnd: false
+                        })
+                      }
+                      className="bg-blue/04 text-white px-3 py-2 rounded-[8px] hover:bg-blue/02"
+                    >
+                      ADICIONAR
+                    </Button>
+                  </div>
                 </div>
                 <div className="flex flex-col h-fit justify-start gap-y-[10px] p-[10px] border border-blue/07 rounded-[10px] text-blue/04">
                   <h1 className="title">Anotação de Enfermagem</h1>
                   <hr className="border-blue/06" />
+                  {nursingNotesFields.fields.map((field, index) => (
+                    <div className="flex gap-x-2 w-full" key={field.id}>
+                      <FormField
+                        control={form.control}
+                        name={`nursingNotes.${index}.note`}
+                        render={({ field: controlField, fieldState }) => {
+                          if (field.isBackEnd === false) {
+                            return (
+                              <div className="flex w-full gap-2">
+                                <FormItem className="w-full">
+                                  <FormControl>
+                                    <Input
+                                      id="note"
+                                      type="text"
+                                      placeholder="Digite aqui"
+                                      className={`p-[10px] border-2 w-full rounded-[10px] bg-gray/04 focus-visible:ring-0 ${
+                                        fieldState.invalid
+                                          ? 'border-red/01 bg-red/03'
+                                          : 'border-blue/07'
+                                      }`}
+                                      {...controlField}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                                <Button
+                                  className="bg-red/01 self-end w-fit button hover:bg-red/02"
+                                  onClick={() =>
+                                    nursingNotesFields.remove(index)
+                                  }
+                                  type="button"
+                                >
+                                  <PiTrashFill />
+                                </Button>
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <p className="text text-blue/04">{field.note}</p>
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      type="button"
+                      onClick={() =>
+                        nursingNotesFields.append({
+                          note: '',
+                          isBackEnd: false
+                        })
+                      }
+                      className="bg-blue/04 text-white px-3 py-2 rounded-[8px] hover:bg-blue/02"
+                    >
+                      ADICIONAR
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

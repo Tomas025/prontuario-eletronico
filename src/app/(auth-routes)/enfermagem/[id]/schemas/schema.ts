@@ -1,16 +1,35 @@
 import { z } from 'zod';
 
 export const mySchema = z.object({
+  //Preenchimento Enfermeiro
+  patientMonitoring: z
+    .object({
+      bloodPressureNursing: z.string().trim(),
+      glucoseNursing: z.string().trim(),
+      temperatureNursing: z.string().trim(),
+      toxygenSaturationNursing: z.string().trim(),
+      isBackEnd: z.boolean()
+    })
+    .array(),
+  nursingNotes: z
+    .object({
+      note: z.string().trim(),
+      isBackEnd: z.boolean()
+    })
+    .array(),
+
   // Preenchimento Médico
   medicalHypothesis: z.string().trim(),
   medicationPrescription: z
     .object({
-      medication: z.string().trim()
+      medication: z.string().trim(),
+      isChecked: z.boolean()
     })
     .array(),
   examsPrescription: z
     .object({
-      exam: z.string().trim()
+      exam: z.string().trim(),
+      isChecked: z.boolean()
     })
     .array(),
 

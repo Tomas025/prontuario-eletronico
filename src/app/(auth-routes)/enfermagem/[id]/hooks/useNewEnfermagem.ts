@@ -8,12 +8,31 @@ export function useNewEnfermagem() {
   const form = useForm<typeMySchema>({
     resolver: zodResolver(mySchema),
     defaultValues: {
+      patientMonitoring: [
+        {
+          bloodPressureNursing: '147',
+          glucoseNursing: '80',
+          temperatureNursing: '36',
+          toxygenSaturationNursing: '100',
+          isBackEnd: true
+        }
+      ],
+      nursingNotes: [
+        { note: 'Exemplo de anotação', isBackEnd: true },
+        { note: 'Exemplo de anotação parte 2', isBackEnd: true }
+      ],
       medicalHypothesis: 'Gastrite aguda',
       medicationPrescription: [
-        { medication: 'Omeprazol 20mg, 1x ao dia por 7 dias' },
-        { medication: 'Dipirona 1g, 1x ao dia por 7 dias' }
+        {
+          medication: 'Omeprazol 20mg, 1x ao dia por 7 dias',
+          isChecked: false
+        },
+        { medication: 'Dipirona 1g, 1x ao dia por 7 dias', isChecked: true }
       ],
-      examsPrescription: [{ exam: 'Exame de sangue' }],
+      examsPrescription: [
+        { exam: 'Exame de sangue', isChecked: false },
+        { exam: 'Exame de sangue', isChecked: true }
+      ],
       allergies: 'Nenhuma conhecida',
       pathologicalHistory: 'Nenhum histórico de doenças graves',
       currentMedications: 'Nenhum medicamento atualmente',
@@ -46,6 +65,16 @@ export function useNewEnfermagem() {
     }
   });
 
+  const patientMonitoringFields = useFieldArray({
+    control: form.control,
+    name: 'patientMonitoring'
+  });
+
+  const nursingNotesFields = useFieldArray({
+    control: form.control,
+    name: 'nursingNotes'
+  });
+
   const {
     fields: medicationFields,
     append: appendMedication,
@@ -76,6 +105,8 @@ export function useNewEnfermagem() {
     removeMedication,
     examFields,
     appendExam,
-    removeExam
+    removeExam,
+    patientMonitoringFields,
+    nursingNotesFields
   };
 }
