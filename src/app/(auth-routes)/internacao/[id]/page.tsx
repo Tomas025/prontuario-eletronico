@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import Link from 'next/link';
 import { PiTrashFill } from 'react-icons/pi';
@@ -7,6 +8,7 @@ import { ListLink } from '@/components/BreadCrumb/types/typesBreadCrumb';
 import EncaminharPaciente from '@/components/SelectEncaminharPaciente/select';
 import { Button } from '@/components/ui/button';
 //import { Checkbox } from '@/components/ui/checkbox';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -17,29 +19,36 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectItem
+} from '@radix-ui/react-select';
+
 import { useNewInternacao } from './hooks/useNewInternacao';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@radix-ui/react-select';
-import { Checkbox } from '@/components/ui/checkbox';
 export default function EnfermagemPaciente() {
   const antecedentes = [
-    { id: "has", label: "HAS" },
-    { id: "dm", label: "DM" },
-    { id: "iam", label: "IAM" },
-    { id: "avc", label: "AVC" },
-    { id: "alzheimer", label: "Alzheimer" },
-    { id: "ca", label: "CA" }
+    { id: 'has', label: 'HAS' },
+    { id: 'dm', label: 'DM' },
+    { id: 'iam', label: 'IAM' },
+    { id: 'avc', label: 'AVC' },
+    { id: 'alzheimer', label: 'Alzheimer' },
+    { id: 'ca', label: 'CA' }
   ];
 
   const exames = [
-    { id: "1", label: "Exame 1", checked: true },
-    { id: "2", label: "Exame 2", checked: false },
-    { id: "3", label: "Exame 3", checked: true  },
+    { id: '1', label: 'Exame 1', checked: true },
+    { id: '2', label: 'Exame 2', checked: false },
+    { id: '3', label: 'Exame 3', checked: true }
   ];
 
   const medicacoes = [
-    { id: "1", label: "Medicação 1", checked: false },
-    { id: "2", label: "Medicação 2", checked: true  },
-    { id: "3", label: "Medicação 2", checked: false },
+    { id: '1', label: 'Medicação 1', checked: false },
+    { id: '2', label: 'Medicação 2', checked: true },
+    { id: '3', label: 'Medicação 2', checked: false }
   ];
 
   const {
@@ -228,69 +237,92 @@ export default function EnfermagemPaciente() {
               <div className="flex flex-col gap-y-[10px]">
                 <h1 className="title">Avaliação e Exame Físico</h1>
                 <div className="flex gap-2 pb-4 border-b-2 border-blue-100 border-dashed text-blue-950">
-                {/* Primeira linha */}
-                <FormField
-                  name="weight1"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex justify-content align-center">
-                        <FormLabel className="pt-3 pr-3 ">Peso:</FormLabel>
-                        <FormControl>
-                          <Input placeholder="60kg" {...field} className="w-16 mr-4 border-blue-200 bg-blue-50" />
-                        </FormControl>
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="FC"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex justify-content align-center">
-                        <FormLabel className="pt-3 pr-1">FC:</FormLabel>
-                        <FormControl>
-                          <Input placeholder="75bpm" className="w-24 mr-4 border-blue-200 bg-blue-50" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  name="PA"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex justify-content align-center">
-                        <FormLabel className="pt-3 pr-1">Temperatura:</FormLabel>
-                        <FormControl>
-                          <Input placeholder="17mmHg" className="w-24 mr-4 border-blue-200 bg-blue-50" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              
-              </div>
+                  {/* Primeira linha */}
+                  <FormField
+                    name="weight1"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-content align-center">
+                          <FormLabel className="pt-3 pr-3 ">Peso:</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="60kg"
+                              {...field}
+                              className="w-16 mr-4 border-blue-200 bg-blue-50"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="FC"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-content align-center">
+                          <FormLabel className="pt-3 pr-1">FC:</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="75bpm"
+                              className="w-24 mr-4 border-blue-200 bg-blue-50"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="PA"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex justify-content align-center">
+                          <FormLabel className="pt-3 pr-1">
+                            Temperatura:
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="17mmHg"
+                              className="w-24 mr-4 border-blue-200 bg-blue-50"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
               <hr className="border-blue/06" />
               <div className="flex flex-col gap-y-[10px]">
                 <h1 className="title">Saúde e Doença</h1>
-                
+
                 <div className="flex flex-col gap-2 pb-4 border-b-2 border-blue-100 border-dashed text-blue-950">
-                  
                   {/* Primeira linha - Antecedentes Familiares */}
                   <div className="flex items-center gap-x-3 flex-wrap">
-                    <span className="font-medium text-gray-600 whitespace-nowrap">Antecedentes Familiares:</span>
+                    <span className="font-medium text-gray-600 whitespace-nowrap">
+                      Antecedentes Familiares:
+                    </span>
                     <div className="flex flex-1 flex-wrap gap-x-3">
                       {antecedentes.map((item) => (
-                        <div className="flex items-center gap-x-1" key={`familiar-${item.id}`}>
-                          <Checkbox id={`familiar-${item.id}`} className="w-5 h-5 cursor-pointer" />
-                          <label htmlFor={`familiar-${item.id}`} className="text-gray-700">
+                        <div
+                          className="flex items-center gap-x-1"
+                          key={`familiar-${item.id}`}
+                        >
+                          <Checkbox
+                            id={`familiar-${item.id}`}
+                            className="w-5 h-5 cursor-pointer"
+                          />
+                          <label
+                            htmlFor={`familiar-${item.id}`}
+                            className="text-gray-700"
+                          >
                             {item.label}
                           </label>
                         </div>
@@ -300,12 +332,23 @@ export default function EnfermagemPaciente() {
 
                   {/* Segunda linha - Antecedentes Pessoais */}
                   <div className="flex items-center gap-x-3 flex-wrap">
-                    <span className="font-medium text-gray-600 whitespace-nowrap">Antecedentes Pessoais:</span>
+                    <span className="font-medium text-gray-600 whitespace-nowrap">
+                      Antecedentes Pessoais:
+                    </span>
                     <div className="flex flex-1 flex-wrap gap-x-3">
                       {antecedentes.map((item) => (
-                        <div className="flex items-center gap-x-1" key={`pessoal-${item.id}`}>
-                          <Checkbox id={`pessoal-${item.id}`} className="w-5 h-5 cursor-pointer" />
-                          <label htmlFor={`pessoal-${item.id}`} className="text-gray-700">
+                        <div
+                          className="flex items-center gap-x-1"
+                          key={`pessoal-${item.id}`}
+                        >
+                          <Checkbox
+                            id={`pessoal-${item.id}`}
+                            className="w-5 h-5 cursor-pointer"
+                          />
+                          <label
+                            htmlFor={`pessoal-${item.id}`}
+                            className="text-gray-700"
+                          >
                             {item.label}
                           </label>
                         </div>
@@ -366,9 +409,20 @@ export default function EnfermagemPaciente() {
                   <hr className="border-blue/06" />
                   <div className="mt-2 flex flex-col gap-2">
                     {exames.map((item) => (
-                      <div className="flex items-center gap-x-2" key={`exame-${item.id}`}>
-                        <Checkbox id={`exame-${item.id}`} className="w-5 h-5 cursor-default" checked={item.checked} disabled />
-                        <label htmlFor={`exame-${item.id}`} className={`text-gray-700 ${item.checked ? "line-through text-gray-500" : ""}`}>
+                      <div
+                        className="flex items-center gap-x-2"
+                        key={`exame-${item.id}`}
+                      >
+                        <Checkbox
+                          id={`exame-${item.id}`}
+                          className="w-5 h-5 cursor-default"
+                          checked={item.checked}
+                          disabled
+                        />
+                        <label
+                          htmlFor={`exame-${item.id}`}
+                          className={`text-gray-700 ${item.checked ? 'line-through text-gray-500' : ''}`}
+                        >
                           {item.label}
                         </label>
                       </div>
@@ -380,9 +434,20 @@ export default function EnfermagemPaciente() {
                   <hr className="border-blue/06" />
                   <div className="mt-2 flex flex-col gap-2">
                     {medicacoes.map((item) => (
-                      <div className="flex items-center gap-x-2" key={`medicacao-${item.id}`}>
-                        <Checkbox id={`medicacao-${item.id}`} className="w-5 h-5 cursor-default" checked={item.checked} disabled />
-                        <label htmlFor={`medicacao-${item.id}`} className={`text-gray-700 ${item.checked ? "line-through text-gray-500" : ""}`}>
+                      <div
+                        className="flex items-center gap-x-2"
+                        key={`medicacao-${item.id}`}
+                      >
+                        <Checkbox
+                          id={`medicacao-${item.id}`}
+                          className="w-5 h-5 cursor-default"
+                          checked={item.checked}
+                          disabled
+                        />
+                        <label
+                          htmlFor={`medicacao-${item.id}`}
+                          className={`text-gray-700 ${item.checked ? 'line-through text-gray-500' : ''}`}
+                        >
                           {item.label}
                         </label>
                       </div>
@@ -396,37 +461,47 @@ export default function EnfermagemPaciente() {
                   <h1 className="title">Monitoramento do Paciente</h1>
                   <hr className="border-blue/06" />
                   <div className="flex flex-wrap gap-x-5 gap-y-1">
-                  {patientMonitoringFields.map((monitoring, index) => (
-                    <div className="flex gap-x-2 items-center w-full" key={index}>
-                      <label htmlFor={`monitoring-${index}`} className="text-blue/04 text font-bold">
-                        {monitoring.hour}    
-                      </label>
-                      <span className="font-bold">
-                        Pressão Art.:
-                      </span>
-                      <label htmlFor={`monitoring-${index}`} className="text-blue/04 text">
-                        {monitoring.bloodPressure}
-                      </label>
-                      <span className="font-bold">
-                        Glicose:
-                      </span>
-                      <label htmlFor={`monitoring-${index}`} className="text-blue/04 text">
-                        {monitoring.glucose}
-                      </label>
-                      <span className="font-bold">
-                      Temperatura:
-                      </span>
-                      <label htmlFor={`monitoring-${index}`} className="text-blue/04 text">
-                        {monitoring.temperature}
-                      </label>
-                      <span className="font-bold">
-                        Saturação:
-                      </span>
-                      <label htmlFor={`monitoring-${index}`} className="text-blue/04 text">
-                        {monitoring.saturation}
-                      </label>
-                    </div>
-                  ))}
+                    {patientMonitoringFields.map((monitoring, index) => (
+                      <div
+                        className="flex gap-x-2 items-center w-full"
+                        key={index}
+                      >
+                        <label
+                          htmlFor={`monitoring-${index}`}
+                          className="text-blue/04 text font-bold"
+                        >
+                          {monitoring.hour}
+                        </label>
+                        <span className="font-bold">Pressão Art.:</span>
+                        <label
+                          htmlFor={`monitoring-${index}`}
+                          className="text-blue/04 text"
+                        >
+                          {monitoring.bloodPressure}
+                        </label>
+                        <span className="font-bold">Glicose:</span>
+                        <label
+                          htmlFor={`monitoring-${index}`}
+                          className="text-blue/04 text"
+                        >
+                          {monitoring.glucose}
+                        </label>
+                        <span className="font-bold">Temperatura:</span>
+                        <label
+                          htmlFor={`monitoring-${index}`}
+                          className="text-blue/04 text"
+                        >
+                          {monitoring.temperature}
+                        </label>
+                        <span className="font-bold">Saturação:</span>
+                        <label
+                          htmlFor={`monitoring-${index}`}
+                          className="text-blue/04 text"
+                        >
+                          {monitoring.saturation}
+                        </label>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -437,10 +512,12 @@ export default function EnfermagemPaciente() {
                   <div className="flex flex-wrap gap-x-5 gap-y-1">
                     {[
                       {
-                        value: "Pressão subiu - 17/10 às 14h"
-                      },
-                    ].map(({ value }) => (
-                      <span className="text">{value}</span>
+                        value: 'Pressão subiu - 17/10 às 14h'
+                      }
+                    ].map(({ value }, index) => (
+                      <span key={index} className="text">
+                        {value}
+                      </span>
                     ))}
                   </div>
                 </div>

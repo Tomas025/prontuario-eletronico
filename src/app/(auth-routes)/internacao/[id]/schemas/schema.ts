@@ -68,8 +68,7 @@ export const mySchema = z.object({
       temperature: z.string().trim(),
       saturation: z.string().trim()
     })
-    .array(),
-
+    .array()
 });
 
 export type typeMySchema = z.infer<typeof mySchema>;

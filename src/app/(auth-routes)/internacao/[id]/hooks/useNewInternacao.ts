@@ -47,14 +47,26 @@ export function useNewInternacao() {
       FC: '',
       PA: '',
       patientMonitoring: [
-        { hour: '10:00', bloodPressure: '14/7', glucose: '95 mg/dL', temperature:'37.2°C', saturation: '99 SpO2'},
-        { hour: '10:00', bloodPressure: '14/7', glucose: '95 mg/dL', temperature:'37.2°C', saturation: '99 SpO2'},
+        {
+          hour: '10:00',
+          bloodPressure: '14/7',
+          glucose: '95 mg/dL',
+          temperature: '37.2°C',
+          saturation: '99 SpO2'
+        },
+        {
+          hour: '10:00',
+          bloodPressure: '14/7',
+          glucose: '95 mg/dL',
+          temperature: '37.2°C',
+          saturation: '99 SpO2'
+        }
       ]
     }
   });
 
   const {
-    fields: medicationFields, 
+    fields: medicationFields,
     append: appendMedication,
     remove: removeMedication
   } = useFieldArray({
@@ -72,7 +84,7 @@ export function useNewInternacao() {
   });
 
   const {
-    fields: patientMonitoringFields, 
+    fields: patientMonitoringFields,
     append: appendMonitoring,
     remove: removeMonitoring
   } = useFieldArray({
