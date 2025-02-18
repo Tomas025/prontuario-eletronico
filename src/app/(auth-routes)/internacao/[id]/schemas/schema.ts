@@ -53,7 +53,13 @@ export const mySchema = z.object({
   pupilReaction: z.string().trim(),
   speech: z.string().trim(),
   consciousnessLevel: z.string().trim(),
-  motorResponse: z.string().trim()
+  motorResponse: z.string().trim(),
+
+  // Avaliacao
+  weight1: z.string().trim(),
+  FC: z.string().trim(),
+  PA: z.string().trim(),
+
 });
 
 export type typeMySchema = z.infer<typeof mySchema>;

@@ -42,7 +42,10 @@ export function useNewInternacao() {
       pupilReaction: '',
       speech: '',
       consciousnessLevel: '',
-      motorResponse: ''
+      motorResponse: '',
+      weight1: '',
+      FC: '',
+      PA: '',
     }
   });
 

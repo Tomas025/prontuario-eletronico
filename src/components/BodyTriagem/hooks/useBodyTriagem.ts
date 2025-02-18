@@ -108,6 +108,7 @@ export function useAnamnesisForm() {
       console.log("Dados enviados com sucesso!", response.data);
       alert("Anamnese cadastrada!");
       form.reset(); // Reseta o formulário após envio
+      push("/triagem");
       return response;
     } catch (error: any) {
       console.error("Erro ao enviar os dados:", error);
