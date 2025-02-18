@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
-import { GetUniquePatient, PostNewPatient } from '@/services/PatientService';
+import {
+  GetUniquePatient,
+  PostNewPatient,
+  PutPatient
+} from '@/services/PatientService';
 import { noMask } from '@/utils/MaskInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -36,7 +41,6 @@ export type typePatientForBack = {
 export function useNovoPaciente() {
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  console.log(params);
   const queryClient = useQueryClient();
   const { push } = useRouter();
   const form = useForm<typeMySchema>({
@@ -46,6 +50,12 @@ export function useNovoPaciente() {
 
       const result = await GetUniquePatient(Number(params.id[0]));
 
+      const date = new Date(result.data.birthDate);
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
       if (params.id[0]) {
         setIsLoading(false);
         return {
@@ -53,7 +63,7 @@ export function useNovoPaciente() {
           cep: result.data.address.cep,
           cidade: result.data.address.city,
           cpf: result.data.cpf,
-          dataNascimento: result.data.birthDate,
+          dataNascimento: `${year}-${month}-${day}`,
           nomeCompleto: result.data.name,
           nomeMae: result.data.motherName,
           nomeSocial: result.data.socialName,
@@ -61,14 +71,14 @@ export function useNovoPaciente() {
           rg: noMask(result.data.rg),
           rua: result.data.address.street,
           sus: result.data.sus,
-          telefone: Number(noMask(result.data.phone)),
-          emergencyContact: [
-            {
-              nomeContatoEmergencia: '',
-              parentesco: '',
-              telefoneContatoEmergencia: ''
-            }
-          ]
+          telefone: noMask(result.data.phone),
+          emergencyContact: result.data.emergencyContactDetails.map(
+            (emergencyContactFields: any) => ({
+              nomeContatoEmergencia: emergencyContactFields.name,
+              parentesco: emergencyContactFields.relationship,
+              telefoneContatoEmergencia: noMask(emergencyContactFields.phone)
+            })
+          )
         };
       } else {
         setIsLoading(false);
@@ -117,6 +127,20 @@ export function useNovoPaciente() {
     }
   });
 
+  const PutPatientMutation = useMutation({
+    mutationFn: (data: typePatientForBack & { id: number }) => PutPatient(data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['Patient', 'NO_SERVICE'],
+        exact: true
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['PatientMedicalRecord', params.id[0]],
+        exact: true
+      });
+    }
+  });
+
   const submitForm: SubmitHandler<typeMySchema> = async (data) => {
     const dataForBack: typePatientForBack = {
       name: data.nomeCompleto,
@@ -148,15 +172,32 @@ export function useNovoPaciente() {
       )
     };
 
-    const result = await postNewPatientMutation.mutateAsync(dataForBack);
+    if (params.id[0]) {
+      const objectPut = Object.assign(dataForBack, {
+        id: Number(params.id[0])
+      });
 
-    if (result.status === 200) {
-      toast.success('Paciente cadastrado com sucesso');
-      push('/atendimentos/listaAtendimentos');
+      const result = await PutPatientMutation.mutateAsync(objectPut);
+
+      if (result.status === 200) {
+        toast.success('Paciente atualizado com sucesso');
+        push(`/paciente/${params.id[0]}`);
+      } else {
+        // Verificar possibilidade de usar melhorar a mensagem de erro
+        // Utilizando o erro retornado do backend
+        toast.error('Erro ao atualizar paciente');
+      }
     } else {
-      // Verificar possibilidade de usar melhorar a mensagem de erro
-      // Utilizando o erro retornado do backend
-      toast.error('Erro ao cadastrar paciente');
+      const result = await postNewPatientMutation.mutateAsync(dataForBack);
+
+      if (result.status === 200) {
+        toast.success('Paciente cadastrado com sucesso');
+        push('/atendimentos/listaAtendimentos');
+      } else {
+        // Verificar possibilidade de usar melhorar a mensagem de erro
+        // Utilizando o erro retornado do backend
+        toast.error('Erro ao cadastrar paciente');
+      }
     }
   };
 
