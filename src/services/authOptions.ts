@@ -10,7 +10,7 @@ type decodeTokenType = {
   userId: string;
   active: boolean;
   email: string;
-  firstAccess: boolean;
+  firstAccess: string;
   position: string;
   role: string;
   unique_name: string;
@@ -90,7 +90,7 @@ export const nextAuthOptions: NextAuthOptions = {
       session.user.email = token.email;
       session.user.firstAccess = token.firstAccess;
       session.user.role = token.role;
-      session.user.position = token.position;
+      session.user.position = token.position as string;
       return session;
     }
   }
