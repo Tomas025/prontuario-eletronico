@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import Link from 'next/link';
 import React, { useMemo } from 'react';
@@ -18,13 +19,13 @@ export default function NovoAtendimento() {
     { label: 'Novo Atendimento', route: '/atendimentos/listaAtendimentos' }
   ];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: dataBack, isLoading } = useQuery({
     queryKey: ['Patient', 'NO_SERVICE'],
     queryFn: () => GetPatientFilter('NO_SERVICE'),
     staleTime: 1 * 60 * 1000
   });
 
+<<<<<<< HEAD
   const queryClient = useQueryClient();
 
   const data = [
@@ -230,12 +231,13 @@ export default function NovoAtendimento() {
     }    
   };
 
+=======
+>>>>>>> c31b94c108d189797b204e58b5c985dd7e055184
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'paciente',
+        accessorKey: 'name',
         header: 'PACIENTE',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ cell }: any) => (
           <Link href={`/paciente/${cell.row.original.id}`}>
             <div className="text-blue/05 font-bold">{cell.getValue()}</div>
@@ -244,13 +246,18 @@ export default function NovoAtendimento() {
       },
       { accessorKey: 'cpf', header: 'CPF' },
       { accessorKey: 'sus', header: 'SUS' },
-      { accessorKey: 'nomeMae', header: 'NOME DA MÃE' },
-      { accessorKey: 'endereco', header: 'ENDEREÇO' },
+      { accessorKey: 'motherName', header: 'NOME DA MÃE' },
+      {
+        accessorKey: 'address',
+        header: 'ENDEREÇO',
+        cell: ({ cell }: any) => {
+          return `${cell.getValue().street}, ${cell.getValue().neighborhood}, ${cell.getValue().number}, ${cell.getValue().city}`;
+        }
+      },
       {
         accessorKey: 'acao',
         id: 'acao',
         header: '',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         cell: ({ row }: any) => (
           <button
             // href={`/triagem/${row.original.id}`}
@@ -273,7 +280,8 @@ export default function NovoAtendimento() {
 
       <CustomTable
         columns={columns}
-        data={data}
+        data={dataBack?.data.data || []}
+        loading={isLoading}
         itemsPerPageOptions={[10, 20, 30]}
         customButton={{
           isActive: true,

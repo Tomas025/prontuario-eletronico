@@ -1,4 +1,5 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -12,39 +13,109 @@ import {
 } from 'react-icons/pi';
 
 export function MenuComponent() {
+  const session = useSession();
   const pathname = usePathname();
-  const listLinkNavBar = [
-    {
+  const listLinkNavBar = [];
+
+  if (session.data?.user.role === 'ADMIN') {
+    listLinkNavBar.push(
+      {
+        label: 'Atendimentos',
+        route: '/atendimentos',
+        icon: <PiAddressBookTabsFill size={20} />
+      },
+      {
+        label: 'Triagem',
+        route: '/triagem',
+        icon: <PiClipboardTextFill size={20} />
+      },
+      {
+        label: 'Atendimento Médico',
+        route: '/atendimentoMedico',
+        icon: <PiAsclepiusFill size={20} />
+      },
+      {
+        label: 'Enfermagem',
+        route: '/enfermagem',
+        icon: <PiSyringeFill size={20} />
+      },
+      {
+        label: 'Internação',
+        route: '/internacao',
+        icon: <PiPulseFill size={20} />
+      },
+      {
+        label: 'Equipe Multiprofissional',
+        route: '/equipeMultiprofissional',
+        icon: <PiStethoscopeFill size={20} />
+      }
+    );
+  }
+  if (session.data?.user.role === 'RECEPTIONTEAM') {
+    listLinkNavBar.push({
       label: 'Atendimentos',
       route: '/atendimentos',
       icon: <PiAddressBookTabsFill size={20} />
-    },
-    {
-      label: 'Triagem',
-      route: '/triagem',
-      icon: <PiClipboardTextFill size={20} />
-    },
-    {
-      label: 'Atendimento Médico',
-      route: '/atendimentoMedico',
-      icon: <PiAsclepiusFill size={20} />
-    },
-    {
-      label: 'Enfermagem',
-      route: '/enfermagem',
-      icon: <PiSyringeFill size={20} />
-    },
-    {
-      label: 'Internação',
-      route: '/internacao',
-      icon: <PiPulseFill size={20} />
-    },
-    {
-      label: 'Equipe Multiprofissional',
-      route: '/equipeMultiprofissional',
-      icon: <PiStethoscopeFill size={20} />
-    }
-  ];
+    });
+  }
+  if (session.data?.user.role === 'DOCTOR') {
+    listLinkNavBar.push(
+      {
+        label: 'Atendimento Médico',
+        route: '/atendimentoMedico',
+        icon: <PiAsclepiusFill size={20} />
+      },
+      {
+        label: 'Internação',
+        route: '/internacao',
+        icon: <PiPulseFill size={20} />
+      },
+      {
+        label: 'Equipe Multiprofissional',
+        route: '/equipeMultiprofissional',
+        icon: <PiStethoscopeFill size={20} />
+      }
+    );
+  }
+  if (session.data?.user.role === 'NURSE') {
+    listLinkNavBar.push(
+      {
+        label: 'Triagem',
+        route: '/triagem',
+        icon: <PiClipboardTextFill size={20} />
+      },
+      {
+        label: 'Enfermagem',
+        route: '/enfermagem',
+        icon: <PiSyringeFill size={20} />
+      },
+      {
+        label: 'Internação',
+        route: '/internacao',
+        icon: <PiPulseFill size={20} />
+      },
+      {
+        label: 'Equipe Multiprofissional',
+        route: '/equipeMultiprofissional',
+        icon: <PiStethoscopeFill size={20} />
+      }
+    );
+  }
+  if (session.data?.user.role === 'INTITUATIONMANAGEMENT') {
+    listLinkNavBar.push(
+      {
+        label: 'Internação',
+        route: '/internacao',
+        icon: <PiPulseFill size={20} />
+      },
+      {
+        label: 'Equipe Multiprofissional',
+        route: '/equipeMultiprofissional',
+        icon: <PiStethoscopeFill size={20} />
+      }
+    );
+  }
+
   return (
     <nav className="flex w-auto space-x-4 bg-blue/03 items-center h-16">
       {/* Navegação */}

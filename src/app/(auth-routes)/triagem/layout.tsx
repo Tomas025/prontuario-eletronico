@@ -12,10 +12,9 @@ export default async function PrivateLayout({
   const session = await getServerSession(nextAuthOptions);
   if (
     !session ||
-    (session.user.position !== 'NURSE' &&
-      session.user.position !== 'NURSING_TECHNICIAN')
+    (session.user.role !== 'NURSE' && session.user.role !== 'ADMIN')
   ) {
-    // redirect('/');
+    redirect('/');
   }
 
   return children;
