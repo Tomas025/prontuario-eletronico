@@ -36,22 +36,19 @@ export async function initService(patientId: number) {
   const session = await getSession();
 
   try {
-    const response = api.post('/Service/initService',patientId ,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.user.accessToken}`,
-          "Content-Type": "application/json",
-        }
-        }
-    );
+    const response = api.post('/Service/initService', patientId, {
+      headers: {
+        Authorization: `Bearer ${session?.user.accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
 
     return response;
-    }
-    catch (error) {
+  } catch (error) {
     if (error instanceof AxiosError) {
       throw error.response?.data || new Error('Erro ao iniciar atendimento');
     }
 
     throw new Error('Erro desconhecido ao iniciar atendimento');
-    }   
+  }
 }
