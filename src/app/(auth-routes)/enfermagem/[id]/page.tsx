@@ -27,7 +27,11 @@ export default function EnfermagemPaciente() {
     examFields,
     medicationFields,
     patientMonitoringFields,
-    nursingNotesFields
+    nursingNotesFields,
+    status,
+    setStatus,
+    serviceStatus,
+    setServiceStatus
   } = useNewEnfermagem();
 
   const linkList: ListLink[] = [
@@ -51,7 +55,12 @@ export default function EnfermagemPaciente() {
           >
             SALVAR
           </Button>
-          <EncaminharPaciente />
+          <EncaminharPaciente
+            status={status}
+            setStatus={setStatus}
+            serviceStatus={serviceStatus}
+            setServiceStatus={setServiceStatus}
+          />
         </div>
       </section>
       <section>

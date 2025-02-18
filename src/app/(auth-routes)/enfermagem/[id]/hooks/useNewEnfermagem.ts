@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -65,6 +66,9 @@ export function useNewEnfermagem() {
     }
   });
 
+  const [status, setStatus] = useState<string>('');
+  const [serviceStatus, setServiceStatus] = useState<string>('');
+
   const patientMonitoringFields = useFieldArray({
     control: form.control,
     name: 'patientMonitoring'
@@ -94,7 +98,9 @@ export function useNewEnfermagem() {
   });
 
   const submitForm: SubmitHandler<typeMySchema> = (data) => {
-    console.log(data);
+    console.log(
+      Object.assign(data, { status: status, serviceStatus: serviceStatus })
+    );
   };
 
   return {
@@ -107,6 +113,10 @@ export function useNewEnfermagem() {
     appendExam,
     removeExam,
     patientMonitoringFields,
-    nursingNotesFields
+    nursingNotesFields,
+    status,
+    setStatus,
+    serviceStatus,
+    setServiceStatus
   };
 }
