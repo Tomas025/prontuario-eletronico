@@ -65,7 +65,7 @@ export default function Atendimentos() {
         header: 'CLASSIFICAÇÃO',
         cell: ({ cell }: any) => {
           const value =
-            cell.getValue()[0].medicalRecord.anamnese.classificationStatus;
+            cell.getValue()[0].medicalRecord.anamnese?.classificationStatus;
           return (
             <div
               className={`w-4 h-4 rounded-full ${classificationColors[value]}`}

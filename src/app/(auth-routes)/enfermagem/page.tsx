@@ -6,6 +6,8 @@ import React, { useMemo } from 'react';
 import { CustomTable } from '@/components/CustomTable';
 
 import { GetPatientFilter } from '@/services/PatientService';
+import { ConvertClassificationStatus } from '@/utils/ConvertEnums';
+import { calcularIdade } from '@/utils/UtilsFunction';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Enfermagem() {
@@ -17,11 +19,11 @@ export default function Enfermagem() {
 
   // Mapeamento de cores para as classificações
   const classificationColors: Record<string, string> = {
-    Emergência: 'bg-red/01',
-    'Muito Urgentes': 'bg-orange',
-    Urgência: 'bg-yellow',
-    'Menos Graves': 'bg-green/01',
-    Leves: 'bg-otherBlue'
+    EMERGENCY: 'bg-red/01',
+    VERY_URGENT: 'bg-orange',
+    URGENCY: 'bg-yellow',
+    LESS_SERIOUS: 'bg-green/01',
+    LIGHTWEIGHT: 'bg-otherBlue'
   };
 
   // Definição das colunas
@@ -38,6 +40,7 @@ export default function Enfermagem() {
       },
       {
         accessorKey: 'services',
+        id: 'horarioDeEntrada',
         header: 'HORÁRIO DE ENTRADA',
         cell: ({ cell }: any) => {
           return new Date(cell.getValue()[0].serviceDate).toLocaleTimeString(
@@ -49,27 +52,42 @@ export default function Enfermagem() {
           );
         }
       },
-      { accessorKey: 'idade', header: 'IDADE' },
       {
-        accessorKey: 'status',
-        header: 'STATUS',
-        // Renderiza um badge para o status
-        cell: ({ cell }: any) => (
-          <span className="bg-blue/05 text-white px-2 py-1 rounded-xl">
-            {cell.getValue()}
-          </span>
-        )
+        accessorKey: 'birthDate',
+        header: 'IDADE',
+        cell: ({ cell }: any) => {
+          return calcularIdade(cell.getValue());
+        }
       },
       {
-        accessorKey: 'classificacao',
+        accessorKey: 'services',
+        id: 'status',
+        header: 'STATUS',
+        // Renderiza um badge para o status
+        cell: ({ cell }: any) => {
+          if (cell.getValue()[0].medicalRecord.statusInCaseOfAdmission) {
+            return (
+              <span className="bg-blue/05 text-white px-2 py-1 rounded-xl">
+                {cell.getValue()}
+              </span>
+            );
+          } else {
+            return '';
+          }
+        }
+      },
+      {
+        accessorKey: 'services',
+        id: 'classificacao',
         header: 'CLASSIFICAÇÃO',
         // Renderiza uma cor associada à classificação
         cell: ({ cell }: any) => {
-          const value = cell.getValue() as string;
+          const value =
+            cell.getValue()[0].medicalRecord.anamnese.classificationStatus;
           return (
             <div
               className={`w-4 h-4 rounded-full ${classificationColors[value]}`}
-              title={value}
+              title={ConvertClassificationStatus(value)}
             />
           );
         }
