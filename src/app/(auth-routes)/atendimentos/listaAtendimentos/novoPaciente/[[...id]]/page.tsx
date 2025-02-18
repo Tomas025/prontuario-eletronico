@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
 import { PiTrashFill } from 'react-icons/pi';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
@@ -26,7 +25,6 @@ import {
 
 import { normalizeCEP, normalizeCPF } from '@/utils/MaskInput';
 
-import { useEditarPaciente } from './hooks/useEditarPaciente';
 import { useNovoPaciente } from './hooks/useNovoPaciente';
 
 interface Field {
@@ -73,13 +71,6 @@ const addressFields: Field[] = [
 export default function NovoPaciente() {
   const { form, submitForm, emergencyContactFields, append, remove } =
     useNovoPaciente();
-  const { dadosPaciente, loading } = useEditarPaciente();
-
-  useEffect(() => {
-    if (!loading && dadosPaciente) {
-      form.reset(dadosPaciente); // Preenche os valores do formulário
-    }
-  }, [dadosPaciente, loading, form]);
 
   const renderFields = (fields: Field[]) =>
     fields.map((field) => (

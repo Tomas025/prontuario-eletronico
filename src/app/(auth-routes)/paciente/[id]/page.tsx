@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { BreadCrumb } from '@/components/BreadCrumb';
@@ -20,8 +22,14 @@ const MENU_OPTIONS = [
 ];
 
 export default function Pacientes() {
+  const params = useParams();
   const [selectedOption, setSelectedOption] = useState(MENU_OPTIONS[0]);
-  const { patientDate, isLoading } = usePaciente();
+  const {
+    patientDate,
+    isLoadingPatientDate,
+    PatientMedicalRecord,
+    isLoadingPatientMedicalRecord
+  } = usePaciente();
   const linkList: ListLink[] = [
     { label: 'Atendimentos', route: '/atendimentos' },
     { label: patientDate?.data.name, route: '' }
@@ -64,26 +72,30 @@ export default function Pacientes() {
         </DropdownMenu>
       </section>
 
-      {selectedOption.value === 'dados-pessoais' && !isLoading && (
+      {selectedOption.value === 'dados-pessoais' && !isLoadingPatientDate && (
         <DadosPessoais data={patientDate?.data} />
       )}
 
-      {selectedOption.value === 'prontuários' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-          {/* {initialData.prontuarios.map((prontuario) => (
-            <CardProntuario
-              key={prontuario.id}
-              pessoaId={initialData.id}
-              prontuarioId={prontuario.id}
-              data={prontuario.data}
-              sintomas={prontuario.sintomas}
-              pressao={prontuario.pressao}
-              glicose={prontuario.glicose}
-              classificacao={prontuario.classificacao}
-            />
-          ))} */}
-        </div>
-      )}
+      {selectedOption.value === 'prontuários' &&
+        !isLoadingPatientMedicalRecord && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
+            {PatientMedicalRecord?.data.data.length > 0 &&
+              PatientMedicalRecord?.data.data.map((prontuario: any) => (
+                <CardProntuario
+                  key={prontuario.id}
+                  pessoaId={params.id as string}
+                  prontuarioId={prontuario.id}
+                  data={new Date(prontuario.serviceDate).toLocaleDateString(
+                    'pt-BR'
+                  )}
+                  sintomas={prontuario.signsAndSymptoms}
+                  pressao={prontuario.bloodPressure}
+                  glicose={prontuario.glucose}
+                  classificacao={prontuario.classificationStatus}
+                />
+              ))}
+          </div>
+        )}
     </section>
   );
 }
