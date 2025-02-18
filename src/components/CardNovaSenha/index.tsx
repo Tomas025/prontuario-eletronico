@@ -1,7 +1,6 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { FiMail, FiLock } from 'react-icons/fi';
 import { FiArrowLeft } from 'react-icons/fi';
 import { LuLoader2 } from 'react-icons/lu';
@@ -18,22 +17,11 @@ import {
   FormMessage
 } from '../ui/form';
 import { PasswordInput } from '../ui/passwordInput';
-
-// const formSchema = z.object({
-//   username: z.string().min(2, {
-//     message: 'Username must be at least 2 characters.'
-//   })
-// });
+import { useCardNovaSenha } from './hooks/useCardNovaSenha';
 
 export default function CardNovaSenha() {
   const router = useRouter();
-
-  const form = useForm();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = (data: any) => {
-    console.log('Form submitted', data);
-  };
+  const { form, submitForm } = useCardNovaSenha();
 
   return (
     <Card className="flex flex-col justify-between bg-white w-[478px] p-[30px] rounded-[20px] absolute right-[150px] self-center">
@@ -50,10 +38,7 @@ export default function CardNovaSenha() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-8"
-          >
+          <form onSubmit={form.handleSubmit(submitForm)} className="space-y-8">
             <FormField
               control={form.control}
               name="email"
@@ -76,7 +61,7 @@ export default function CardNovaSenha() {
             />
             <FormField
               control={form.control}
-              name="Código de Acesso"
+              name="accessCode"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -116,7 +101,7 @@ export default function CardNovaSenha() {
             />
             <FormField
               control={form.control}
-              name="Repetir Senha"
+              name="repeatPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -152,6 +137,4 @@ export default function CardNovaSenha() {
       </CardContent>
     </Card>
   );
-
-  // Card{CardHeader(ButtonBack, Label("Nova Senha"));CardContent(Form(Input [n] button[submit])})
 }

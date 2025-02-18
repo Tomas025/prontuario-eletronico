@@ -5,8 +5,14 @@ export const mySchema = z
     email: z
       .string({ required_error: 'Campo obrigatório' })
       .email('Email Inválido'),
-    password: z.string({ required_error: 'Campo obrigatório' })
+    accessCode: z.string({ required_error: 'Campo obrigatório' }),
+    password: z.string({ required_error: 'Campo obrigatório' }),
+    repeatPassword: z.string().min(1, { message: 'Senha obrigatória' })
   })
-  .required();
+  .required()
+  .refine((data) => data.password === data.repeatPassword, {
+    message: 'As senhas não conferem',
+    path: ['repeatPassword']
+  });
 
 export type typeMyschema = z.infer<typeof mySchema>;
