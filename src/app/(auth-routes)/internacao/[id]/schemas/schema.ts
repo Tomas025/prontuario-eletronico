@@ -60,6 +60,16 @@ export const mySchema = z.object({
   FC: z.string().trim(),
   PA: z.string().trim(),
 
+  patientMonitoring: z
+    .object({
+      hour: z.string().trim(),
+      bloodPressure: z.string().trim(),
+      glucose: z.string().trim(),
+      temperature: z.string().trim(),
+      saturation: z.string().trim()
+    })
+    .array(),
+
 });
 
 export type typeMySchema = z.infer<typeof mySchema>;
